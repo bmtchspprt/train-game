@@ -2,27 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Scanner Training - 45 Scenarios</title>
+    <title>3D Scanner Training - Professional Assessment</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #eef2f3; line-height: 1.6; padding: 20px; }
-        .game-container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #0056b3; }
-        .score-panel { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; }
-        .progress-bar { height: 12px; background: #e9ecef; border-radius: 6px; margin: 20px 0; overflow: hidden; }
-        #progress { height: 100%; background: #28a745; width: 0%; transition: 0.5s; }
-        .choice-btn { display: block; width: 100%; text-align: left; padding: 15px; margin: 10px 0; border: 1px solid #ced4da; border-radius: 6px; cursor: pointer; background: #fff; font-size: 1rem; transition: all 0.2s; }
-        .choice-btn:hover { background: #f0f7ff; border-color: #0056b3; transform: translateX(5px); }
-        .feedback { font-weight: bold; margin-top: 20px; padding: 15px; border-radius: 6px; display: none; }
-        .grading-desc { font-size: 0.85rem; color: #666; margin-top: 5px; font-style: italic; }
-        .manual-ref { color: #0056b3; font-size: 0.8rem; margin-top: 10px; display: block; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #eef2f3; line-height: 1.6; padding: 20px; }
+        .game-container { max-width: 950px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 8px solid #0056b3; }
+        .score-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; }
+        .progress-bar { height: 14px; background: #e9ecef; border-radius: 7px; margin: 20px 0; overflow: hidden; border: 1px solid #ddd; }
+        #progress { height: 100%; background: linear-gradient(90deg, #28a745, #85d298); width: 0%; transition: 0.5s; }
+        .choice-btn { display: block; width: 100%; text-align: left; padding: 16px; margin: 12px 0; border: 1px solid #ced4da; border-radius: 8px; cursor: pointer; background: #fff; font-size: 1rem; transition: all 0.2s ease; }
+        .choice-btn:hover { background: #f0f7ff; border-color: #0056b3; transform: translateX(8px); box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
+        .feedback { font-weight: bold; margin-top: 25px; padding: 20px; border-radius: 8px; display: none; border-left: 5px solid transparent; }
+        .grading-meta { font-size: 0.9rem; color: #555; line-height: 1.4; }
+        .manual-ref { color: #0056b3; font-size: 0.85rem; font-weight: bold; margin-top: 15px; display: block; background: #e7f1ff; padding: 5px 10px; border-radius: 4px; display: inline-block; }
     </style>
 </head>
 <body>
 
 <div class="game-container">
     <div class="score-panel">
-        <div><strong>Scenario:</strong> <span id="count">1</span> / 45</div>
-        <div><strong>Technical Empathy:</strong> <span id="score">0</span>%
-            <div class="grading-desc">Correct diagnostic questions show professional efficiency.</div>
+        <div><strong>Module:</strong> 3D Scanner Support<br><strong>Scenario:</strong> <span id="count">1</span> / 45</div>
+        <div class="grading-meta">
+            <strong>Technical Empathy Score:</strong> <span id="score">0</span>%<br>
+            <span id="grade-desc">Evaluation: Initializing assessment...</span>
         </div>
     </div>
     
@@ -30,137 +31,333 @@
 
     <div id="game-content">
         <h3 id="step-title">Step 1: The Scenario</h3>
-        <p id="scenario-text" style="font-size: 1.1rem; color: #2c3e50; font-weight: 500;"></p>
+        <p id="scenario-text" style="font-size: 1.15rem; color: #2c3e50; font-weight: 500; background: #fff9e6; padding: 15px; border-left: 4px solid #ffc107;"></p>
         <div id="choices"></div>
         <div id="feedback" class="feedback"></div>
-        <button id="next-btn" style="display:none; margin-top:20px; padding:12px 30px; background:#0056b3; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Continue to Next Phase</button>
+        <button id="next-btn" style="display:none; margin-top:25px; padding:15px 40px; background:#0056b3; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem;">Continue to Next Phase</button>
     </div>
 </div>
 
 <script>
 const scenarios = [
-    // SCENARIO 1: THAILAND EMAILS
+    // 1. THAILAND EMAILS - TEMPERATURE
     {
-        scenario: "Field Report: All 5 MVL units in Thailand show constant temperature errors (199°F) even after a factory reset.",
+        scenario: "JES Thailand reports that all 5 MVL units are displaying '199 degrees' or negative values. They performed a factory reset, but the error persists.",
         questions: [
-            { text: "Do the units chirping/pulse when powered up outside the silo?", correct: true },
-            { text: "Is the site using a shielded Belden #3084A cable?", correct: false },
-            { text: "Has the transducer been disassembled recently?", correct: false },
-            { text: "Is the RS485 converter set to COM Port 2?", correct: false },
-            { text: "What is the specific ambient temperature at the top of the silo?", correct: false }
+            { text: "When you pull the scanner out of the silo, is the antenna emitting chirping noises?", correct: true },
+            { text: "Is the baud rate in the 3DMultiVision software set to 19200?", correct: false },
+            { text: "Are the scanners mounted using the standard 10 degree flange?", correct: false },
+            { text: "Is the PC running the latest Windows security updates?", correct: false },
+            { text: "Was the power supply verified at exactly 24.0V DC?", correct: false }
         ],
         actions: [
-            { text: "Inspect transducer connectors for loose/disconnected wires.", correct: true },
-            { text: "Replace the electronic card.", correct: false },
-            { text: "Install a new license key.", correct: false },
-            { text: "Check the PC Device Manager.", correct: false },
-            { text: "Add a 120-ohm resistor to the line.", correct: false }
+            { text: "Inspect the transducer disassembly; wires are likely loose/disconnected at the connector.", correct: true },
+            { text: "Advise the customer to install a cooling fan on the flange.", correct: false },
+            { text: "Replace the electronic motherboard immediately.", correct: false },
+            { text: "Change the project unit settings from Fahrenheit to Celsius.", correct: false },
+            { text: "Tell the customer to re-run the auto-detection tool in software.", correct: false }
         ],
-        ref: "Source: JES Thailand Email History (Eran Malka)"
+        ref: "Ref: Troubleshooting Email (Eran Malka) & Manual Appx D"
     },
-
-    // SCENARIO 2: PHYSICAL MANUAL - MOUNTING
+    // 2. MANUAL - MOUNTING INTERFERENCE
     {
-        scenario: "A customer wants to mount the scanner near the center of the silo to get the best average level.",
+        scenario: "A customer wants to install a scanner in a silo with a large internal center-fill pipe and several structural cross-beams.",
         questions: [
-            { text: "Is there an internal ladder or brace within 2 feet of the center?", correct: true },
-            { text: "Is the silo taller than 200 feet?", correct: false },
-            { text: "Is the product stored in liquid form?", correct: false },
-            { text: "What is the material's dielectric constant?", correct: false },
-            { text: "Is the power supply 110V or 240V?", correct: false }
+            { text: "Is there a location at least 1.6 feet (0.5m) away from the wall and away from the fill-stream?", correct: true },
+            { text: "What is the wall thickness of the silo?", correct: false },
+            { text: "Does the customer have a crane for the installation?", correct: false },
+            { text: "Is the fill pipe made of carbon steel or aluminum?", correct: false },
+            { text: "What is the color of the material being measured?", correct: false }
         ],
         actions: [
-            { text: "Relocate the scanner; never mount in the center due to excessive noise/reflections.", correct: true },
-            { text: "Proceed with center mounting.", correct: false },
-            { text: "Use a longer horn assembly.", correct: false },
-            { text: "Calibrate for center-loading only.", correct: false },
-            { text: "Apply a noise filter in 3DMultiVision.", correct: false }
+            { text: "Avoid center mounting and ensure the 'seeing' path is clear of structural obstacles.", correct: true },
+            { text: "Increase the pulse frequency to penetrate the structural beams.", correct: false },
+            { text: "Mount the scanner directly over the fill pipe to detect the peak.", correct: false },
+            { text: "Tell the customer to cut the structural beams out of the silo.", correct: false },
+            { text: "Lower the sensitivity (Threshold) in the software settings.", correct: false }
         ],
-        ref: "Source: 3D Manual Section 3.1 (Location Guidelines)"
+        ref: "Ref: 3D Manual Section 3.1 (Positioning)"
     },
-
-    // SCENARIO 3: SOFTWARE MANUAL - LICENSING
+    // 3. MANUAL - WIRING & POWER
     {
-        scenario: "The client successfully installed 3DMultiVision, but after 31 days, they can no longer see bin data.",
+        scenario: "A technician reports that two scanners work fine, but the third scanner on the same 2000ft run causes all units to flicker on/off.",
         questions: [
-            { text: "Was a permanent license key entered before the 30-day trial expired?", correct: true },
-            { text: "Is the server computer connected to the internet?", correct: false },
-            { text: "Did the technician change the server password?", correct: false },
-            { text: "Is the MAC address of the client PC correct?", correct: false },
-            { text: "Was the project exported from a previous version?", correct: false }
+            { text: "Are you using a 4-wire shielded cable like Belden 3084A to handle both power and data?", correct: true },
+            { text: "Is the third scanner painted a different color?", correct: false },
+            { text: "Is the RS485 converter plugged into a USB 2.0 or 3.0 port?", correct: false },
+            { text: "What is the serial number of the flickering unit?", correct: false },
+            { text: "Is the PC monitor showing any static?", correct: false }
         ],
         actions: [
-            { text: "Obtain the 3DVision Server MAC address and request a license key.", correct: true },
-            { text: "Reinstall the software to reset the trial.", correct: false },
-            { text: "Change the server port to 22222.", correct: false },
-            { text: "Clear the browser cache.", correct: false },
-            { text: "Check if the USB-RS485 driver is signed.", correct: false }
+            { text: "Verify voltage at the last scanner; if below 18V, the power drop is too high for the daisy chain.", correct: true },
+            { text: "Install a 120-ohm resistor at the PC side only.", correct: false },
+            { text: "Swap the A and B lines on the RS485 terminal.", correct: false },
+            { text: "Reinstall the 3DMultiVision software.", correct: false },
+            { text: "Reduce the number of scanners on the project to two.", correct: false }
         ],
-        ref: "Source: 3D MultiVision Manual (Licensing Section)"
+        ref: "Ref: 3D Manual Section 3.5 (Wiring)"
     },
-
-    // SCENARIO 4: MANUAL - WIRING DISTANCE
+    // 4. SOFTWARE - COM PORT ASSIGNMENT
     {
-        scenario: "A technician is planning an RS485 run that spans 5,000 feet (1500m) from the silo to the PC.",
+        scenario: "The client installed the USB-to-RS485 driver, but the 3DMultiVision software shows 'Disconnected' for all bins.",
         questions: [
-            { text: "What is the total cable length for the RS485 loop?", correct: true },
-            { text: "Is the cable UV-rated?", correct: false },
-            { text: "Are you using 4-20mA as a backup?", correct: false },
-            { text: "How many silos are on this run?", correct: false },
-            { text: "Is the conduit made of PVC or Steel?", correct: false }
+            { text: "Does the COM Port number in Device Manager match the Port assigned in the BinMaster software?", correct: true },
+            { text: "Is the computer's wallpaper distracting the sensor?", correct: false },
+            { text: "Did the user restart the computer three times?", correct: false },
+            { text: "Is the USB cable longer than 50 feet?", correct: false },
+            { text: "Is the 'stech' password entered in the Windows login?", correct: false }
         ],
         actions: [
-            { text: "Advise the client that RS485 max distance is 4000ft; they need a repeater or wireless bridge.", correct: true },
-            { text: "Use thicker 12AWG wire to bridge the gap.", correct: false },
-            { text: "Decrease the baud rate to 1200.", correct: false },
-            { text: "Swap to a 2nd COM port.", correct: false },
-            { text: "Connect only one scanner per loop.", correct: false }
+            { text: "Match the software COM Port setting to the hardware's assigned Port (e.g., COM3).", correct: true },
+            { text: "Buy a new RS485 converter.", correct: false },
+            { text: "Format the hard drive and reinstall Windows.", correct: false },
+            { text: "Disable the antivirus software completely.", correct: false },
+            { text: "Switch the RS485 polarity at every single scanner.", correct: false }
         ],
-        ref: "Source: 3D Manual Section 3.5 (Wiring Specifications)"
+        ref: "Ref: 3D MultiVision Manual Section 4.2"
     },
-
-    // SCENARIO 5: EMAIL - RS485 COLLAPSE
+    // 5. MANUAL - DUST & MAINTENANCE
     {
-        scenario: "After a thunderstorm, the entire RS485 daisy chain is unresponsive, but the PC is fine.",
+        scenario: "A client in a very dusty cement application reports that their volume accuracy is degrading over time.",
         questions: [
-            { text: "Does removing one specific scanner from the chain restore communication to others?", correct: true },
-            { text: "Is the software displaying 'Project Not Found'?", correct: false },
-            { text: "Was the PC unplugged during the storm?", correct: false },
-            { text: "Are the scanners making a high-pitched whine?", correct: false },
-            { text: "Is the site using Windows 7 or Windows 10?", correct: false }
+            { text: "Is the neck/horn of the scanner clogged with material buildup or dust?", correct: true },
+            { text: "Is the material being ground into a finer powder than before?", correct: false },
+            { text: "Is the silo's roof leaking water?", correct: false },
+            { text: "How many users are logged into the web interface?", correct: false },
+            { text: "Is the scanner using the Teflon-coated antenna option?", correct: false }
         ],
         actions: [
-            { text: "Check for a surge-damaged RS485 chip in one unit pulling down the entire bus.", correct: true },
-            { text: "Replace the USB-RS485 adapter at the PC.", correct: false },
-            { text: "Re-calibrate the Z-position of all sensors.", correct: false },
-            { text: "Disable the firewall on the server.", correct: false },
-            { text: "Perform a factory reset on the server software.", correct: false }
+            { text: "Schedule a cleaning of the antenna and consider using the air-purge connection.", correct: true },
+            { text: "Increase the 'Vessel Height' setting in the software.", correct: false },
+            { text: "Apply a higher 'Threshold' to ignore the dust cloud.", correct: false },
+            { text: "Replace the scanner head with an RL model.", correct: false },
+            { text: "Move the scanner further away from the wall.", correct: false }
         ],
-        ref: "Source: BinMaster Support Case Log (Tyler Strop)"
+        ref: "Ref: 3D Manual Section 5.1 (Maintenance)"
+    },
+    // 6. SOFTWARE - LICENSING 30-DAY TRIAL
+    {
+        scenario: "A user is getting a 'License Reminder' popup every time they open the application.",
+        questions: [
+            { text: "Has the software been installed for fewer than 30 days?", correct: true },
+            { text: "Is the user an Administrator on the PC?", correct: false },
+            { text: "Is the license key printed on the side of the scanner?", correct: false },
+            { text: "Has the PC's clock been moved forward?", correct: false },
+            { text: "Is the software connected to a BinMaster cloud account?", correct: false }
+        ],
+        actions: [
+            { text: "Collect the Server MAC Address and send it to BinMaster for a permanent key.", correct: true },
+            { text: "Click 'Don't Remind' and ignore it forever.", correct: false },
+            { text: "The software will stop working in 30 days if no key is entered.", correct: false },
+            { text: "Purchase a new USB dongle for the license.", correct: false },
+            { text: "License keys are only for the RL model, not the MVL.", correct: false }
+        ],
+        ref: "Ref: 3D MultiVision Manual (Activation)"
+    },
+    // 7. EMAIL - DAISY CHAIN FAILURE
+    {
+        scenario: "A Swiss customer added two new scanners, and now the RS485 bus has crashed for the whole plant.",
+        questions: [
+            { text: "If you disconnect the two new scanners, does the original system resume working?", correct: true },
+            { text: "Are the new scanners mounted in silos 4 and 5?", correct: false },
+            { text: "Is the IT department blocking the 22222 port?", correct: false },
+            { text: "Is the new cable green or black?", correct: false },
+            { text: "What is the name of the technician on-site?", correct: false }
+        ],
+        actions: [
+            { text: "Perform a bench test: check if the units power up with the horn assembly unplugged.", correct: true },
+            { text: "Increase the RS485 voltage to 48V.", correct: false },
+            { text: "Replace the PC running the MultiVision Server.", correct: false },
+            { text: "Add a resistor to every scanner in the chain.", correct: false },
+            { text: "Told the customer to wait 24 hours for the system to reset.", correct: false }
+        ],
+        ref: "Ref: Tyler Strop Troubleshooting Email"
+    },
+    // 8. MANUAL - ANALOG 4-20MA
+    {
+        scenario: "The customer wants to use the 4-20mA output instead of RS485, but is getting no signal at the PLC.",
+        questions: [
+            { text: "Is the 4-20mA loop being powered by an external source or the scanner (Passive/Active)?", correct: true },
+            { text: "What is the PLC's IP address?", correct: false },
+            { text: "Is the scanner head rotating during measurement?", correct: false },
+            { text: "Is the wire diameter 18AWG?", correct: false },
+            { text: "What is the project name in MultiVision?", correct: false }
+        ],
+        actions: [
+            { text: "Verify the wiring polarity and check if the scanner is set to the correct output mode.", correct: true },
+            { text: "4-20mA is not supported on 3D scanners.", correct: false },
+            { text: "Tell the customer to use a USB converter for the 4-20mA.", correct: false },
+            { text: "Change the Baud rate to 9600.", correct: false },
+            { text: "The signal only works if the scanner is in 'Test Mode'.", correct: false }
+        ],
+        ref: "Ref: 3D Manual Section 3.5.2 (Analog)"
+    },
+    // 9. SOFTWARE - VESSEL HEIGHT CONFIG
+    {
+        scenario: "The scanner reports the silo is full, but the customer can see it is only half-full.",
+        questions: [
+            { text: "Is the 'Vessel Height' correctly measured from the sensor face to the bottom?", correct: true },
+            { text: "Is the scanner mounted at a 45-degree angle?", correct: false },
+            { text: "Is the material made of plastic pellets?", correct: false },
+            { text: "Did the customer change the software password?", correct: false },
+            { text: "What time of day is the reading taken?", correct: false }
+        ],
+        actions: [
+            { text: "Adjust the Vessel Height and Bottom settings in the software to match physical dimensions.", correct: true },
+            { text: "Lower the sensor further into the silo.", correct: false },
+            { text: "Reset the software to factory defaults.", correct: false },
+            { text: "Decrease the pulse power of the transducer.", correct: false },
+            { text: "Assume the sensor is broken and issue an RMA.", correct: false }
+        ],
+        ref: "Ref: 3D MultiVision Manual Section 5.2"
+    },
+    // 10. MANUAL - AMBIENT TEMPERATURE LIMITS
+    {
+        scenario: "A scanner in a tropical climate stops responding during the hottest part of the day.",
+        questions: [
+            { text: "Is the ambient temperature exceeding the 185°F (85°C) limit for the electronics?", correct: true },
+            { text: "Is the sun reflecting off the horn?", correct: false },
+            { text: "Is the technician wearing gloves?", correct: false },
+            { text: "Is the scanner mounted on a plastic flange?", correct: false },
+            { text: "Does the scanner have a sun-shield installed?", correct: false }
+        ],
+        actions: [
+            { text: "Provide cooling or a sun-shade to keep the electronic head within operating specs.", correct: true },
+            { text: "Wrap the unit in insulation to keep it warm.", correct: false },
+            { text: "Change the internal temperature sensor to 'Ignore'.", correct: false },
+            { text: "Lower the voltage to 12V to reduce heat.", correct: false },
+            { text: "Replace the scanner with a standard non-HT model.", correct: false }
+        ],
+        ref: "Ref: 3D Manual Appx D (Specifications)"
+    },
+    // 11. SOFTWARE - MAC ADDRESS RETRIEVAL
+    {
+        scenario: "A customer cannot find the MAC address needed for their permanent license.",
+        questions: [
+            { text: "Are they looking in the 'About' section of the 3DMultiVision Server application?", correct: true },
+            { text: "Is the computer's serial number visible?", correct: false },
+            { text: "Are they checking the label on the bottom of the scanner?", correct: false },
+            { text: "Is the router's MAC address being used instead?", correct: false },
+            { text: "Is the PC connected to a domain?", correct: false }
+        ],
+        actions: [
+            { text: "Open the 3DVision Server and click 'Get MAC Address' to copy it to the clipboard.", correct: true },
+            { text: "Tell them to use the PC's name instead.", correct: false },
+            { text: "The MAC address is the same as the Order Number.", correct: false },
+            { text: "Tell them to call Microsoft support for the MAC.", correct: false },
+            { text: "Use the scanner's Node ID as the MAC address.", correct: false }
+        ],
+        ref: "Ref: 3D MultiVision Manual Section 8 (Licensing)"
+    },
+    // 12. MANUAL - CLEARANCE REQUIREMENTS
+    {
+        scenario: "The scanner is mounted 6 inches from the silo wall and is providing constant 'Full' readings.",
+        questions: [
+            { text: "Is the scanner at least 1.6 feet (0.5m) away from the wall to avoid side-lobe reflections?", correct: true },
+            { text: "Is the wall painted a reflective color?", correct: false },
+            { text: "Is the scanner head perfectly level?", correct: false },
+            { text: "What is the humidity inside the bin?", correct: false },
+            { text: "Is the flange made of stainless steel?", correct: false }
+        ],
+        actions: [
+            { text: "Relocate the mounting hole further from the wall to satisfy clearance specs.", correct: true },
+            { text: "Apply a 'False Echo Storage' filter in software.", correct: false },
+            { text: "Shorten the horn assembly.", correct: false },
+            { text: "Increase the mounting angle to 20 degrees.", correct: false },
+            { text: "Tell the customer to ignore the first 5 feet of data.", correct: false }
+        ],
+        ref: "Ref: 3D Manual Section 3.1"
+    },
+    // 13. EMAIL - ERRONEOUS DATA AFTER RMA
+    {
+        scenario: "A unit was returned for repair and sent back to the customer, but it won't connect to the old project.",
+        questions: [
+            { text: "Did the Node ID of the replacement unit change compared to the original?", correct: true },
+            { text: "Is the replacement unit a different color?", correct: false },
+            { text: "Was the software updated while the unit was in repair?", correct: false },
+            { text: "Is the customer using the same login?", correct: false },
+            { text: "Did the customer change their internet provider?", correct: false }
+        ],
+        actions: [
+            { text: "Update the Node ID in the Vessel Configuration to match the new unit's label.", correct: true },
+            { text: "RMA the unit again.", correct: false },
+            { text: "Delete the entire project and start over.", correct: false },
+            { text: "Change the COM port to COM1.", correct: false },
+            { text: "Tell the customer replacement units are not compatible.", correct: false }
+        ],
+        ref: "Ref: Technical Support Internal Protocol"
+    },
+    // 14. MANUAL - AIR PURGE USAGE
+    {
+        scenario: "A customer in a flour mill is worried about dust settling on the transducer.",
+        questions: [
+            { text: "Does the installation include a 1/8\" NPT air-purge connection?", correct: true },
+            { text: "Is the flour organic or non-organic?", correct: false },
+            { text: "Is the customer using a vacuum system?", correct: false },
+            { text: "What is the air pressure in the room?", correct: false },
+            { text: "Is the scanner mounted upside down?", correct: false }
+        ],
+        actions: [
+            { text: "Advise using low-pressure, clean, dry air for the air-purge to keep the face clean.", correct: true },
+            { text: "Tell the customer to wipe the lens every morning.", correct: false },
+            { text: "Install a vibrating motor on the flange.", correct: false },
+            { text: "Dust doesn't affect 3D scanners, so ignore it.", correct: false },
+            { text: "Use a water-wash system instead of air.", correct: false }
+        ],
+        ref: "Ref: 3D Manual Section 3.4.1 (Purging)"
+    },
+    // 15. SOFTWARE - EXPORTING PROJECTS
+    {
+        scenario: "The customer is moving their 3DMultiVision server to a new PC and wants to keep all their settings.",
+        questions: [
+            { text: "Have they used the 'Export Project' feature to save a .bmpj file?", correct: true },
+            { text: "Is the new PC the same brand as the old PC?", correct: false },
+            { text: "Do they have the original installation CD?", correct: false },
+            { text: "Is the old PC still connected to the internet?", correct: false },
+            { text: "Did they write down all the coordinates by hand?", correct: false }
+        ],
+        actions: [
+            { text: "Export the project from the old server and 'Import Project' on the new server.", correct: true },
+            { text: "Copy the C:\\Program Files folder to the new PC.", correct: false },
+            { text: "The data is stored in the scanner and will download automatically.", correct: false },
+            { text: "They must manually re-enter every coordinate.", correct: false },
+            { text: "Projects cannot be moved between computers.", correct: false }
+        ],
+        ref: "Ref: 3D MultiVision Manual Section 5.6"
     }
 ];
 
-// GENERATING 40 PLACEHOLDERS FOR FULL 45-QUEST LIST
-for(let i=5; i<45; i++) {
+// GENERATING REMAINING 30 PLACEHOLDERS (For logic test, can be filled with more manual data)
+for(let i=15; i<45; i++) {
     scenarios.push({
-        scenario: `Expansion Scenario #${i+1}: Sourced from Manual Chapter ${Math.floor(i/5)}.`,
+        scenario: `Expansion Scenario #${i+1}: Advanced diagnostic case from Section ${Math.floor(i/5)}.`,
         questions: [
-            {text: "Correct diagnostic question based on manual?", correct: true},
-            {text: "Distractor A", correct: false}, {text: "Distractor B", correct: false},
-            {text: "Distractor C", correct: false}, {text: "Distractor D", correct: false}
+            {text: "Correct technical question?", correct: true},
+            {text: "Distractor 1", correct: false}, {text: "Distractor 2", correct: false},
+            {text: "Distractor 3", correct: false}, {text: "Distractor 4", correct: false}
         ],
         actions: [
             {text: "Correct technical correction", correct: true},
-            {text: "Incorrect action A", correct: false}, {text: "Incorrect action B", correct: false},
-            {text: "Incorrect action C", correct: false}, {text: "Incorrect action D", correct: false}
+            {text: "Action Error A", correct: false}, {text: "Action Error B", correct: false},
+            {text: "Action Error C", correct: false}, {text: "Action Error D", correct: false}
         ],
-        ref: "Source: BinMaster Documentation"
+        ref: "Ref: BinMaster Reference Manual"
     });
 }
 
 let currentIdx = 0;
 let currentStep = 1; 
 let score = 0;
+
+function updateGrading() {
+    const desc = document.getElementById('grade-desc');
+    const s = Math.round(score);
+    if (s < 10) desc.innerText = "Evaluation: Assessing fundamental knowledge...";
+    else if (s < 40) desc.innerText = "Evaluation: Developing technical empathy...";
+    else if (s < 70) desc.innerText = "Evaluation: Proficient in standard troubleshooting.";
+    else if (s < 90) desc.innerText = "Evaluation: Advanced support specialist capability.";
+    else desc.innerText = "Evaluation: Master of 3D Technical Services.";
+}
 
 function loadStep() {
     const item = scenarios[currentIdx];
@@ -172,8 +369,97 @@ function loadStep() {
     feedback.style.display = 'none';
     nextBtn.style.display = 'none';
     document.getElementById('count').innerText = currentIdx + 1;
+    updateGrading();
 
     if (currentStep === 1) {
-        document.getElementById('step-title').innerText = "Step 1: The Scenario";
+        document.getElementById('step-title').innerText = "Step 1: Analyze the Field Scenario";
         document.getElementById('scenario-text').innerText = item.scenario;
         const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.innerHTML = "<strong>➜ Initiate Troubleshooting Procedure</strong>";
+        btn.onclick = () => { currentStep = 2; loadStep(); };
+        choicesDiv.appendChild(btn);
+    } 
+    else if (currentStep === 2) {
+        document.getElementById('step-title').innerText = "Step 2: Selection of High-Value Follow-up Question";
+        // Shuffling questions
+        [...item.questions].sort(() => Math.random() - 0.5).forEach(q => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = q.text;
+            btn.onclick = () => handleChoice(q.correct, "Diagnostic Logic Validated. Proceeding to solution.", 3);
+            choicesDiv.appendChild(btn);
+        });
+    }
+    else if (currentStep === 3) {
+        document.getElementById('step-title').innerText = "Step 3: Determination of Final Corrective Action";
+        [...item.actions].sort(() => Math.random() - 0.5).forEach(a => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = a.text;
+            btn.onclick = () => handleChoice(a.correct, "Technical Correction Applied.", 4);
+            choicesDiv.appendChild(btn);
+        });
+        const refSpan = document.createElement('span');
+        refSpan.className = 'manual-ref';
+        refSpan.innerText = item.ref;
+        choicesDiv.appendChild(refSpan);
+    }
+}
+
+function handleChoice(isCorrect, msg, nextStep) {
+    const feedback = document.getElementById('feedback');
+    feedback.style.display = 'block';
+    if (isCorrect) {
+        feedback.innerText = "✓ SUCCESS: " + msg;
+        feedback.style.background = "#d4edda";
+        feedback.style.borderColor = "#28a745";
+        feedback.style.color = "#155724";
+        score += 2.22; // Adjusted for 45 questions to hit ~100
+    } else {
+        feedback.innerText = "✗ FAILURE: That choice leads to technical misalignment or customer dissatisfaction.";
+        feedback.style.background = "#f8d7da";
+        feedback.style.borderColor = "#dc3545";
+        feedback.style.color = "#721c24";
+        score -= 1.5;
+    }
+    document.getElementById('score').innerText = Math.max(0, Math.round(score));
+    
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.style.display = 'block';
+    nextBtn.onclick = () => {
+        if (nextStep === 3) {
+            currentStep = 3;
+            loadStep();
+        } else {
+            currentIdx++;
+            currentStep = 1;
+            if (currentIdx < scenarios.length) {
+                document.getElementById('progress').style.width = (currentIdx / scenarios.length * 100) + "%";
+                loadStep();
+            } else {
+                finishGame();
+            }
+        }
+    };
+}
+
+function finishGame() {
+    document.getElementById('game-content').innerHTML = `
+        <div style="text-align:center; padding:40px;">
+            <h2 style="color:#0056b3;">Training Assessment Complete</h2>
+            <p style="font-size:1.4rem;">Final Empathy Score: ${Math.round(score)}%</p>
+            <div style="background:#f1f1f1; padding:20px; border-radius:10px; margin:20px 0;">
+                <strong>Grading Description:</strong><br>
+                A score of 85%+ indicates you are ready for lead technical support on 3D systems.<br>
+                60% - 84% suggests you need to review the "Physical Installation" section of the 3D Manual.<br>
+                Under 60% requires a supervised retraining session.
+            </div>
+            <button onclick="location.reload()" class="choice-btn" style="text-align:center;">Restart Module</button>
+        </div>`;
+}
+
+loadStep();
+</script>
+</body>
+</html>
