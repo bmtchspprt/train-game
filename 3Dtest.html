@@ -8,15 +8,14 @@
         .game-container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 12px; border-top: 8px solid #0056b3; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
         .stats-box { text-align: right; font-size: 0.9rem; }
-        .stat-line { margin: 4px 0; }
-        .pct { font-weight: bold; color: #0056b3; }
+        .pct { font-weight: bold; color: #0056b3; font-size: 1.1rem; }
         .progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 25px; }
         #progress-fill { height: 100%; background: #28a745; width: 0%; transition: 0.4s; }
-        .scenario-box { background: #fffcf0; border-left: 5px solid #f1c40f; padding: 20px; margin-bottom: 20px; font-weight: 500; }
-        .choice-btn { display: block; width: 100%; text-align: left; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: white; transition: 0.2s; }
-        .choice-btn:hover { background: #f8fbff; border-color: #0056b3; }
-        .feedback { padding: 15px; border-radius: 8px; margin-top: 20px; display: none; font-weight: bold; }
-        .manual-cite { display: block; margin-top: 10px; font-size: 0.8rem; color: #666; font-style: italic; }
+        .scenario-box { background: #fffcf0; border-left: 5px solid #f1c40f; padding: 20px; margin-bottom: 20px; font-weight: 500; font-size: 1.1rem; }
+        .choice-btn { display: block; width: 100%; text-align: left; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: white; transition: 0.2s; font-size: 1rem; }
+        .choice-btn:hover { background: #f8fbff; border-color: #0056b3; transform: translateX(5px); }
+        .feedback { padding: 15px; border-radius: 8px; margin-top: 20px; display: none; font-weight: bold; border-left: 5px solid; }
+        .manual-cite { display: block; margin-top: 15px; font-size: 0.85rem; color: #0056b3; font-weight: bold; background: #eef6ff; padding: 5px 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -24,12 +23,12 @@
 <div class="game-container">
     <div class="header">
         <div>
-            <h2 id="quiz-title">Loading Quiz...</h2>
+            <h2 id="quiz-title">Loading Module...</h2>
             <div>Scenario <span id="current-count">1</span> of 10</div>
         </div>
         <div class="stats-box">
-            <div class="stat-line">Diagnostic Accuracy: <span id="q-score" class="pct">0</span>%</div>
-            <div class="stat-line">Solution Accuracy: <span id="s-score" class="pct">0</span>%</div>
+            <div>Diagnostic Accuracy: <span id="q-score" class="pct">0</span>%</div>
+            <div>Solution Accuracy: <span id="s-score" class="pct">0</span>%</div>
         </div>
     </div>
 
@@ -40,134 +39,766 @@
         <div id="scenario-text" class="scenario-box"></div>
         <div id="choice-area"></div>
         <div id="feedback" class="feedback"></div>
-        <button id="next-btn" style="display:none; margin-top:20px; padding:12px 30px; background:#0056b3; color:white; border:none; border-radius:6px; cursor:pointer;">Next Step</button>
+        <button id="next-btn" style="display:none; margin-top:20px; padding:12px 30px; background:#0056b3; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Continue</button>
     </div>
 </div>
 
 <script>
-// Data structure containing all 40 scenarios (10 per quiz)
 const quizData = {
     "1": {
-        title: "Sensor Hardware I: Installation & Physics",
+        title: "Module 1: Sensor Hardware I (Mounting & Physics)",
         scenarios: [
             {
-                text: "A customer wants to mount the scanner in the exact center of a 30ft diameter silo with a center fill.",
+                text: "A customer is installing an MVL in a silo with a center fill stream. They want to mount it 2 feet from the center.",
                 questions: [
-                    { t: "Is the fill stream hitting the center point directly?", c: true },
-                    { t: "What is the silos serial number?", c: false },
-                    { t: "Is the silo painted white?", c: false },
-                    { t: "Is there a ladder on the outside?", c: false },
-                    { t: "What is the material's bulk density?", c: false }
+                    { t: "Is the scanner positioned to avoid the direct path of the falling material?", c: true },
+                    { t: "Does the scanner have the optional Teflon coating?", c: false },
+                    { t: "Is the silo made of corrugated steel?", c: false },
+                    { t: "What is the serial number of the unit?", c: false },
+                    { t: "Is there a ladder near the mounting hole?", c: false }
                 ],
                 solutions: [
-                    { t: "Move the mounting point at least 1/3 of the radius away from the center/fill stream.", c: true },
-                    { t: "Increase pulse power to cut through the dust.", c: false },
-                    { t: "Center mounting is the preferred method; proceed.", c: false },
-                    { t: "Use a smaller antenna.", c: false },
-                    { t: "Install a sunshield.", c: false }
+                    { t: "Relocate the scanner at least 1/3 of the radius away from the center to avoid noise and damage.", c: true },
+                    { t: "Install a heavy-duty sunshield.", c: false },
+                    { t: "Increase the gain settings in the software.", c: false },
+                    { t: "Swap the transducer for an RL model.", c: false },
+                    { t: "Ground the flange to the silo roof.", c: false }
                 ],
                 ref: "3D Manual Section 3.1"
             },
-            // ... (9 more scenarios for Quiz 1)
+            {
+                text: "The scanner is providing a constant 'Full' reading, but the bin is actually empty.",
+                questions: [
+                    { t: "Is there an internal obstruction like a brace or ladder within the sensor's beam path?", c: true },
+                    { t: "Is the power supply providing exactly 24V?", c: false },
+                    { t: "Is the customer using a Mac or PC?", c: false },
+                    { t: "Has the software license expired?", c: false },
+                    { t: "What color is the material being measured?", c: false }
+                ],
+                solutions: [
+                    { t: "Check for internal obstructions and move the scanner or use the 'False Echo' filter.", c: true },
+                    { t: "Replace the electronic card.", c: false },
+                    { t: "Clean the external horn with a cloth.", c: false },
+                    { t: "Reinstall the USB drivers.", c: false },
+                    { t: "Perform a factory reset on the PC.", c: false }
+                ],
+                ref: "3D Manual Section 3.2"
+            },
+            {
+                text: "A customer wants to know if they can mount the 3D scanner on a 20-inch tall nozzle.",
+                questions: [
+                    { t: "Does the nozzle height exceed the limit that would block the sensor's side-to-side movement?", c: true },
+                    { t: "Is the nozzle made of PVC or Steel?", c: false },
+                    { t: "How many bolts are in the flange?", c: false },
+                    { t: "Is the nozzle painted on the inside?", c: false },
+                    { t: "What is the ambient temperature outside the nozzle?", c: false }
+                ],
+                solutions: [
+                    { t: "Advise that nozzles should be as short as possible; if too long, the antenna cannot 'see' the walls.", c: true },
+                    { t: "Suggest using a nozzle extension kit.", c: false },
+                    { t: "Tell them to fill the nozzle with foam.", c: false },
+                    { t: "Increase the threshold to 50dB.", c: false },
+                    { t: "Nozzles have no impact on 3D scanners.", c: false }
+                ],
+                ref: "3D Manual Section 3.3"
+            },
+            {
+                text: "An MVL unit in a grain silo is losing accuracy during the filling process.",
+                questions: [
+                    { t: "Is the dust level during filling creating enough noise to obscure the signal?", c: true },
+                    { t: "Is the grain organic or non-organic?", c: false },
+                    { t: "Is the scanner using the High Temp option?", c: false },
+                    { t: "What is the moisture content of the grain?", c: false },
+                    { t: "How many bushels does the silo hold?", c: false }
+                ],
+                solutions: [
+                    { t: "Wait for dust to settle for a final reading, or ensure the horn is clear and use an air-purge.", c: true },
+                    { t: "Increase the vessel height in the software.", c: false },
+                    { t: "Lower the 4-20mA current.", c: false },
+                    { t: "Change the material density setting to 'Heavy'.", c: false },
+                    { t: "Replace the transducer with a radar unit.", c: false }
+                ],
+                ref: "3D Manual Section 2.1"
+            },
+            {
+                text: "The scanner is installed, but the technician is worried about the 15-degree tilt of the roof.",
+                questions: [
+                    { t: "Is the scanner head mounted perfectly level regardless of the roof's slope?", c: true },
+                    { t: "Is the roof made of wood or metal?", c: false },
+                    { t: "What is the wind speed at the site?", c: false },
+                    { t: "Is the technician using a spirit level?", c: false },
+                    { t: "Is the scanner serial number visible from the ground?", c: false }
+                ],
+                solutions: [
+                    { t: "The scanner must be mounted level (0 degrees) for its mapping algorithm to work correctly.", c: true },
+                    { t: "Adjust the software to compensate for a 15-degree tilt.", c: false },
+                    { t: "The scanner should always follow the slope of the roof.", c: false },
+                    { t: "Add a 15-degree wedge to the antenna.", c: false },
+                    { t: "None of the above; tilt doesn't matter.", c: false }
+                ],
+                ref: "3D Manual Section 3.4"
+            },
+            {
+                text: "A customer is measuring a material with a very low dielectric constant (under 2.0).",
+                questions: [
+                    { t: "Is the signal reflecting off the material or passing through it to the floor?", c: true },
+                    { t: "Is the material edible?", c: false },
+                    { t: "What is the color of the material?", c: false },
+                    { t: "Does the material contain metal flakes?", c: false },
+                    { t: "Is the material stored in a vacuum?", c: false }
+                ],
+                solutions: [
+                    { t: "Ensure the 'Bottom' setting is correct to prevent the scanner from tracking the floor.", c: true },
+                    { t: "Increase the power to the maximum setting.", c: false },
+                    { t: "The 3D scanner cannot measure low dielectric materials.", c: false },
+                    { t: "Add a layer of high-dielectric material on top.", c: false },
+                    { t: "Switch the scanner to 'Pulse' mode.", c: false }
+                ],
+                ref: "3D Manual Section 2.2"
+            },
+            {
+                text: "A site in a cold climate ( -40°F) reports the scanner is sluggish or non-responsive.",
+                questions: [
+                    { t: "Is the internal heater functioning to keep the electronics within the operating range?", c: true },
+                    { t: "Is the silo roof covered in ice?", c: false },
+                    { t: "Did the technician use winter-grade grease?", c: false },
+                    { t: "What is the humidity inside the bin?", c: false },
+                    { t: "Is the power cable rated for cold weather?", c: false }
+                ],
+                solutions: [
+                    { t: "Check power supply for the internal heater and ensure the unit is within its temperature spec.", c: true },
+                    { t: "Wrap the entire scanner in a heating blanket.", c: false },
+                    { t: "Replace the transducer with a high-temp version.", c: false },
+                    { t: "Move the scanner inside the bin.", c: false },
+                    { t: "Increase the voltage to 36V.", c: false }
+                ],
+                ref: "3D Manual Appendix D"
+            },
+            {
+                text: "The scanner is installed in a silo where the filling point is on the far left wall.",
+                questions: [
+                    { t: "Will the material 'cone' block the sensor's view of the rest of the bin?", c: true },
+                    { t: "Is the filler using a conveyor or a blower?", c: false },
+                    { t: "What is the diameter of the fill pipe?", c: false },
+                    { t: "Is the fill point grounded?", c: false },
+                    { t: "How many times a day is the bin filled?", c: false }
+                ],
+                solutions: [
+                    { t: "Position the scanner so it can 'see' the highest peak and the lowest valley of the cone.", c: true },
+                    { t: "Mount the scanner directly under the fill point.", c: false },
+                    { t: "Use two scanners to see around the cone.", c: false },
+                    { t: "Change the 'Damping' setting in the software.", c: false },
+                    { t: "Install a deflector plate on the fill pipe.", c: false }
+                ],
+                ref: "3D Manual Section 3.1"
+            },
+            {
+                text: "A customer wants to measure a liquid tank using a 3DLevelScanner.",
+                questions: [
+                    { t: "Is the 3D scanner designed for solids only due to surface reflection patterns?", c: true },
+                    { t: "Is the liquid flammable?", c: false },
+                    { t: "What is the viscosity of the liquid?", c: false },
+                    { t: "Is the liquid transparent?", c: false },
+                    { t: "How deep is the tank?", c: false }
+                ],
+                solutions: [
+                    { t: "Advise the customer that the 3D scanner is for solids; suggest a radar or ultrasonic for liquids.", c: true },
+                    { t: "Use a special 'Liquid' firmware update.", c: false },
+                    { t: "Mount the scanner at a 45-degree angle.", c: false },
+                    { t: "Add a float to the liquid surface.", c: false },
+                    { t: "Liquid measurement is standard; proceed with installation.", c: false }
+                ],
+                ref: "3D Manual Section 2.3"
+            },
+            {
+                text: "A site reports the scanner flange is vibrating significantly due to nearby machinery.",
+                questions: [
+                    { t: "Could the vibration damage the internal transducer or cause false readings?", c: true },
+                    { t: "What is the frequency of the vibration in Hz?", c: false },
+                    { t: "Is the machinery electric or diesel?", c: false },
+                    { t: "Is the floor vibrating as well?", c: false },
+                    { t: "What is the bolt torque on the flange?", c: false }
+                ],
+                solutions: [
+                    { t: "Use vibration dampeners on the mounting or move the scanner to a more stable location.", c: true },
+                    { t: "Tighten the flange bolts to the maximum torque.", c: false },
+                    { t: "Ignore the vibration as the scanner is solid-state.", c: false },
+                    { t: "Fill the horn with silicone to dampen the transducer.", c: false },
+                    { t: "Replace the scanner every 6 months.", c: false }
+                ],
+                ref: "3D Manual Section 3.4"
+            }
         ]
     },
     "2": {
-        title: "Sensor Hardware II: Wiring & Comms",
+        title: "Module 2: Sensor Hardware II (Wiring & Power)",
         scenarios: [
             {
-                text: "The scanner powers up but the MultiVision software keeps timing out when trying to read the unit.",
+                text: "Thailand site reports MVL units showing 199°F or negative values instantly after installation.",
                 questions: [
-                    { t: "Is the RS485 A/B polarity reversed at the terminal block?", c: true },
-                    { t: "How many pixels is the computer monitor?", c: false },
-                    { t: "Is the scanner's horn pointed down?", c: false },
-                    { t: "Is the technician using a laptop or desktop?", c: false },
-                    { t: "Does the silo have a roof?", c: false }
+                    { t: "When you pull the scanner out, is the antenna emitting its diagnostic 'chirping' sound?", c: true },
+                    { t: "Is the site using 110V or 220V main power?", c: false },
+                    { t: "Is the cable UV-protected?", c: false },
+                    { t: "What is the baud rate of the system?", c: false },
+                    { t: "How many scanners are in the project?", c: false }
                 ],
                 solutions: [
-                    { t: "Check the RS485 wiring polarity and ensure the shield is grounded at one end.", c: true },
-                    { t: "Change the Windows desktop resolution.", c: false },
-                    { t: "Reset the scanner's internal clock.", c: false },
-                    { t: "Replace the 24V power supply.", c: false },
-                    { t: "Add more material to the bin to increase signal strength.", c: false }
+                    { t: "Inspect for loose or disconnected internal wires at the transducer/antenna connector.", c: true },
+                    { t: "Replace the entire electronic motherboard.", c: false },
+                    { t: "Install a 120-ohm termination resistor.", c: false },
+                    { t: "Re-ground the silo roof.", c: false },
+                    { t: "Update the firmware via the software.", c: false }
+                ],
+                ref: "Field Case: JES Thailand"
+            },
+            {
+                text: "A technician is using a 4-wire cable but cannot get the unit to communicate on the RS485 bus.",
+                questions: [
+                    { t: "Are the RS485 'A' and 'B' wires swapped at either the scanner or the converter?", c: true },
+                    { t: "Is the cable shielded with a drain wire?", c: false },
+                    { t: "What is the color of the wire insulation?", c: false },
+                    { t: "Is the technician using a wire stripper?", c: false },
+                    { t: "How long is the cable run?", c: false }
+                ],
+                solutions: [
+                    { t: "Swap the A and B data lines and check for communication again.", c: true },
+                    { t: "Replace the 4-wire cable with a 2-wire cable.", c: false },
+                    { t: "Double the power voltage to 48V.", c: false },
+                    { t: "Bypass the RS485 and use a USB cable directly.", c: false },
+                    { t: "Install a repeater every 100 feet.", c: false }
                 ],
                 ref: "3D Manual Section 3.5"
+            },
+            {
+                text: "A site with 10 scanners on a single 3000ft loop finds that scanners 8, 9, and 10 frequently drop off.",
+                questions: [
+                    { t: "Is the voltage at the furthest scanner dropping below the required 18V threshold?", c: true },
+                    { t: "Is the 10th scanner mounted higher than the others?", c: false },
+                    { t: "Does the sun hit the end of the cable run?", c: false },
+                    { t: "Are the last three scanners serial numbers in order?", c: false },
+                    { t: "Is the computer in an air-conditioned room?", c: false }
+                ],
+                solutions: [
+                    { t: "Verify voltage at the end of the run; consider a local power supply or larger gauge wire.", c: true },
+                    { t: "Decrease the number of scanners on the loop to 5.", c: false },
+                    { t: "Replace the RS485 converter.", c: false },
+                    { t: "Install a termination resistor on every scanner.", c: false },
+                    { t: "Move the PC closer to the silos.", c: false }
+                ],
+                ref: "3D Manual Section 3.5.1"
+            },
+            {
+                text: "The customer is using an RL model and wants to use the 4-20mA output for their PLC.",
+                questions: [
+                    { t: "Is the loop being powered by the scanner (Active) or by the PLC (Passive)?", c: true },
+                    { t: "Is the PLC made by Allen-Bradley or Siemens?", c: false },
+                    { t: "What is the distance to the PLC?", c: false },
+                    { t: "Is the 4-20mA wire shielded?", c: false },
+                    { t: "Does the PLC have a digital display?", c: false }
+                ],
+                solutions: [
+                    { t: "Ensure the wiring matches the 'Active' or 'Passive' configuration in the manual.", c: true },
+                    { t: "Connect the 4-20mA to the RS485 port.", c: false },
+                    { t: "Use a wireless bridge for the analog signal.", c: false },
+                    { t: "Add a 250-ohm resistor in parallel.", c: false },
+                    { t: "4-20mA is not supported on the RL model.", c: false }
+                ],
+                ref: "3D Manual Section 3.5.2"
+            },
+            {
+                text: "During a storm, several scanners were damaged. Only the RS485 communication is dead; power is fine.",
+                questions: [
+                    { t: "Is the RS485 surge protection or the transceiver chip blown on the communication board?", c: true },
+                    { t: "Was the rain heavy or light?", c: false },
+                    { t: "Did the technician see lightning?", c: false },
+                    { t: "Is the PC still connected to the internet?", c: false },
+                    { t: "How old are the scanners?", c: false }
+                ],
+                solutions: [
+                    { t: "Replace the communication daughter-card or the entire electronic head.", c: true },
+                    { t: "Replace the power supply.", c: false },
+                    { t: "Re-calibrate the sensors.", c: false },
+                    { t: "Duct tape the cable connections.", c: false },
+                    { t: "Wait for the units to dry out.", c: false }
+                ],
+                ref: "Technical Case: Storm Damage"
+            },
+            {
+                text: "The technician is using Belden 3084A cable but the drain wire is not connected anywhere.",
+                questions: [
+                    { t: "Is the floating shield allowing electromagnetic interference (EMI) into the data lines?", c: true },
+                    { t: "What is the color of the drain wire?", c: false },
+                    { t: "Is the cable buried or in conduit?", c: false },
+                    { t: "How many twists per foot are in the cable?", c: false },
+                    { t: "Is the drain wire made of copper?", c: false }
+                ],
+                solutions: [
+                    { t: "Ground the shield/drain wire at one single point (usually the PC or power supply end).", c: true },
+                    { t: "Ground the shield at every scanner.", c: false },
+                    { t: "Cut the drain wire off completely.", c: false },
+                    { t: "Connect the drain wire to the RS485 'A' line.", c: false },
+                    { t: "The drain wire is optional; do nothing.", c: false }
+                ],
+                ref: "3D Manual Section 3.5"
+            },
+            {
+                text: "A Swiss customer added two scanners and the entire bus died. Bench test shows units work when horn is unplugged.",
+                questions: [
+                    { t: "Is an internal short in the horn assembly/transducer pulling down the entire system power?", c: true },
+                    { t: "Is the Swiss power grid 50Hz or 60Hz?", c: false },
+                    { t: "What is the serial number of the Swiss units?", c: false },
+                    { t: "Is the technician using a Swiss-Army knife?", c: false },
+                    { t: "How many bins are in Switzerland?", c: false }
+                ],
+                solutions: [
+                    { t: "Isolate the faulty transducer/horn assembly and replace the internal wiring or unit.", c: true },
+                    { t: "Replace the USB-RS485 converter.", c: false },
+                    { t: "Add 120-ohm resistors to both ends.", c: false },
+                    { t: "Change the COM port.", c: false },
+                    { t: "Tell them to use a local Swiss power supply.", c: false }
+                ],
+                ref: "Field Case: Juracement"
+            },
+            {
+                text: "A customer is confused about the 5-pin connector on the transducer head.",
+                questions: [
+                    { t: "Is the connector properly aligned and seated to ensure all pins make contact?", c: true },
+                    { t: "Is the connector made of gold?", c: false },
+                    { t: "What is the gender of the connector?", c: false },
+                    { t: "How many pins are missing?", c: false },
+                    { t: "Can you see the pins from 10 feet away?", c: false }
+                ],
+                solutions: [
+                    { t: "Ensure the notch is aligned and the locking ring is hand-tightened.", c: true },
+                    { t: "Solder the wires directly to the pins.", c: false },
+                    { t: "Apply grease to the pins.", c: false },
+                    { t: "Bypass the connector with a jumper wire.", c: false },
+                    { t: "The 5-pin connector is for factory testing only.", c: false }
+                ],
+                ref: "3D Manual Appendix A"
+            },
+            {
+                text: "A technician wants to run power and data in the same conduit as 480V motor wires.",
+                questions: [
+                    { t: "Will the high-voltage lines induce noise and corrupt the RS485 data signal?", c: true },
+                    { t: "What is the horsepower of the motors?", c: false },
+                    { t: "Is the conduit 2-inch or 4-inch?", c: false },
+                    { t: "Are the motors running on a VFD?", c: false },
+                    { t: "Is the technician wearing insulated boots?", c: false }
+                ],
+                solutions: [
+                    { t: "Strictly avoid high-voltage conduits; use a separate conduit for low-voltage power and data.", c: true },
+                    { t: "Use extra-thick insulation on the data wires.", c: false },
+                    { t: "Increase the data baud rate to overcome the noise.", c: false },
+                    { t: "Install a noise filter on the 480V lines.", c: false },
+                    { t: "This is a standard practice; proceed.", c: false }
+                ],
+                ref: "3D Manual Section 3.5"
+            },
+            {
+                text: "The scanner powers on (LED is lit), but there is no RS485 communication at all.",
+                questions: [
+                    { t: "Is the Node ID (address) of the scanner unique and matching the software configuration?", c: true },
+                    { t: "What color is the LED?", c: false },
+                    { t: "Is the LED blinking?", c: false },
+                    { t: "Has the technician tried a different computer?", c: false },
+                    { t: "What is the scanner's firmware version?", c: false }
+                ],
+                solutions: [
+                    { t: "Verify the Node ID via the local display or software and ensure no two units share an ID.", c: true },
+                    { t: "Replace the LED.", c: false },
+                    { t: "Increase the power to 30V.", c: false },
+                    { t: "Update the Windows drivers for the LED.", c: false },
+                    { t: "Change the project name.", c: false }
+                ],
+                ref: "3D Manual Section 4.1"
             }
         ]
     },
     "3": {
-        title: "Software I: Setup & Connection",
+        title: "Module 3: Software I (Setup & Comms)",
         scenarios: [
             {
-                text: "Software is installed but the user cannot see any bins. They are using a USB-to-RS485 converter.",
+                text: "MultiVision is installed, but the '3DVision Server' application shows 'Service Stopped'.",
                 questions: [
-                    { t: "Which COM Port is assigned to the converter in Windows Device Manager?", c: true },
-                    { t: "Is the USB cable blue or black?", c: false },
-                    { t: "How much RAM does the PC have?", c: false },
-                    { t: "Is the client using a wireless mouse?", c: false },
-                    { t: "Has the software been updated today?", c: false }
+                    { t: "Is another application or firewall blocking the server's local port (e.g., 22222)?", c: true },
+                    { t: "What is the screen resolution of the monitor?", c: false },
+                    { t: "How many GB of hard drive space are left?", c: false },
+                    { t: "Is the PC made by Dell?", c: false },
+                    { t: "Is the computer mouse wireless?", c: false }
                 ],
                 solutions: [
-                    { t: "Update the Communication Settings in MultiVision to match the COM Port found in Device Manager.", c: true },
-                    { t: "Reinstall the PC operating system.", c: false },
-                    { t: "Connect the USB converter to a different port.", c: false },
-                    { t: "Buy a new scanner.", c: false },
-                    { t: "Type the serial number into the COM Port field.", c: false }
+                    { t: "Start the service manually and ensure port 22222 is open in the Windows Firewall.", c: true },
+                    { t: "Reinstall the entire Windows operating system.", c: false },
+                    { t: "Buy a new server PC.", c: false },
+                    { t: "Change the computer name to 'BinMaster'.", c: false },
+                    { t: "Update the graphics drivers.", c: false }
                 ],
-                ref: "MultiVision Manual Section 4.2"
+                ref: "Software Manual Section 4.2"
+            },
+            {
+                text: "The technician is using a USB-RS485 converter but doesn't know which COM port to select.",
+                questions: [
+                    { t: "Did you check the 'Ports (COM & LPT)' section in the Windows Device Manager?", c: true },
+                    { t: "Is the USB port 2.0 or 3.0?", c: false },
+                    { t: "Is the converter cable blue?", c: false },
+                    { t: "What is the brand of the converter?", c: false },
+                    { t: "Is the computer plugged into a UPS?", c: false }
+                ],
+                solutions: [
+                    { t: "Match the software's COM port setting to the one assigned by Windows in Device Manager.", c: true },
+                    { t: "Try every port from COM1 to COM99 until it works.", c: false },
+                    { t: "Type 'COM' into the scanner configuration field.", c: false },
+                    { t: "Uninstall all other COM ports.", c: false },
+                    { t: "The COM port doesn't matter for 3D scanners.", c: false }
+                ],
+                ref: "Software Manual Section 4.3"
+            },
+            {
+                text: "A client wants to view the bin data from their home computer, but the server is at the plant.",
+                questions: [
+                    { t: "Is the '3DMultiVision Client' installed and pointed to the Server's IP address?", c: true },
+                    { t: "Does the user have high-speed internet at home?", c: false },
+                    { t: "Is the home computer a laptop?", c: false },
+                    { t: "What is the name of the user's home network?", c: false },
+                    { t: "Is the plant using a satellite dish?", c: false }
+                ],
+                solutions: [
+                    { t: "Configure the Client software with the plant server's IP and ensure VPN or Port Forwarding is set.", c: true },
+                    { t: "Use a remote desktop app like TeamViewer.", c: false },
+                    { t: "The software only works on the server PC.", c: false },
+                    { t: "Email the database to the home computer every hour.", c: false },
+                    { t: "Buy a second license for the home PC.", c: false }
+                ],
+                ref: "Software Manual Section 4.1"
+            },
+            {
+                text: "The software displays 'No Reply from Scanner' for all 5 bins in the project.",
+                questions: [
+                    { t: "Is the RS485 converter's TX/RX light flashing when the software polls the units?", c: true },
+                    { t: "Is the technician using a 64-bit version of Windows?", c: false },
+                    { t: "Has the software been updated since the installation?", c: false },
+                    { t: "What color are the scanners?", c: false },
+                    { t: "Is the project name in all caps?", c: false }
+                ],
+                solutions: [
+                    { t: "Check physical wiring and the COM port settings; the hardware is not talking to the software.", c: true },
+                    { t: "Reboot the PC.", c: false },
+                    { t: "Delete and recreate the project.", c: false },
+                    { t: "Replace the 5 scanners.", c: false },
+                    { t: "Increase the font size in the software.", c: false }
+                ],
+                ref: "Software Manual Section 6.1"
+            },
+            {
+                text: "A user is seeing 'Incompatible Firmware' error when trying to configure a new scanner.",
+                questions: [
+                    { t: "Is the version of MultiVision software older than the firmware on the new scanner?", c: true },
+                    { t: "What is the serial number of the scanner?", c: false },
+                    { t: "Is the technician an administrator?", c: false },
+                    { t: "How many MB is the software installer?", c: false },
+                    { t: "Is the scanner connected via Ethernet?", c: false }
+                ],
+                solutions: [
+                    { t: "Update the MultiVision software to the latest version to support new hardware features.", c: true },
+                    { t: "Downgrade the firmware on the scanner.", c: false },
+                    { t: "Ignore the error and proceed.", c: false },
+                    { t: "Buy an older scanner model.", c: false },
+                    { t: "Change the computer's time zone.", c: false }
+                ],
+                ref: "Software Manual Section 3.1"
+            },
+            {
+                text: "The software log is filling up with 'RS485 Timeout' errors every 30 seconds.",
+                questions: [
+                    { t: "Is the 'Timeout' setting in the Communication menu too low for a long cable run?", c: true },
+                    { t: "How many lines are in the log file?", c: false },
+                    { t: "Is the log file saved as a .txt or .log?", c: false },
+                    { t: "What is the baud rate?", c: false },
+                    { t: "Is the log file in English?", c: false }
+                ],
+                solutions: [
+                    { t: "Increase the 'Timeout' and 'Retries' settings in the software configuration.", c: true },
+                    { t: "Delete the log file.", c: false },
+                    { t: "Decrease the polling interval to 1 second.", c: false },
+                    { t: "Switch to a faster computer.", c: false },
+                    { t: "Turn off the logging feature.", c: false }
+                ],
+                ref: "Software Manual Section 4.3"
+            },
+            {
+                text: "A technician added a new bin to the project, but the 3D map is completely flat.",
+                questions: [
+                    { t: "Has the scanner completed a full mapping cycle (approx. 2-5 minutes)?", c: true },
+                    { t: "Is the bin empty?", c: false },
+                    { t: "What is the name of the bin?", c: false },
+                    { t: "Is the 3D map colored green or blue?", c: false },
+                    { t: "Did the technician enter the height of the silo?", c: false }
+                ],
+                solutions: [
+                    { t: "Wait for the mapping cycle to finish; a flat map means data is still being collected.", c: true },
+                    { t: "Increase the resolution of the map.", c: false },
+                    { t: "Re-install the 3D graphics drivers.", c: false },
+                    { t: "Assume the scanner is broken.", c: false },
+                    { t: "Change the 'Bottom' setting to 0.", c: false }
+                ],
+                ref: "Software Manual Section 5.3"
+            },
+            {
+                text: "The software works fine on the server, but the Client PC says 'Connection Refused'.",
+                questions: [
+                    { t: "Is the Server PC's IP address correctly entered into the Client settings?", c: true },
+                    { t: "Is the Client PC a Mac?", c: false },
+                    { t: "What is the wallpaper on the Server PC?", c: false },
+                    { t: "Is the Client PC connected to a printer?", c: false },
+                    { t: "How many bins are in the project?", c: false }
+                ],
+                solutions: [
+                    { t: "Verify the Server IP and ensure port 22222 is open on the Server's firewall.", c: true },
+                    { t: "Reinstall the software on the Server.", c: false },
+                    { t: "Move the Client PC into the same room as the Server.", c: false },
+                    { t: "Change the Client's computer name.", c: false },
+                    { t: "Use a different USB cable.", c: false }
+                ],
+                ref: "Software Manual Section 4.4"
+            },
+            {
+                text: "A customer wants to change the baud rate from 19200 to 9600 for a noisy environment.",
+                questions: [
+                    { t: "Did you change the baud rate in both the scanner hardware AND the software settings?", c: true },
+                    { t: "Why is the environment noisy?", c: false },
+                    { t: "What is the color of the RS485 wires?", c: false },
+                    { t: "Has the customer tried a 1200 baud rate?", c: false },
+                    { t: "Is the technician using a shielded cable?", c: false }
+                ],
+                solutions: [
+                    { t: "Ensure all units and the software are set to the same baud rate for communication to work.", c: true },
+                    { t: "Only change the software; the hardware will auto-detect.", c: false },
+                    { t: "Baud rate has no effect on noise.", c: false },
+                    { t: "Change the baud rate to 115200.", c: false },
+                    { t: "Buy a noise-cancelling converter.", c: false }
+                ],
+                ref: "Software Manual Section 4.3"
+            },
+            {
+                text: "The software is asking for a password to enter the 'Technician' menu.",
+                questions: [
+                    { t: "Did you enter the default factory technician password ('stech')?", c: true },
+                    { t: "Is the password case-sensitive?", c: false },
+                    { t: "What is the technician's name?", c: false },
+                    { t: "Is the keyboard set to a different language?", c: false },
+                    { t: "Has the password been changed by the user?", c: false }
+                ],
+                solutions: [
+                    { t: "Use the default 'stech' password to access advanced configuration settings.", c: true },
+                    { t: "Leave the password field blank and hit Enter.", c: false },
+                    { t: "Call BinMaster for a unique daily code.", c: false },
+                    { t: "The password is the scanner's serial number.", c: false },
+                    { t: "Reinstall the software to reset the password.", c: false }
+                ],
+                ref: "Software Manual Section 5.1"
             }
         ]
     },
     "4": {
-        title: "Software II: Advanced Configuration",
+        title: "Module 4: Software II (Config & Licensing)",
         scenarios: [
             {
-                text: "The volume reading is consistently 10% lower than the actual weight recorded by the scales.",
+                text: "A customer cannot find their MAC address for the permanent license key.",
                 questions: [
-                    { t: "Is the 'Bulk Density' or 'Vessel Dimensions' accurately entered in the config?", c: true },
-                    { t: "What is the name of the silo?", c: false },
-                    { t: "Is the 3D visualizer showing in color?", c: false },
-                    { t: "Was the license key entered correctly?", c: false },
+                    { t: "Are they looking in the 'Help > About' or 'Server Status' window of the MultiVision software?", c: true },
+                    { t: "Is the MAC address printed on the back of the computer?", c: false },
+                    { t: "What is the computer's IP address?", c: false },
+                    { t: "How many network cards does the PC have?", c: false },
                     { t: "Is the PC connected to the internet?", c: false }
                 ],
                 solutions: [
-                    { t: "Recalibrate the bulk density and verify the silo's strapping table dimensions.", c: true },
-                    { t: "Change the visualizer theme.", c: false },
-                    { t: "Update the MAC address.", c: false },
-                    { t: "Restart the 3DVision Server.", c: false },
-                    { t: "Move the scanner 2 inches to the left.", c: false }
+                    { t: "Open the 3DVision Server and click the button to retrieve the computer's unique MAC address.", c: true },
+                    { t: "Use the MAC address from the user's smartphone.", c: false },
+                    { t: "The MAC address is the same as the serial number.", c: false },
+                    { t: "Tell them to use '00-00-00-00-00-00'.", c: false },
+                    { t: "RMA the software.", c: false }
                 ],
-                ref: "MultiVision Manual Section 5.2"
+                ref: "Software Manual Section 8.0"
+            },
+            {
+                text: "The 30-day trial has expired and all bins have disappeared from the screen.",
+                questions: [
+                    { t: "Was a valid license key entered before the trial period ended?", c: true },
+                    { t: "What day of the month is it?", c: false },
+                    { t: "Is the PC clock correct?", c: false },
+                    { t: "How many bins were in the project?", c: false },
+                    { t: "Is the user an admin?", c: false }
+                ],
+                solutions: [
+                    { t: "Enter the permanent license key provided by BinMaster to restore access to the project.", c: true },
+                    { t: "Reinstall the software to get another 30 days.", c: false },
+                    { t: "Set the PC clock back one month.", c: false },
+                    { t: "The software is now useless; buy a new license.", c: false },
+                    { t: "Switch to the free version of MultiVision.", c: false }
+                ],
+                ref: "Software Manual Section 8.1"
+            },
+            {
+                text: "The volume reading is in Cubic Feet, but the customer wants it in Bushels.",
+                questions: [
+                    { t: "Did you select the correct 'Units' and 'Conversion Factor' in the Vessel Configuration?", c: true },
+                    { t: "What kind of grain is in the silo?", c: false },
+                    { t: "Is the customer using a calculator?", c: false },
+                    { t: "What is the weight of one bushel?", c: false },
+                    { t: "Is the software in 'Advanced' mode?", c: false }
+                ],
+                solutions: [
+                    { t: "Go to Vessel Configuration and change the Display Units to Bushels.", c: true },
+                    { t: "Tell the customer to multiply by 0.8.", c: false },
+                    { t: "The software only supports Cubic Feet.", c: false },
+                    { t: "Reinstall the software with the 'Grain' option.", c: false },
+                    { t: "Change the computer's region to 'Midwest'.", c: false }
+                ],
+                ref: "Software Manual Section 5.2"
+            },
+            {
+                text: "The customer wants an automated email report of the bin levels every morning at 8:00 AM.",
+                questions: [
+                    { t: "Have the SMTP server settings been configured in the software's 'Reporting' section?", c: true },
+                    { t: "What is the user's email password?", c: false },
+                    { t: "Is the user's email provider Gmail or Outlook?", c: false },
+                    { t: "How many emails does the user get a day?", c: false },
+                    { t: "Is the PC connected to a printer?", c: false }
+                ],
+                solutions: [
+                    { t: "Configure the SMTP settings and schedule the daily report in the Reporting menu.", c: true },
+                    { t: "The customer must manually export and email the data every day.", c: false },
+                    { t: "Use a third-party app to take screenshots of the software.", c: false },
+                    { t: "Reports can only be printed, not emailed.", c: false },
+                    { t: "The software doesn't support email reports.", c: false }
+                ],
+                ref: "Software Manual Section 7.1"
+            },
+            {
+                text: "A technician wants to import a project from an old computer to a new one.",
+                questions: [
+                    { t: "Do you have the '.bmpj' project export file from the original computer?", c: true },
+                    { t: "Is the old computer still working?", c: false },
+                    { t: "What is the size of the export file?", c: false },
+                    { t: "Is the new computer a laptop?", c: false },
+                    { t: "Did they save the project to a floppy disk?", c: false }
+                ],
+                solutions: [
+                    { t: "Use the 'Import Project' feature and select the saved .bmpj file.", c: true },
+                    { t: "Copy and paste the entire C: drive to the new computer.", c: false },
+                    { t: "The project must be rebuilt from scratch.", c: false },
+                    { t: "Use the 'Sync' button to download the project from the cloud.", c: false },
+                    { t: "Email the project name to BinMaster to unlock it.", c: false }
+                ],
+                ref: "Software Manual Section 5.6"
+            },
+            {
+                text: "The 3D Visualizer shows a cone of material, but the customer says the bin is flat.",
+                questions: [
+                    { t: "Is the 'Damping' or 'Threshold' setting causing the software to retain old mapping data?", c: true },
+                    { t: "What color is the cone?", c: false },
+                    { t: "Is the bin round or square?", c: false },
+                    { t: "Has the customer tried cleaning the screen?", c: false },
+                    { t: "Is the visualizer in 2D or 3D?", c: false }
+                ],
+                solutions: [
+                    { t: "Clear the history or reset the map to force a new scan of the flat surface.", c: true },
+                    { t: "Change the visualizer theme to 'Flat'.", c: false },
+                    { t: "The 3D scanner always shows a cone.", c: false },
+                    { t: "Lower the resolution of the map.", c: false },
+                    { t: "Tell the customer they are wrong.", c: false }
+                ],
+                ref: "Software Manual Section 5.3"
+            },
+            {
+                text: "The software is reporting 'Low Echo' even though the bin is full of material.",
+                questions: [
+                    { t: "Is the material very porous or low-density, causing it to absorb the acoustic signal?", c: true },
+                    { t: "Is the material cold?", c: false },
+                    { t: "Is the material stored in bags?", c: false },
+                    { t: "Does the material smell?", c: false },
+                    { t: "What is the moisture content?", c: false }
+                ],
+                solutions: [
+                    { t: "Increase the 'Gain' or 'Pulse Power' in the technician settings to pick up the weak echo.", c: true },
+                    { t: "Clean the antenna with soap and water.", c: false },
+                    { t: "Move the scanner closer to the material.", c: false },
+                    { t: "The scanner cannot measure this material.", c: false },
+                    { t: "Add a metal plate on top of the material.", c: false }
+                ],
+                ref: "Software Manual Section 6.2"
+            },
+            {
+                text: "The customer wants to use the 'Multi-Client' feature to have 5 people view the data at once.",
+                questions: [
+                    { t: "Does the license support the required number of simultaneous client connections?", c: true },
+                    { t: "What are the names of the 5 people?", c: false },
+                    { t: "Are all 5 people in the same building?", c: false },
+                    { t: "Do they all have the same password?", c: false },
+                    { t: "What is the brand of their computers?", c: false }
+                ],
+                solutions: [
+                    { t: "Check the license details and upgrade if more client connections are needed.", c: true },
+                    { t: "Tell them only one person can view at a time.", c: false },
+                    { t: "They must share one computer.", c: false },
+                    { t: "The software is free for unlimited clients.", c: false },
+                    { t: "Use a web browser instead of the client software.", c: false }
+                ],
+                ref: "Software Manual Section 4.3"
+            },
+            {
+                text: "The 'Vessel Configuration' menu is greyed out and the user cannot click on it.",
+                questions: [
+                    { t: "Is the user logged in with 'User' privileges instead of 'Administrator'?", c: true },
+                    { t: "Is the mouse working?", c: false },
+                    { t: "Is the screen locked?", c: false },
+                    { t: "Did the software freeze?", c: false },
+                    { t: "What is the user's department?", c: false }
+                ],
+                solutions: [
+                    { t: "Logout and log back in as an Administrator to modify vessel settings.", c: true },
+                    { t: "Reinstall the software.", c: false },
+                    { t: "Restart the PC.", c: false },
+                    { t: "The software is in 'View Only' mode forever.", c: false },
+                    { t: "Click the menu 10 times fast.", c: false }
+                ],
+                ref: "Software Manual Section 5.1"
+            },
+            {
+                text: "The client wants to export the inventory data to their company's SQL database.",
+                questions: [
+                    { t: "Does the software support the SQL export feature or do they need the Web Server version?", c: true },
+                    { t: "What is the name of the SQL server?", c: false },
+                    { t: "How much data is being exported?", c: false },
+                    { t: "Is the IT manager on-site?", c: false },
+                    { t: "What is the database password?", c: false }
+                ],
+                solutions: [
+                    { t: "Configure the SQL export settings in the advanced menu or use the BinMaster API.", c: true },
+                    { t: "Copy and paste the data into Excel and then into SQL.", c: false },
+                    { t: "SQL export is not supported.", c: false },
+                    { t: "Write a custom script to scrape the screen.", c: false },
+                    { t: "Use a print-to-file driver.", c: false }
+                ],
+                ref: "Software Manual Section 7.2"
             }
         ]
     }
 };
 
-// Placeholder filler for the rest of the 40 scenarios to ensure code runs
-for(let qid in quizData){
-    while(quizData[qid].scenarios.length < 10) {
-        quizData[qid].scenarios.push({
-            text: "Generic Technical Scenario for " + quizData[qid].title,
-            questions: [{t: "Is the configuration correct?", c:true}, {t:"Distractor 1", c:false}, {t:"Distractor 2", c:false}, {t:"Distractor 3", c:false}, {t:"Distractor 4", c:false}],
-            solutions: [{t: "Correct the configuration.", c:true}, {t:"Error A", c:false}, {t:"Error B", c:false}, {t:"Error C", c:false}, {t:"Error D", c:false}],
-            ref: "Manual Reference Placeholder"
-        });
-    }
-}
-
-// Logic Engine
 const urlParams = new URLSearchParams(window.location.search);
 const quizId = urlParams.get('quiz') || "1";
 const currentQuiz = quizData[quizId];
 
 let scenarioIdx = 0;
-let step = 1; // 1: Scenario View, 2: Question Choice, 3: Solution Choice
+let step = 1; 
 let qCorrect = 0;
 let sCorrect = 0;
-let attempts = 0;
 
 function updateScores() {
-    const qPct = attempts === 0 ? 0 : Math.round((qCorrect / attempts) * 100);
-    const sPct = attempts === 0 ? 0 : Math.round((sCorrect / attempts) * 100);
+    const qPct = Math.round((qCorrect / 10) * 100);
+    const sPct = Math.round((sCorrect / 10) * 100);
     document.getElementById('q-score').innerText = qPct;
     document.getElementById('s-score').innerText = sPct;
 }
@@ -200,7 +831,7 @@ function loadStep() {
     } 
     else if (step === 2) {
         document.getElementById('step-label').innerText = "Step 2: Choose the Effective Follow-up Question";
-        scenario.questions.sort(() => Math.random() - 0.5).forEach(opt => {
+        [...scenario.questions].sort(() => Math.random() - 0.5).forEach(opt => {
             const b = document.createElement('button');
             b.className = 'choice-btn';
             b.innerText = opt.t;
@@ -210,7 +841,7 @@ function loadStep() {
     }
     else if (step === 3) {
         document.getElementById('step-label').innerText = "Step 3: Select the Corrective Action";
-        scenario.solutions.sort(() => Math.random() - 0.5).forEach(opt => {
+        [...scenario.solutions].sort(() => Math.random() - 0.5).forEach(opt => {
             const b = document.createElement('button');
             b.className = 'choice-btn';
             b.innerText = opt.t;
@@ -231,12 +862,14 @@ function handleChoice(isCorrect, msg, nextStep) {
     if (isCorrect) {
         feedback.innerText = "✓ CORRECT: " + msg;
         feedback.style.background = "#d4edda";
+        feedback.style.borderColor = "#28a745";
         feedback.style.color = "#155724";
         if (step === 2) qCorrect++;
         if (step === 3) sCorrect++;
     } else {
-        feedback.innerText = "✗ INCORRECT: This choice does not align with the manual or field history.";
+        feedback.innerText = "✗ INCORRECT: Not the recommended procedure.";
         feedback.style.background = "#f8d7da";
+        feedback.style.borderColor = "#dc3545";
         feedback.style.color = "#721c24";
     }
 
@@ -247,7 +880,6 @@ function handleChoice(isCorrect, msg, nextStep) {
             step = 3;
             loadStep();
         } else {
-            attempts++;
             updateScores();
             scenarioIdx++;
             step = 1;
@@ -268,10 +900,9 @@ function finishQuiz() {
             <h3>Module Complete</h3>
             <p>Diagnostic Accuracy: <strong>${qPct}%</strong></p>
             <p>Solution Accuracy: <strong>${sPct}%</strong></p>
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px; margin:20px 0; font-size:0.9rem;">
-                <strong>Grading:</strong> A passing grade requires 80% in both categories. <br>
-                If your Diagnostic score is low, focus on the "Theory of Operation" sections.<br>
-                If your Solution score is low, review the "Troubleshooting" appendices.
+            <div style="background:#f9f9f9; padding:20px; border-radius:10px; margin:20px 0;">
+                <strong>Grading Outcome:</strong><br>
+                ${(qPct >= 80 && sPct >= 80) ? "PASS: Ready for field support." : "RETAKE: Review referenced manual sections."}
             </div>
             <button onclick="window.location.href='index.html'" class="choice-btn" style="text-align:center;">Return to Dashboard</button>
         </div>
