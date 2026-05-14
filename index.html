@@ -3,20 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BinMaster Technical Training Portal</title>
+    <title>BinMaster Training Portal</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f9; color: #333; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; max-width: 400px; border-top: 5px solid #0056b3; }
-        img { max-width: 200px; margin-bottom: 1rem; }
-        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #004494; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 600px; }
+        .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        .quiz-card { border: 2px solid #eee; padding: 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .quiz-card:hover { border-color: #0056b3; background: #f0f7ff; }
+        h1 { color: #0056b3; margin-bottom: 10px; }
+        .desc { color: #666; margin-bottom: 30px; }
+        .tag { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #0056b3; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Tech-Support Academy</h1>
-        <p>Master the 3DLevelScanner system through 45 real-world troubleshooting simulations.</p>
-        <button onclick="window.location.href='3Dtest.html'">Start 3D Scanner Training</button>
+    <div class="container">
+        <h1>Technical Training Academy</h1>
+        <p class="desc">Select a module to begin. Each quiz contains 10 industry scenarios based on the 3DLevelScanner and MultiVision manuals.</p>
+        
+        <div class="quiz-grid">
+            <div class="quiz-card" onclick="window.location.href='3Dtest.html?quiz=1'">
+                <span class="tag">Module 1</span>
+                <h3>Sensor Hardware I</h3>
+                <p>Mounting, Physical Clearance, and Environment.</p>
+            </div>
+            <div class="quiz-card" onclick="window.location.href='3Dtest.html?quiz=2'">
+                <span class="tag">Module 2</span>
+                <h3>Sensor Hardware II</h3>
+                <p>Wiring, RS485, and Power Requirements.</p>
+            </div>
+            <div class="quiz-card" onclick="window.location.href='3Dtest.html?quiz=3'">
+                <span class="tag">Module 3</span>
+                <h3>Software I</h3>
+                <p>Server-Client Setup, COM Ports, and Licensing.</p>
+            </div>
+            <div class="quiz-card" onclick="window.location.href='3Dtest.html?quiz=4'">
+                <span class="tag">Module 4</span>
+                <h3>Software II</h3>
+                <p>Vessel Config, Visualizer, and Data Export.</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
