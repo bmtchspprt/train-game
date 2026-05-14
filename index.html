@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BINMASTER | ORD Delta - Order & Customer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.3s ease; }
+        .drop-zone.dragover { border-color: #be123c; background-color: #fff1f2; }
+        .binmaster-red { background-color: #be123c; }
+        .binmaster-red:hover { background-color: #9f1239; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-900">
+
+    <header class="bg-white p-4 shadow-sm border-b-2 border-black">
+        <div class="max-w-7xl mx-auto flex items-baseline gap-4">
+            <h1 class="text-3xl font-black italic tracking-tighter text-red-700">BINMASTER</h1>
+            <div class="flex flex-col">
+                <span class="text-xl font-bold uppercase">ORD Delta Tool</span>
+                <span class="text-[10px] tracking-widest text-gray-400 uppercase font-bold">New Orders & Customer Mapping</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded shadow-sm overflow-hidden border border-gray-200">
+                <div class="bg-black text-white px-4 py-2 flex items-center gap-2">
+                    <span class="bg-red-600 rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">1</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider">Baseline File (Older)</span>
+                </div>
+                <div id="drop-baseline" class="drop-zone m-4 p-8 rounded-lg flex flex-col items-center justify-center text-center cursor-pointer">
+                    <svg class="w-8 h-8 text-yellow-400 mb-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+                    <p id="name-baseline" class="text-[10px] text-gray-400 font-bold uppercase">Drag Baseline Here</p>
+                    <input type="file" id="file-baseline" class="hidden" accept=".xlsx, .xls, .csv">
+                </div>
+            </div>
+
+            <div class="bg-white rounded shadow-sm overflow-hidden border border-gray-200">
+                <div class="bg-black text-white px-4 py-2 flex items-center gap-2">
+                    <span class="bg-red-600 rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">2</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider">Current File (Newer)</span>
+                </div>
+                <div id="drop-current" class="drop-zone m-4 p-8 rounded-lg flex flex-col items-center justify-center text-center cursor-pointer">
+                    <svg class="w-8 h-8 text-yellow-400 mb-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+                    <p id="name-current" class="text-[10px] text-gray-400 font-bold uppercase">Drag Current Here</p>
+                    <input type="file" id="file-current" class="hidden" accept=".xlsx, .xls, .csv">
+                </div>
+            </div>
+        </div>
+
+        <button id="process-btn" class="binmaster-red text-white px-10 py-4 rounded font-bold uppercase text-xs w-full shadow-md transition-all active:scale-[0.98]">
+            Identify New Orders & Customers
+        </button>
+
+        <div id="results" class="hidden animate-in fade-in duration-500">
+            <div class="bg-white border border-gray-200 rounded shadow-sm overflow-hidden">
+                <div class="bg-gray-50 border-b px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-gray-600">Delta Report</h3>
+                    <span id="summary-count" class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-1 rounded-full uppercase"></span>
+                </div>
+                <table class="min-w-full text-left">
+                    <thead class="bg-white border-b uppercase text-[10px] font-bold text-gray-400">
+                        <tr>
+                            <th class="px-6 py-3">Order Number</th>
+                            <th class="px-6 py-3 border-l">Customer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-output" class="text-sm font-medium"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let dataStore = { baseline: null, current: null };
+
+        function setupDropZone(zoneId, inputId, key) {
+            const zone = document.getElementById(zoneId);
+            const input = document.getElementById(inputId);
+            const nameDisp = document.getElementById(`name-${key}`);
+
+            zone.onclick = () => input.click();
+            zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('dragover'); };
+            zone.ondragleave = () => zone.classList.remove('dragover');
+            zone.ondrop = (e) => {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+                handleFile(e.dataTransfer.files[0], key, nameDisp);
+            };
+            input.onchange = (e) => handleFile(e.target.files[0], key, nameDisp);
+        }
+
+        async function handleFile(file, key, display) {
+            if (!file) return;
+            display.innerText = file.name;
+            display.classList.remove('text-gray-400');
+            display.classList.add('text-blue-600');
+            const data = await file.arrayBuffer();
+            const workbook = XLSX.read(data);
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            dataStore[key] = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+        }
+
+        setupDropZone('drop-baseline', 'file-baseline', 'baseline');
+        setupDropZone('drop-current', 'file-current', 'current');
+
+        document.getElementById('process-btn').onclick = () => {
+            if (!dataStore.baseline || !dataStore.current) {
+                alert("Please upload both files.");
+                return;
+            }
+
+            const baselineRows = dataStore.baseline;
+            const currentRows = dataStore.current;
+            const header = currentRows[0];
+            
+            const orderColIndex = header.findIndex(h => String(h).toLowerCase().includes('order'));
+            const customerColIndex = header.findIndex(h => String(h).toLowerCase().includes('customer'));
+            
+            if (orderColIndex === -1 || customerColIndex === -1) {
+                alert(`Missing Columns: ${orderColIndex === -1 ? '[Order] ' : ''}${customerColIndex === -1 ? '[Customer]' : ''}`);
+                return;
+            }
+
+            const baselineSet = new Set(baselineRows.slice(1).map(row => String(row[orderColIndex]).trim()));
+            
+            let outputRowsHtml = "";
+            let count = 0;
+
+            for (let i = 1; i < currentRows.length; i++) {
+                const orderId = String(currentRows[i][orderColIndex] || "").trim();
+                const customerName = String(currentRows[i][customerColIndex] || "").trim();
+
+                if (orderId && !baselineSet.has(orderId)) {
+                    count++;
+                    outputRowsHtml += `
+                        <tr class="border-b hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-3 font-mono text-blue-600">${orderId}</td>
+                            <td class="px-6 py-3 border-l text-gray-700">${customerName}</td>
+                        </tr>`;
+                }
+            }
+
+            const resultsDiv = document.getElementById('results');
+            const output = document.getElementById('report-output');
+            const summary = document.getElementById('summary-count');
+            
+            if (count > 0) {
+                output.innerHTML = outputRowsHtml;
+                summary.innerText = `${count} New Orders Found`;
+            } else {
+                output.innerHTML = `<tr><td colspan="2" class="px-6 py-8 text-center text-gray-400 italic">No new entries found.</td></tr>`;
+                summary.innerText = "0 New Orders";
+            }
+
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        };
+    </script>
+</body>
+</html>
