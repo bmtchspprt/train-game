@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TechTrain — Field Technician Knowledge Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0f;
@@ -13,14 +12,16 @@
     --accent: #00e5a0;
     --accent2: #7b5cfa;
     --text: #f0f0f8;
-    --muted: #6b6b8a;
+    --muted: #8888aa;
     --border: rgba(255,255,255,0.07);
     --danger: #ff4d6d;
+    --font: 'Arial Narrow', Arial, sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font);
+    font-weight: bold;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -36,14 +37,6 @@
     pointer-events: none;
     z-index: 0;
   }
-  .noise {
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-  }
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -57,24 +50,27 @@
     background: rgba(10,10,15,0.7);
   }
   .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
+    font-family: var(--font);
+    font-weight: bold;
     font-size: 1.4rem;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.04em;
     color: var(--text);
     text-decoration: none;
+    text-transform: uppercase;
   }
   .logo span { color: var(--accent); }
   .nav-links { display: flex; gap: 0.5rem; align-items: center; }
   .nav-btn {
     padding: 0.5rem 1.2rem;
     border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font);
     font-size: 0.88rem;
-    font-weight: 500;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .nav-btn.ghost {
     background: transparent;
@@ -86,7 +82,6 @@
     background: var(--accent);
     border: 1px solid var(--accent);
     color: #0a0a0f;
-    font-weight: 600;
   }
   .nav-btn.primary:hover { background: #00fdb5; }
   .hero {
@@ -109,9 +104,9 @@
     border-radius: 100px;
     padding: 0.35rem 1rem;
     font-size: 0.78rem;
-    font-weight: 500;
+    font-weight: bold;
     color: var(--accent);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 2rem;
     animation: fadeUp 0.6s ease both;
@@ -126,11 +121,12 @@
   }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font);
     font-size: clamp(2.8rem, 7vw, 5.5rem);
-    font-weight: 800;
+    font-weight: bold;
     line-height: 1.05;
-    letter-spacing: -0.04em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     margin-bottom: 1.5rem;
     animation: fadeUp 0.6s 0.1s ease both;
   }
@@ -141,11 +137,12 @@
     background-clip: text;
   }
   .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
     color: var(--muted);
     max-width: 560px;
     line-height: 1.7;
     margin-bottom: 3rem;
+    font-weight: normal;
     animation: fadeUp 0.6s 0.2s ease both;
   }
   .login-card {
@@ -159,12 +156,14 @@
     box-shadow: 0 40px 80px rgba(0,0,0,0.4);
   }
   .card-title {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font);
     font-size: 1.3rem;
-    font-weight: 700;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     margin-bottom: 0.4rem;
   }
-  .card-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+  .card-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; font-weight: normal; }
   .role-tabs {
     display: flex;
     gap: 0.5rem;
@@ -180,11 +179,13 @@
     border: none;
     background: transparent;
     color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-family: var(--font);
+    font-size: 0.88rem;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .role-tab.active {
     background: var(--surface);
@@ -194,11 +195,11 @@
   .form-group { margin-bottom: 1.2rem; }
   label {
     display: block;
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: bold;
     color: var(--muted);
     margin-bottom: 0.5rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   input {
@@ -208,7 +209,7 @@
     border-radius: 10px;
     padding: 0.8rem 1rem;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font);
     font-size: 0.95rem;
     transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
@@ -224,13 +225,14 @@
     border: none;
     border-radius: 10px;
     color: #0a0a0f;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font);
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
     margin-top: 0.5rem;
     transition: all 0.2s;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
   .btn-login:hover { background: #00fdb5; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,229,160,0.25); }
   .btn-login:active { transform: translateY(0); }
@@ -241,6 +243,7 @@
     margin: 1.5rem 0;
     color: var(--muted);
     font-size: 0.8rem;
+    font-weight: normal;
   }
   .divider::before, .divider::after {
     content: '';
@@ -255,10 +258,13 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    font-family: var(--font);
+    font-size: 0.88rem;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .btn-demo:hover { border-color: var(--accent2); color: var(--accent2); }
   .error-msg {
@@ -268,6 +274,7 @@
     padding: 0.7rem 1rem;
     color: var(--danger);
     font-size: 0.85rem;
+    font-weight: normal;
     margin-bottom: 1rem;
     display: none;
   }
@@ -280,19 +287,20 @@
     margin: 0 auto;
   }
   .section-label {
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent);
-    font-weight: 600;
+    font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
   }
   .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-family: var(--font);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     text-align: center;
     margin-bottom: 4rem;
   }
@@ -309,21 +317,16 @@
     transition: border-color 0.3s, transform 0.3s;
   }
   .feat-card:hover { border-color: rgba(0,229,160,0.3); transform: translateY(-4px); }
-  .feat-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    margin-bottom: 1.2rem;
+  .feat-icon { font-size: 1.6rem; margin-bottom: 1.2rem; }
+  .feat-title {
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
   }
-  .feat-icon.green { background: rgba(0,229,160,0.1); }
-  .feat-icon.purple { background: rgba(123,92,250,0.1); }
-  .feat-icon.orange { background: rgba(255,166,0,0.1); }
-  .feat-icon.blue { background: rgba(56,182,255,0.1); }
-  .feat-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
-  .feat-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+  .feat-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; font-weight: normal; }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: translateY(0); }
@@ -334,27 +337,32 @@
     text-align: center;
     padding: 2rem;
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
+    font-weight: normal;
     border-top: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 </style>
 </head>
 <body>
-<div class="noise"></div>
+
 <nav>
-  <a href="index.html" class="logo">Tech<span>Train</span></a>
+  <a href="index.html" class="logo">TECH<span>TRAIN</span></a>
   <div class="nav-links">
     <a href="dashboard.html" class="nav-btn ghost">Dashboard</a>
     <a href="upload.html" class="nav-btn ghost">Upload</a>
     <a href="3Dtest.html" class="nav-btn primary">Start Training</a>
   </div>
 </nav>
+
 <section class="hero">
   <div class="hero-badge">AI-Powered Field Training</div>
   <h1>Turn Manuals Into<br><span class="highlight">Field Expertise</span></h1>
   <p class="hero-sub">Upload email threads and PDF manuals. AI generates smart quizzes. Track your technicians' growing knowledge with real-time analytics.</p>
+
   <div class="login-card">
-    <div class="card-title">Welcome back</div>
+    <div class="card-title">Welcome Back</div>
     <div class="card-sub">Sign in to continue your training</div>
     <div class="role-tabs">
       <button class="role-tab active" onclick="setRole('technician', this)">Technician</button>
@@ -374,36 +382,40 @@
     <button class="btn-demo" onclick="demoLogin()">Continue with Demo Access</button>
   </div>
 </section>
+
 <section class="features">
   <div class="section-label">Platform Features</div>
-  <div class="section-title">Everything your team needs</div>
+  <div class="section-title">Everything Your Team Needs</div>
   <div class="feat-grid">
     <div class="feat-card">
-      <div class="feat-icon green">📄</div>
+      <div class="feat-icon">📄</div>
       <div class="feat-title">Smart Document Ingestion</div>
       <div class="feat-desc">Upload PDFs and email threads. AI parses, indexes, and extracts key knowledge automatically into the knowledge base.</div>
     </div>
     <div class="feat-card">
-      <div class="feat-icon purple">🧠</div>
+      <div class="feat-icon">🧠</div>
       <div class="feat-title">AI Quiz Generation</div>
       <div class="feat-desc">Claude generates contextual, multi-format questions from your uploaded materials — no manual authoring required.</div>
     </div>
     <div class="feat-card">
-      <div class="feat-icon orange">💬</div>
+      <div class="feat-icon">💬</div>
       <div class="feat-title">Question Feedback Loop</div>
       <div class="feat-desc">Technicians flag confusing or incorrect questions. Admins review and correct, keeping the knowledge base sharp.</div>
     </div>
     <div class="feat-card">
-      <div class="feat-icon blue">📊</div>
+      <div class="feat-icon">📊</div>
       <div class="feat-title">Training Analytics</div>
       <div class="feat-desc">Track quiz scores, completion rates, and knowledge growth over time with detailed technician-level reporting.</div>
     </div>
   </div>
 </section>
+
 <footer>© 2025 TechTrain Platform — Built on Supabase + Claude AI</footer>
+
 <script>
   const SUPABASE_URL = 'YOUR_SUPABASE_URL';
   const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
   let currentRole = 'technician';
 
   function setRole(role, btn) {
@@ -438,7 +450,9 @@
         errEl.textContent = data.error_description || 'Login failed. Check credentials.';
         errEl.classList.add('show');
       }
-    } catch (e) { demoLogin(); }
+    } catch (e) {
+      demoLogin();
+    }
   }
 
   function demoLogin() {
@@ -448,10 +462,16 @@
     window.location.href = currentRole === 'admin' ? 'dashboard.html' : '3Dtest.html';
   }
 
-  if (localStorage.getItem('tt_token')) {
-    const role = localStorage.getItem('tt_role');
-    if (role === 'admin') window.location.href = 'dashboard.html';
-    else if (role === 'technician') window.location.href = '3Dtest.html';
+  // SAFE redirect — only fires if token looks valid
+  try {
+    const savedToken = localStorage.getItem('tt_token');
+    const savedRole = localStorage.getItem('tt_role');
+    if (savedToken && savedToken !== 'undefined' && savedToken !== 'null') {
+      if (savedRole === 'admin') window.location.href = 'dashboard.html';
+      else if (savedRole === 'technician') window.location.href = '3Dtest.html';
+    }
+  } catch(e) {
+    localStorage.clear();
   }
 </script>
 </body>
