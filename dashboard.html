@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Supervisor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; padding: 30px; background: #f4f7f6; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        th { background: #0056b3; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Training Reports</h1>
+    <div class="card">
+        <h3>Quiz Results</h3>
+        <table id="results-table">
+            <thead><tr><th>Date</th><th>Tech</th><th>Strikes</th><th>Status</th></tr></thead>
+            <tbody id="results-body"></tbody>
+        </table>
+    </div>
+    <div class="card">
+        <h3>Field Corrections</h3>
+        <table id="feedback-table">
+            <thead><tr><th>Date</th><th>Author</th><th>Comment</th></tr></thead>
+            <tbody id="feedback-body"></tbody>
+        </table>
+    </div>
+    <p><a href="index.html">Back to Menu</a></p>
 
+<script>
+    const CONST_URL = 'YOUR_SUPABASE_URL_HERE';
+    const CONST_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+    const _supabase = supabase.createClient(CONST_URL, CONST_KEY);
+
+    async function loadData() {
+        const { data: results } = await _supabase.from('bst_training_results').select('*').order('created_at', { ascending: false });
+        const { data: feedback } = await _supabase.from('bst_field_feedback').select('*').order('created_at', { ascending: false });
+
+        document.getElementById('results-body').innerHTML = results.map(r => 
+            `<tr><td>${new Date(r.created_at).toLocaleDateString()}</td><td>${r.technician_name}</td><td>${r.strikes}</td><td>${r.outcome}</td></tr>`).join('');
+        
+        document.getElementById('feedback-body').innerHTML = feedback.map(f => 
+            `<tr><td>${new Date(f.created_at).toLocaleDateString()}</td><td>${f.author_name}</td><td>${f.suggested_correction}</td></tr>`).join('');
+    }
+    loadData();
+</script>
+</body>
+</html>
