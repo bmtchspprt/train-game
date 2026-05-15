@@ -161,11 +161,11 @@
         document.getElementById('final-stats').innerText = `Result: ${status} | Strikes: ${strikes}`;
 
         // Log to Supabase
-        await _supabase.from('training_logs').insert([{
-            employee_name: technicianName,
-            module_id: currentModule,
-            strikes: strikes,
-            status: status
+await _supabase.from('bst_training_results').insert([{
+    technician_name: technicianName,
+    module_id: currentModule,
+    strikes: strikes,
+    outcome: status
         }]);
     }
 
