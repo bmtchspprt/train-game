@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Knowledge Manager | BinMaster</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; }
+        .card { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .drop-zone { border: 2px dashed #0056b3; padding: 30px; text-align: center; color: #0056b3; cursor: pointer; margin-bottom: 20px; }
+        textarea { width: 100%; height: 150px; margin-top: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #0056b3; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Upload Technical Knowledge</h2>
+        <div class="drop-zone" id="dropZone">Drag & Drop Manual (PDF) or Click to Upload</div>
+        <p>OR: Paste Email/Chat Logs Below</p>
+        <textarea id="chatLog" placeholder="Paste conversation here..."></textarea>
+        <button onclick="saveKnowledge()">Save to Knowledge Base</button>
+        <p><a href="dashboard.html">← Back to Dashboard</a></p>
+    </div>
 
+    <script>
+        const _supabase = supabase.createClient('YOUR_URL', 'YOUR_KEY');
+
+        async function saveKnowledge() {
+            const text = document.getElementById('chatLog').value;
+            const { error } = await _supabase.from('knowledge_base').insert([
+                { title: "Manual/Chat Log " + new Date().toLocaleDateString(), category: "Raw Data", file_url: text }
+            ]);
+            if(!error) alert("Knowledge Saved! AI will analyze this for new scenarios.");
+        }
+    </script>
+</body>
+</html>
