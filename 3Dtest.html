@@ -143,11 +143,11 @@
 
     async function submitCorrection(comment) {
         const scenario = quizData[currentModule].scenarios[currentIdx];
-        const { error } = await _supabase.from('question_feedback').insert([{
-            module_id: currentModule,
-            scenario_text: scenario.text,
-            technician_name: technicianName,
-            correction_comment: comment
+     const { error } = await _supabase.from('bst_field_feedback').insert([{
+    module_ref: currentModule,
+    original_scenario: scenario.text,
+    author_name: technicianName,
+    suggested_correction: comment
         }]);
 
         if (!error) alert("Knowledge correction submitted for review. Thank you.");
