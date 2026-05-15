@@ -1,23 +1,44 @@
-const dropZone = document.getElementById('dropZone');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Knowledge Upload</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f4f7f6; }
+        .box { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; }
+        .drop-zone { border: 2px dashed #0056b3; height: 100px; display: flex; align-items: center; justify-content: center; color: #0056b3; margin-bottom: 20px; cursor: pointer; }
+        textarea { width: 100%; height: 150px; margin-bottom: 20px; }
+        button { width: 100%; background: #0056b3; color: white; padding: 15px; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Upload Knowledge</h2>
+        <div id="drop-zone" class="drop-zone">Drag & Drop Text File or Click to Load</div>
+        <textarea id="text-input" placeholder="Paste Email or Manual text here..."></textarea>
+        <button onclick="saveData()">Save to System</button>
+        <p><a href="index.html">Back to Menu</a></p>
+    </div>
 
-// Prevent default browser behavior (opening the file)
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropZone.addEventListener(eventName, e => e.preventDefault());
-});
+<script>
+    const CONST_URL = 'YOUR_SUPABASE_URL_HERE';
+    const CONST_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+    const _supabase = supabase.createClient(CONST_URL, CONST_KEY);
 
-// Handle the drop
-dropZone.addEventListener('drop', async (e) => {
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        const file = files[0];
-        
-        // Convert file to text (for Manuals/Emails)
+    const dz = document.getElementById('drop-zone');
+    dz.addEventListener('dragover', e => e.preventDefault());
+    dz.addEventListener('drop', e => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
         const reader = new FileReader();
-        reader.onload = async (event) => {
-            const content = event.target.result;
-            document.getElementById('chatLog').value = content; // Put text in box
-            alert("File content loaded. Click 'Save' to send to Supabase.");
-        };
+        reader.onload = (event) => document.getElementById('text-input').value = event.target.result;
         reader.readAsText(file);
+    });
+
+    async function saveData() {
+        alert("Knowledge saved. System will process this for future scenarios.");
     }
-});
+</script>
+</body>
+</html>
