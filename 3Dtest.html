@@ -6,22 +6,35 @@
     <title>BinMaster Academy | 3DLevelScanner Training</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --primary: #0056b3; --success: #28a745; --danger: #dc3545; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .quiz-container { max-width: 800px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        :root { --primary: #0056b3; --success: #28a745; --danger: #dc3545; --bg: #f4f7f6; --dark: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--dark); }
+        
+        /* New Supervisor Nav Bar */
+        .admin-nav { background: #222; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+        .admin-nav a { color: #aaa; text-decoration: none; margin-left: 15px; transition: 0.3s; }
+        .admin-nav a:hover { color: #fff; }
+
+        .quiz-container { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .header { border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
-        .scenario-box { background: #eef2f3; padding: 25px; border-radius: 8px; border-left: 5px solid var(--primary); margin-bottom: 25px; }
+        .scenario-box { background: #eef2f3; padding: 25px; border-radius: 8px; border-left: 5px solid var(--primary); margin-bottom: 25px; min-height: 80px; }
         .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #ddd; border-radius: 6px; background: white; text-align: left; cursor: pointer; transition: 0.2s; font-size: 1rem; }
         .option-btn:hover { border-color: var(--primary); background: #f0f7ff; }
         .feedback-area { margin-top: 30px; padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .correct-btn { background: #6c757d; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
-        .correct-btn:hover { background: #5a6268; }
         .progress-bar { height: 10px; background: #eee; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
         #progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.5s; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
+
+<div class="admin-nav">
+    <span>Supervisor Portal</span>
+    <div>
+        <a href="dashboard.html">View Dashboard</a>
+        <a href="upload.html" style="font-weight: bold; color: #fff;">+ Add Knowledge</a>
+    </div>
+</div>
 
 <div class="quiz-container">
     <div class="header">
@@ -33,18 +46,18 @@
 
     <div id="quiz-ui">
         <div class="scenario-box">
-            <h3 id="scenario-text">Loading Scenario...</h3>
+            <h3 id="scenario-text">Initializing...</h3>
         </div>
         <div id="options-list"></div>
         
         <div class="feedback-area">
             <span>Module: <strong id="module-id-display">3D-101</strong></span>
-            <button class="correct-btn" onclick="openCorrectionBox()">Flag for Knowledge Correction</button>
+            <button class="correct-btn" onclick="openCorrectionBox()">Flag Technical Correction</button>
         </div>
     </div>
 
     <div id="result-ui" class="hidden">
-        <h1>Quiz Complete</h1>
+        <h1>Module Complete</h1>
         <p id="final-stats"></p>
         <button class="option-btn" style="text-align:center; background: var(--primary); color:white;" onclick="location.reload()">Restart Training</button>
     </div>
@@ -56,42 +69,30 @@
     const SUPABASE_KEY = 'REPLACE_WITH_YOUR_ANON_KEY';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // --- TRAINING DATA (Derived from Manuals) ---
+    // --- TRAINING DATA ---
     const quizData = {
         "3D-101": {
             title: "Installation & Physical Positioning",
             scenarios: [
                 {
-                    text: "You are installing a 3DLevelScanner in a silo that is 10m in diameter. Where is the best mounting location?",
-                    options: [
-                        "Exactly in the center for maximum coverage",
-                        "Between the center and the wall, using the 3DScanner Locator software ",
-                        "Directly against the wall to avoid filling points "
-                    ],
+                    text: "You are installing a 3DLevelScanner. What is the minimum recommended distance from the vessel wall for mounting?",
+                    options: ["100mm (4\")", "500mm (16\")", "1000mm (39\")"],
                     correct: 1,
-                    knowledgeRef: "Manual Section 3.1: Location and positioning guidelines "
+                    knowledgeRef: "Manual Section 3.1: Installation Constraints"
                 },
                 {
-                    text: "What is the minimum distance required from the vessel wall for mounting?",
-                    options: ["250mm", "500mm (16\") ", "1000mm"],
+                    text: "When measuring powders like flour or cement, what physical property of the 3DLevelScanner helps it 'see' through dust?",
+                    options: ["High-intensity laser pulses", "Low-frequency acoustic waves (3kHz-7kHz)", "High-frequency ultrasonic vibrations"],
                     correct: 1,
-                    knowledgeRef: "Manual Section 3.1: Installation Constraints "
-                },
-                {
-                    text: "The scanner has a 'Dead Zone' where it cannot measure. What is this distance?",
-                    options: ["100mm", "300mm", "500mm (16\") "],
-                    correct: 2,
-                    knowledgeRef: "Manual Page 10: Technical Specifications "
+                    knowledgeRef: "Theory of Operation: Self-Cleaning Acoustic Waves"
                 }
             ]
         }
     };
 
-    // --- APP STATE ---
     let currentModule = "3D-101";
     let currentIdx = 0;
     let strikes = 0;
-    let technicianName = "Dave Zelnio"; // Default for development
 
     function loadScenario() {
         const module = quizData[currentModule];
@@ -119,38 +120,36 @@
         const scenario = quizData[currentModule].scenarios[currentIdx];
         
         if (choice === scenario.correct) {
-            alert("Correct! " + scenario.knowledgeRef);
-            currentIdx++;
+            alert("Correct. Reference: " + scenario.knowledgeRef);
         } else {
             strikes++;
             document.getElementById('score-display').innerText = `Strikes: ${strikes}/3`;
-            alert("Incorrect. Review the knowledge base: " + scenario.knowledgeRef);
-            if (strikes >= 3) return endQuiz(false);
-            currentIdx++;
+            alert("Incorrect. The manual specifies: " + scenario.knowledgeRef);
         }
 
-        if (currentIdx >= quizData[currentModule].scenarios.length) {
-            endQuiz(true);
+        currentIdx++;
+        if (currentIdx >= quizData[currentModule].scenarios.length || strikes >= 3) {
+            endQuiz(strikes < 3);
         } else {
             loadScenario();
         }
     }
 
     function openCorrectionBox() {
-        const comment = prompt("Correction: Please describe why this scenario or answer is technically inaccurate based on field experience:");
+        const comment = prompt("Field Correction: Please explain the technical error in this scenario:");
         if (comment) submitCorrection(comment);
     }
 
     async function submitCorrection(comment) {
         const scenario = quizData[currentModule].scenarios[currentIdx];
-     const { error } = await _supabase.from('bst_field_feedback').insert([{
-    module_ref: currentModule,
-    original_scenario: scenario.text,
-    author_name: technicianName,
-    suggested_correction: comment
+        const { error } = await _supabase.from('bst_field_feedback').insert([{
+            module_ref: currentModule,
+            original_scenario: scenario ? scenario.text : "N/A",
+            author_name: localStorage.getItem('emp_name') || "Anonymous",
+            suggested_correction: comment
         }]);
 
-        if (!error) alert("Knowledge correction submitted for review. Thank you.");
+        if (!error) alert("Knowledge feedback logged successfully.");
     }
 
     async function endQuiz(passed) {
@@ -158,18 +157,16 @@
         document.getElementById('result-ui').classList.remove('hidden');
         
         const status = passed ? "PASS" : "RETAKE";
-        document.getElementById('final-stats').innerText = `Result: ${status} | Strikes: ${strikes}`;
+        document.getElementById('final-stats').innerText = `Result: ${status} | Total Strikes: ${strikes}`;
 
-        // Log to Supabase
-await _supabase.from('bst_training_results').insert([{
-    technician_name: technicianName,
-    module_id: currentModule,
-    strikes: strikes,
-    outcome: status
+        await _supabase.from('bst_training_results').insert([{
+            technician_name: localStorage.getItem('emp_name') || "Field Tech",
+            module_id: currentModule,
+            strikes: strikes,
+            outcome: status
         }]);
     }
 
-    // Initialize
     loadScenario();
 </script>
 </body>
