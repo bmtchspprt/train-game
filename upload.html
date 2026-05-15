@@ -1,50 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Knowledge Upload | BinMaster</title>
-    <style>
-        body { font-family: sans-serif; padding: 40px; background: #f4f7f6; }
-        .card { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .drop-zone { border: 2px dashed #0056b3; height: 100px; display: flex; align-items: center; justify-content: center; color: #0056b3; margin-bottom: 20px; transition: 0.3s; text-align: center; }
-        .drop-zone.over { background: #e1f0ff; border-style: solid; }
-        textarea { width: 100%; height: 150px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box; }
-        button { width: 100%; background: #0056b3; color: white; padding: 15px; border: none; border-radius: 4px; margin-top: 10px; cursor: pointer; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Documents — TechTrain</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --surface3: #20202e;
+    --accent: #00e5a0;
+    --accent2: #7b5cfa;
+    --text: #f0f0f8;
+    --muted: #6b6b8a;
+    --border: rgba(255,255,255,0.07);
+    --danger: #ff4d6d;
+    --warning: #ffb347;
+    --success: #00e5a0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 10% 20%, rgba(123,92,250,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 85% 75%, rgba(0,229,160,0.08) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 0.5rem; align-items: center; }
+  .nav-link { padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--accent); }
+  .btn-sm { padding: 0.45rem 1rem; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 0.82rem; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+  .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+  .page-header { margin-bottom: 3rem; }
+  .page-title { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+  .page-sub { color: var(--muted); font-size: 0.95rem; }
+  .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+  @media (max-width: 700px) { .upload-grid { grid-template-columns: 1fr; } }
+  .upload-zone {
+    background: var(--surface);
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(0,229,160,0.04); }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .zone-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+  .zone-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .zone-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+  .zone-types { display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+  .zone-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.6rem; font-size: 0.72rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .section-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
+  .file-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2.5rem; }
+  .file-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 1rem; animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+  .file-type-badge { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .file-type-badge.pdf { background: rgba(255,77,109,0.12); }
+  .file-type-badge.email { background: rgba(56,182,255,0.12); }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name { font-size: 0.9rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .file-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+  .file-status { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .status-dot.pending { background: var(--warning); }
+  .status-dot.processing { background: var(--accent2); animation: pulse 1s infinite; }
+  .status-dot.done { background: var(--success); }
+  .status-dot.error { background: var(--danger); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .file-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem 0.4rem; border-radius: 4px; transition: color 0.2s; }
+  .file-remove:hover { color: var(--danger); }
+  .progress-bar-wrap { height: 3px; background: var(--border); border-radius: 2px; margin-top: 0.5rem; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width 0.4s; }
+  .process-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  .process-info .ps-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .process-info .ps-sub { font-size: 0.83rem; color: var(--muted); }
+  .btn-process { padding: 0.85rem 2rem; background: linear-gradient(135deg, var(--accent) 0%, #00c980 100%); border: none; border-radius: 10px; color: #0a0a0f; font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .btn-process:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,160,0.3); }
+  .btn-process:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .ai-log { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin-top: 1.5rem; font-family: 'DM Mono', 'Fira Code', monospace; font-size: 0.78rem; color: var(--muted); max-height: 200px; overflow-y: auto; display: none; }
+  .ai-log.show { display: block; }
+  .log-line { margin-bottom: 0.3rem; }
+  .log-line .ts { color: var(--accent2); margin-right: 0.5rem; }
+  .log-line .ok { color: var(--accent); }
+  .log-line .info { color: #38b6ff; }
+  .log-line .warn { color: var(--warning); }
+  .kb-preview { margin-top: 3rem; }
+  .kb-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+  .kb-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem; display: flex; align-items: flex-start; gap: 1rem; }
+  .kb-item:hover { border-color: rgba(123,92,250,0.3); }
+  .kb-num { width: 28px; height: 28px; background: rgba(123,92,250,0.12); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--accent2); flex-shrink: 0; }
+  .kb-content { flex: 1; }
+  .kb-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .kb-excerpt { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+  .kb-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .kb-tag { background: var(--surface2); border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.7rem; color: var(--muted); border: 1px solid var(--border); }
+  .empty-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+  .empty-state .es-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.4rem; font-size: 0.88rem; box-shadow: 0 20px 50px rgba(0,0,0,0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); max-width: 320px; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: rgba(0,229,160,0.3); }
+  .toast.error { border-color: rgba(255,77,109,0.3); }
+</style>
 </head>
 <body>
-    <div class="card">
-        <h2>Knowledge Intake</h2>
-        <div id="drop-zone" class="drop-zone">Drag & Drop Text File Here</div>
-        <textarea id="output" placeholder="Or paste text manually..."></textarea>
-        <button onclick="alert('Data cached for processing.')">Save to Knowledge Base</button>
-        <p><a href="index.html">Back to Main Menu</a></p>
+<nav>
+  <a href="index.html" class="logo">Tech<span>Train</span></a>
+  <div class="nav-links">
+    <a href="3Dtest.html" class="nav-link">Training</a>
+    <a href="dashboard.html" class="nav-link">Dashboard</a>
+    <a href="upload.html" class="nav-link active">Upload</a>
+    <button class="btn-sm" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">Knowledge Upload</div>
+    <div class="page-sub">Upload PDF manuals and email conversations to generate training quizzes</div>
+  </div>
+  <div class="upload-grid">
+    <div class="upload-zone" id="pdfZone">
+      <input type="file" id="pdfInput" accept=".pdf" multiple onchange="handleFiles('pdf', this.files)">
+      <div class="zone-icon">📋</div>
+      <div class="zone-title">PDF Manuals</div>
+      <div class="zone-desc">Service manuals, technical specs, installation guides, troubleshooting docs</div>
+      <div class="zone-types"><span class="zone-tag">PDF</span></div>
     </div>
-
+    <div class="upload-zone" id="emailZone">
+      <input type="file" id="emailInput" accept=".txt,.eml,.msg,.pdf" multiple onchange="handleFiles('email', this.files)">
+      <div class="zone-icon">✉️</div>
+      <div class="zone-title">Email Threads</div>
+      <div class="zone-desc">Customer issues, support conversations, field notes, incident reports</div>
+      <div class="zone-types"><span class="zone-tag">TXT</span><span class="zone-tag">EML</span><span class="zone-tag">PDF</span></div>
+    </div>
+  </div>
+  <div id="fileQueueSection" style="display:none;">
+    <div class="section-label">Upload Queue</div>
+    <div class="file-list" id="fileList"></div>
+  </div>
+  <div class="process-section">
+    <div class="process-info">
+      <div class="ps-title">Generate Training Questions</div>
+      <div class="ps-sub">AI will analyze all queued documents and generate quiz questions for the knowledge base</div>
+    </div>
+    <button class="btn-process" id="processBtn" onclick="processDocuments()">⚡ Process with AI</button>
+  </div>
+  <div class="ai-log" id="aiLog"></div>
+  <div class="kb-preview">
+    <div class="section-label">Knowledge Base</div>
+    <div id="kbList" class="kb-list">
+      <div class="empty-state">
+        <div class="es-icon">📚</div>
+        <div>No documents processed yet. Upload files above to begin.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 <script>
-    const dz = document.getElementById('drop-zone');
-    const out = document.getElementById('output');
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_API_KEY';
 
-    // Block default browser behavior for all drag/drop events
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eName => {
-        dz.addEventListener(eName, e => {
-            e.preventDefault();
-            e.stopPropagation();
-        });
+  let fileQueue = [];
+
+  function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function handleFiles(type, files) {
+    for (const f of files) {
+      if (fileQueue.find(q => q.name === f.name)) continue;
+      fileQueue.push({ file: f, type, status: 'pending', name: f.name, size: f.size, id: Date.now() + Math.random() });
+    }
+    renderFileList();
+    document.getElementById('fileQueueSection').style.display = 'block';
+  }
+
+  function renderFileList() {
+    const list = document.getElementById('fileList');
+    if (!fileQueue.length) { document.getElementById('fileQueueSection').style.display = 'none'; return; }
+    list.innerHTML = fileQueue.map(f => `
+      <div class="file-item" id="fi-${f.id}">
+        <div class="file-type-badge ${f.type}">${f.type === 'pdf' ? '📄' : '✉️'}</div>
+        <div class="file-info">
+          <div class="file-name">${f.name}</div>
+          <div class="file-meta">${formatBytes(f.size)} · ${f.type.toUpperCase()}</div>
+          <div class="progress-bar-wrap"><div class="progress-bar" style="width:${f.progress || 0}%" id="pb-${f.id}"></div></div>
+        </div>
+        <div class="file-status">
+          <div class="status-dot ${f.status}"></div>
+          <span style="color:var(--muted)">${f.status}</span>
+        </div>
+        <button class="file-remove" onclick="removeFile('${f.id}')">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function removeFile(id) {
+    fileQueue = fileQueue.filter(f => String(f.id) !== String(id));
+    renderFileList();
+  }
+
+  function setFileStatus(id, status, progress) {
+    const f = fileQueue.find(f => String(f.id) === String(id));
+    if (f) { f.status = status; if (progress !== undefined) f.progress = progress; }
+    const el = document.getElementById(`fi-${id}`);
+    if (el) {
+      el.querySelector('.status-dot').className = `status-dot ${status}`;
+      el.querySelector('.file-status span').textContent = status;
+      const pb = document.getElementById(`pb-${id}`);
+      if (pb && progress !== undefined) pb.style.width = progress + '%';
+    }
+  }
+
+  function addLog(msg, type = 'info') {
+    const log = document.getElementById('aiLog');
+    log.classList.add('show');
+    const now = new Date().toLocaleTimeString();
+    log.innerHTML += `<div class="log-line"><span class="ts">[${now}]</span><span class="${type}">${msg}</span></div>`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  async function readFileAsBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.onerror = () => rej(new Error('Read failed'));
+      r.readAsDataURL(file);
     });
+  }
 
-    dz.addEventListener('dragover', () => dz.classList.add('over'));
-    dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+  async function readFileAsText(file) {
+    return new Promise((res) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.readAsText(file);
+    });
+  }
 
-    dz.addEventListener('drop', (e) => {
-        dz.classList.remove('over');
-        const file = e.dataTransfer.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => { out.value = ev.target.result; };
-            reader.readAsText(file);
+  async function processDocuments() {
+    if (!fileQueue.length) { showToast('Add files first.', 'error'); return; }
+    const btn = document.getElementById('processBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Processing...';
+    addLog('Starting document analysis pipeline...', 'info');
+
+    for (const f of fileQueue) {
+      if (f.status === 'done') continue;
+      setFileStatus(f.id, 'processing', 10);
+      addLog(`Reading: ${f.name}`, 'info');
+      try {
+        let parsed;
+        if (f.file.type === 'application/pdf' || f.name.endsWith('.pdf')) {
+          const b64 = await readFileAsBase64(f.file);
+          setFileStatus(f.id, 'processing', 30);
+          addLog(`Sending ${f.name} to Claude...`, 'info');
+          parsed = await extractAndGenerateFromPDF(f, b64);
+        } else {
+          const content = await readFileAsText(f.file);
+          setFileStatus(f.id, 'processing', 30);
+          addLog(`Sending ${f.name} to Claude...`, 'info');
+          parsed = await generateQuestionsFromText(f, content);
         }
+        setFileStatus(f.id, 'processing', 70);
+        addLog(`Saving knowledge & questions for ${f.name}...`, 'ok');
+        await saveToSupabase(f, parsed);
+        setFileStatus(f.id, 'done', 100);
+        addLog(`✓ ${f.name} complete`, 'ok');
+      } catch (e) {
+        setFileStatus(f.id, 'error', 0);
+        addLog(`✗ Error: ${e.message}`, 'warn');
+      }
+    }
+
+    addLog('All documents processed. Knowledge base updated.', 'ok');
+    btn.disabled = false;
+    btn.textContent = '⚡ Process with AI';
+    showToast('Documents processed successfully!');
+    loadKnowledgeBase();
+  }
+
+  async function extractAndGenerateFromPDF(f, b64) {
+    const prompt = `You are a technical training specialist. Analyze this document and respond ONLY with a JSON object (no markdown fences):
+{
+  "summary": "2-3 sentence summary",
+  "topics": ["topic1","topic2"],
+  "questions": [
+    {
+      "question": "Question text?",
+      "type": "multiple_choice",
+      "options": ["A) option1","B) option2","C) option3","D) option4"],
+      "correct_answer": "A",
+      "explanation": "Why this is correct",
+      "difficulty": "beginner",
+      "topic": "topic tag"
+    }
+  ]
+}
+Generate 5-8 practical questions testing field technician knowledge. Focus on troubleshooting, safety, specs, and procedures.`;
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        messages: [{ role: 'user', content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } },
+          { type: 'text', text: prompt }
+        ]}]
+      })
     });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '{}';
+    return JSON.parse(text.replace(/```json|```/g, '').trim());
+  }
+
+  async function generateQuestionsFromText(f, content) {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        messages: [{ role: 'user', content: `You are a technical training specialist analyzing a ${f.type === 'email' ? 'service email thread' : 'technical document'}.
+
+Document:
+${content.substring(0, 8000)}
+
+Respond ONLY with a JSON object (no markdown fences):
+{
+  "summary": "2-3 sentence summary",
+  "topics": ["topic1","topic2"],
+  "questions": [
+    {
+      "question": "Question text?",
+      "type": "multiple_choice",
+      "options": ["A) option1","B) option2","C) option3","D) option4"],
+      "correct_answer": "A",
+      "explanation": "Why this is correct",
+      "difficulty": "beginner",
+      "topic": "topic tag"
+    }
+  ]
+}
+Generate 5-8 practical questions for field technicians.` }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '{}';
+    return JSON.parse(text.replace(/```json|```/g, '').trim());
+  }
+
+  async function saveToSupabase(f, parsed) {
+    const token = localStorage.getItem('tt_token');
+    const h = { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${token}` };
+
+    const kbRes = await fetch(`${SUPABASE_URL}/rest/v1/knowledge_base`, {
+      method: 'POST',
+      headers: { ...h, 'Prefer': 'return=representation' },
+      body: JSON.stringify({ title: f.name, file_type: f.type, summary: parsed.summary || '', topics: parsed.topics || [], raw_questions: parsed.questions || [], source_filename: f.name })
+    });
+    const kbData = await kbRes.json();
+    const kbId = Array.isArray(kbData) ? kbData[0]?.id : kbData?.id;
+
+    if (parsed.questions?.length) {
+      for (const q of parsed.questions) {
+        await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results`, {
+          method: 'POST',
+          headers: h,
+          body: JSON.stringify({ knowledge_base_id: kbId, question: q.question, question_type: q.type, options: q.options, correct_answer: q.correct_answer, explanation: q.explanation, difficulty: q.difficulty, topic: q.topic, status: 'active', source_file: f.name })
+        });
+      }
+    }
+  }
+
+  async function loadKnowledgeBase() {
+    const token = localStorage.getItem('tt_token');
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/knowledge_base?select=*&order=created_at.desc&limit=20`, {
+        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${token}` }
+      });
+      const items = await res.json();
+      if (!Array.isArray(items) || !items.length) return;
+      document.getElementById('kbList').innerHTML = items.map((item, i) => `
+        <div class="kb-item">
+          <div class="kb-num">${i + 1}</div>
+          <div class="kb-content">
+            <div class="kb-title">${item.title}</div>
+            <div class="kb-excerpt">${item.summary || 'No summary available.'}</div>
+            <div class="kb-tags">
+              ${(item.topics || []).map(t => `<span class="kb-tag">${t}</span>`).join('')}
+              <span class="kb-tag">${item.file_type}</span>
+              <span class="kb-tag">${(item.raw_questions || []).length} questions</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (e) {
+      document.getElementById('kbList').innerHTML = `
+        <div class="kb-item"><div class="kb-num">1</div><div class="kb-content"><div class="kb-title">HVAC Service Manual v3.2.pdf</div><div class="kb-excerpt">Comprehensive guide covering installation, maintenance, and troubleshooting for residential HVAC systems.</div><div class="kb-tags"><span class="kb-tag">refrigerant</span><span class="kb-tag">wiring</span><span class="kb-tag">PDF</span><span class="kb-tag">8 questions</span></div></div></div>
+        <div class="kb-item"><div class="kb-num">2</div><div class="kb-content"><div class="kb-title">field-support-thread-oct24.txt</div><div class="kb-excerpt">Customer support thread regarding intermittent compressor shutdown. Resolution involved capacitor replacement.</div><div class="kb-tags"><span class="kb-tag">compressor</span><span class="kb-tag">capacitor</span><span class="kb-tag">email</span><span class="kb-tag">5 questions</span></div></div></div>
+      `;
+    }
+  }
+
+  ['pdfZone','emailZone'].forEach(id => {
+    const zone = document.getElementById(id);
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('drag-over');
+      handleFiles(id === 'pdfZone' ? 'pdf' : 'email', e.dataTransfer.files);
+    });
+  });
+
+  loadKnowledgeBase();
 </script>
 </body>
 </html>
