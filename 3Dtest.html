@@ -2,106 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BinMaster Academy | 3DLevelScanner Training</title>
+    <title>3D Training Engine | BinMaster</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --primary: #0056b3; --success: #28a745; --danger: #dc3545; --bg: #f4f7f6; --dark: #333; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--dark); }
-        
-        /* New Supervisor Nav Bar */
-        .admin-nav { background: #222; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
-        .admin-nav a { color: #aaa; text-decoration: none; margin-left: 15px; transition: 0.3s; }
-        .admin-nav a:hover { color: #fff; }
-
-        .quiz-container { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .header { border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
-        .scenario-box { background: #eef2f3; padding: 25px; border-radius: 8px; border-left: 5px solid var(--primary); margin-bottom: 25px; min-height: 80px; }
-        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #ddd; border-radius: 6px; background: white; text-align: left; cursor: pointer; transition: 0.2s; font-size: 1rem; }
+        :root { --primary: #0056b3; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
+        .admin-nav { background: #222; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; }
+        .admin-nav a { color: #aaa; text-decoration: none; margin-left: 15px; font-size: 0.8rem; }
+        .container { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .scenario-box { background: #eef2f3; padding: 25px; border-radius: 8px; border-left: 5px solid var(--primary); margin-bottom: 25px; }
+        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #ddd; border-radius: 6px; background: white; text-align: left; cursor: pointer; font-size: 1rem; }
         .option-btn:hover { border-color: var(--primary); background: #f0f7ff; }
-        .feedback-area { margin-top: 30px; padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .correct-btn { background: #6c757d; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
-        .progress-bar { height: 10px; background: #eee; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
-        #progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.5s; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
-
-<div class="admin-nav">
-    <span>Supervisor Portal</span>
-    <div>
-        <a href="dashboard.html">View Dashboard</a>
-        <a href="upload.html" style="font-weight: bold; color: #fff;">+ Add Knowledge</a>
+    <div class="admin-nav">
+        <span>3D Engine</span>
+        <div><a href="index.html">Main Menu</a><a href="upload.html">Upload Knowledge</a></div>
     </div>
-</div>
-
-<div class="quiz-container">
-    <div class="header">
-        <h2 id="module-title">BinMaster Technical Certification</h2>
-        <span id="score-display">Strikes: 0/3</span>
-    </div>
-
-    <div class="progress-bar"><div id="progress-fill"></div></div>
-
-    <div id="quiz-ui">
-        <div class="scenario-box">
-            <h3 id="scenario-text">Initializing...</h3>
+    <div class="container">
+        <div id="quiz-ui">
+            <h2 id="module-title">Loading...</h2>
+            <div class="scenario-box"><h3 id="scenario-text">Initializing Connection...</h3></div>
+            <div id="options-list"></div>
+            <hr>
+            <button onclick="openCorrectionBox()" style="background:none; border:none; color:grey; cursor:pointer; font-size:0.8rem;">Flag Correction</button>
         </div>
-        <div id="options-list"></div>
-        
-        <div class="feedback-area">
-            <span>Module: <strong id="module-id-display">3D-101</strong></span>
-            <button class="correct-btn" onclick="openCorrectionBox()">Flag Technical Correction</button>
+        <div id="result-ui" class="hidden">
+            <h1>Complete</h1>
+            <p id="final-stats"></p>
+            <button class="option-btn" onclick="location.href='index.html'">Return to Menu</button>
         </div>
     </div>
-
-    <div id="result-ui" class="hidden">
-        <h1>Module Complete</h1>
-        <p id="final-stats"></p>
-        <button class="option-btn" style="text-align:center; background: var(--primary); color:white;" onclick="location.reload()">Restart Training</button>
-    </div>
-</div>
 
 <script>
-    // --- SUPABASE CONFIG ---
-    const SUPABASE_URL = 'REPLACE_WITH_YOUR_PROJECT_URL';
-    const SUPABASE_KEY = 'REPLACE_WITH_YOUR_ANON_KEY';
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // ==========================================
+    // PASTE YOUR SUPABASE CREDENTIALS HERE
+    // ==========================================
+    const CONST_URL = 'YOUR_SUPABASE_URL_HERE';
+    const CONST_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+    // ==========================================
 
-    // --- TRAINING DATA ---
+    const _supabase = supabase.createClient(CONST_URL, CONST_KEY);
+
     const quizData = {
         "3D-101": {
-            title: "Installation & Physical Positioning",
+            title: "Installation & Physics",
             scenarios: [
-                {
-                    text: "You are installing a 3DLevelScanner. What is the minimum recommended distance from the vessel wall for mounting?",
-                    options: ["100mm (4\")", "500mm (16\")", "1000mm (39\")"],
-                    correct: 1,
-                    knowledgeRef: "Manual Section 3.1: Installation Constraints"
-                },
-                {
-                    text: "When measuring powders like flour or cement, what physical property of the 3DLevelScanner helps it 'see' through dust?",
-                    options: ["High-intensity laser pulses", "Low-frequency acoustic waves (3kHz-7kHz)", "High-frequency ultrasonic vibrations"],
-                    correct: 1,
-                    knowledgeRef: "Theory of Operation: Self-Cleaning Acoustic Waves"
-                }
+                { text: "Mounting location for 10m silo?", options: ["Center", "Between center and wall", "Against wall"], correct: 1 },
+                { text: "Minimum wall distance?", options: ["250mm", "500mm (16\")", "1000mm"], correct: 1 }
             ]
         }
     };
 
-    let currentModule = "3D-101";
     let currentIdx = 0;
     let strikes = 0;
 
     function loadScenario() {
-        const module = quizData[currentModule];
-        const scenario = module.scenarios[currentIdx];
-        
-        document.getElementById('module-id-display').innerText = currentModule;
-        document.getElementById('module-title').innerText = module.title;
+        const scenario = quizData["3D-101"].scenarios[currentIdx];
+        document.getElementById('module-title').innerText = quizData["3D-101"].title;
         document.getElementById('scenario-text').innerText = scenario.text;
-        
         const list = document.getElementById('options-list');
         list.innerHTML = '';
         scenario.options.forEach((opt, i) => {
@@ -111,60 +72,42 @@
             btn.onclick = () => checkAnswer(i);
             list.appendChild(btn);
         });
-
-        const progress = ((currentIdx) / module.scenarios.length) * 100;
-        document.getElementById('progress-fill').style.width = `${progress}%`;
     }
 
-    async function checkAnswer(choice) {
-        const scenario = quizData[currentModule].scenarios[currentIdx];
-        
-        if (choice === scenario.correct) {
-            alert("Correct. Reference: " + scenario.knowledgeRef);
-        } else {
-            strikes++;
-            document.getElementById('score-display').innerText = `Strikes: ${strikes}/3`;
-            alert("Incorrect. The manual specifies: " + scenario.knowledgeRef);
-        }
-
+    async function checkAnswer(i) {
+        if (i !== quizData["3D-101"].scenarios[currentIdx].correct) strikes++;
         currentIdx++;
-        if (currentIdx >= quizData[currentModule].scenarios.length || strikes >= 3) {
-            endQuiz(strikes < 3);
+        if (currentIdx >= quizData["3D-101"].scenarios.length) {
+            endQuiz();
         } else {
             loadScenario();
         }
     }
 
-    function openCorrectionBox() {
-        const comment = prompt("Field Correction: Please explain the technical error in this scenario:");
-        if (comment) submitCorrection(comment);
-    }
-
-    async function submitCorrection(comment) {
-        const scenario = quizData[currentModule].scenarios[currentIdx];
-        const { error } = await _supabase.from('bst_field_feedback').insert([{
-            module_ref: currentModule,
-            original_scenario: scenario ? scenario.text : "N/A",
-            author_name: localStorage.getItem('emp_name') || "Anonymous",
-            suggested_correction: comment
-        }]);
-
-        if (!error) alert("Knowledge feedback logged successfully.");
-    }
-
-    async function endQuiz(passed) {
+    async function endQuiz() {
         document.getElementById('quiz-ui').classList.add('hidden');
         document.getElementById('result-ui').classList.remove('hidden');
+        const status = strikes < 2 ? "PASS" : "RETAKE";
+        document.getElementById('final-stats').innerText = `Strikes: ${strikes} | Outcome: ${status}`;
         
-        const status = passed ? "PASS" : "RETAKE";
-        document.getElementById('final-stats').innerText = `Result: ${status} | Total Strikes: ${strikes}`;
-
         await _supabase.from('bst_training_results').insert([{
-            technician_name: localStorage.getItem('emp_name') || "Field Tech",
-            module_id: currentModule,
+            technician_name: localStorage.getItem('emp_name') || "Unknown",
+            module_id: "3D-101",
             strikes: strikes,
             outcome: status
         }]);
+    }
+
+    function openCorrectionBox() {
+        const comment = prompt("What is wrong with this scenario?");
+        if (comment) {
+            _supabase.from('bst_field_feedback').insert([{
+                module_ref: "3D-101",
+                original_scenario: quizData["3D-101"].scenarios[currentIdx].text,
+                author_name: localStorage.getItem('emp_name'),
+                suggested_correction: comment
+            }]);
+        }
     }
 
     loadScenario();
