@@ -2,58 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BinMaster Academy | Home</title>
+    <title>BinMaster Training | Home</title>
     <style>
-        :root { --primary: #0056b3; --dark: #2c3e50; --light: #ecf0f1; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--light); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .menu-card { background: white; width: 90%; max-width: 500px; padding: 40px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { color: #7f8c8d; margin-bottom: 30px; font-size: 0.9rem; }
-        
-        .nav-section { margin-bottom: 30px; }
-        .section-label { font-size: 0.75rem; font-weight: bold; color: #95a5a6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: block; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        
-        .menu-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; background: var(--primary); color: white; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: transform 0.2s, background 0.2s; box-sizing: border-box; }
-        .menu-btn:hover { background: #004494; transform: translateY(-2px); }
-        .menu-btn.alt { background: var(--dark); }
-        .menu-btn.outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .menu-btn.outline:hover { background: var(--primary); color: white; }
-
-        .footer-note { font-size: 0.75rem; color: #bdc3c7; margin-top: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .menu-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 400px; }
+        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 6px; background: #0056b3; color: white; text-decoration: none; font-weight: bold; box-sizing: border-box; }
+        .btn-alt { background: #2c3e50; }
+        .btn-outline { background: white; color: #0056b3; border: 2px solid #0056b3; }
     </style>
 </head>
 <body>
-
-<div class="menu-card">
-    <div class="logo">BinMaster Training</div>
-    <div class="subtitle">3DLevelScanner & MultiVision Certification</div>
-
-    <div class="nav-section">
-        <span class="section-label">Technician Portal</span>
-        <a href="3Dtest.html?quiz=1" class="menu-btn">Start 3D Training Engine</a>
+    <div class="menu-card">
+        <h2>BinMaster Academy</h2>
+        <p>Technical Knowledge Portal</p>
+        <a href="3Dtest.html" class="btn">Start 3D Training Engine</a>
+        <a href="upload.html" class="btn btn-alt">+ Add Knowledge</a>
+        <a href="dashboard.html" class="btn btn-outline">View Reports & Feedback</a>
     </div>
-
-    <div class="nav-section">
-        <span class="section-label">Supervisor Tools</span>
-        <a href="upload.html" class="menu-btn alt">+ Add Technical Knowledge</a>
-        <a href="dashboard.html" class="menu-btn outline">View Reports & Feedback</a>
-    </div>
-
-    <div class="footer-note">
-        Authorized Personnel Only • Powered by Supabase train-game
-    </div>
-</div>
-
-<script>
-    // Ensure we have the technician's name stored for the session
-    window.onload = function() {
-        if (!localStorage.getItem('emp_name')) {
-            let name = prompt("Please enter your name to begin:");
-            if (name) localStorage.setItem('emp_name', name);
-        }
-    }
-</script>
-
+    <script>
+        window.onload = () => {
+            if (!localStorage.getItem('emp_name')) {
+                let name = prompt("Enter technician name:");
+                if (name) localStorage.setItem('emp_name', name);
+            }
+        };
+    </script>
 </body>
 </html>
