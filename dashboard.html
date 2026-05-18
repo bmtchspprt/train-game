@@ -103,7 +103,7 @@
   .modal-backdrop.hidden { display: none; }
   .modal { background: var(--surface); border: 1px solid rgba(139,26,26,0.3); border-radius: 20px; padding: 2rem; width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto; animation: fadeUp 0.3s ease; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
-  .modal-title { font-family: var(--headline-font); font-size: 1.2rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-light); margin-bottom: 0.4rem; text-shadow: 0 0 20px var(--maroon-glow); }
+  .modal-title { font-family: var(--headline-font); font-size: 1.2rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-light); margin-bottom: 0.4rem; }
   .modal-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
   .form-group { margin-bottom: 1.2rem; }
   label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.45rem; letter-spacing: 0.05em; text-transform: uppercase; font-family: var(--headline-font); }
@@ -296,10 +296,19 @@
   async function sf(path, opts = {}) {
     try {
       const res = await fetch(SUPABASE_URL + path, {
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, ...opts.headers },
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal',
+          ...opts.headers
+        },
         ...opts
       });
-      return res.json();
+      if (res.status === 204 || res.status === 200 || res.status === 201) {
+        try { return await res.json(); } catch { return true; }
+      }
+      return null;
     } catch { return null; }
   }
 
