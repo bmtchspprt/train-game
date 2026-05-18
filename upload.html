@@ -23,19 +23,8 @@
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font); font-weight: bold; background: var(--bg); color: var(--text); min-height: 100vh; }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse 70% 50% at 10% 20%, rgba(139,26,26,0.08) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 85% 75%, rgba(0,229,160,0.05) 0%, transparent 55%);
-    pointer-events: none; z-index: 0;
-  }
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.9rem 2.5rem;
-    background: rgba(10,10,15,0.95); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 70% 50% at 10% 20%, rgba(139,26,26,0.08) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 75%, rgba(0,229,160,0.05) 0%, transparent 55%); pointer-events: none; z-index: 0; }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 2.5rem; background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
   .logo { font-family: var(--font); font-weight: bold; font-size: 1.4rem; color: var(--text); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
   .logo span { color: var(--maroon-light); }
   .nav-links { display: flex; gap: 0.5rem; align-items: center; }
@@ -112,7 +101,7 @@
 <nav>
   <a href="index.html" class="logo">TECH<span>TRAIN</span></a>
   <div class="nav-links">
-    <a href="testing.html" class="nav-link">Training</a>
+    <a href="training.html" class="nav-link">Training</a>
     <a href="dashboard.html" class="nav-link">Dashboard</a>
     <a href="upload.html" class="nav-link active">Upload</a>
     <button class="btn-sm" onclick="logout()">Sign Out</button>
@@ -350,21 +339,43 @@ RULES:
     const btn = document.getElementById('saveBtn');
     btn.disabled = true;
     btn.textContent = 'Saving...';
-    const h = { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+    const h = {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Prefer': 'return=minimal'
+    };
     let saved = 0, failed = 0;
     for (const q of parsedQuestions) {
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results`, {
-          method: 'POST', headers: h,
-          body: JSON.stringify({ question: q.question, options: q.options, correct_answer: q.correct_answer, explanation: q.explanation || '', difficulty: q.difficulty || 'beginner', topic: q.topic || 'General', category: q.category || '', source_file: q.source || '', status: 'active' })
+          method: 'POST',
+          headers: h,
+          body: JSON.stringify({
+            question: q.question,
+            options: q.options,
+            correct_answer: q.correct_answer,
+            explanation: q.explanation || '',
+            difficulty: q.difficulty || 'beginner',
+            topic: q.topic || 'General',
+            category: q.category || '',
+            source_file: q.source || '',
+            status: 'active'
+          })
         });
-        if (res.ok || res.status === 201) saved++;
-        else { const err = await res.json(); console.error('Save error:', err); failed++; }
-      } catch (e) { failed++; }
+        if (res.ok || res.status === 201 || res.status === 204) saved++;
+        else { const err = await res.text(); console.error('Save error:', err); failed++; }
+      } catch (e) { console.error(e); failed++; }
     }
     btn.disabled = false;
     btn.textContent = '✓ Save All Questions to Training Platform';
-    if (saved > 0) { showToast(`${saved} question${saved !== 1 ? 's' : ''} saved!`); loadKnowledgeBase(); document.getElementById('jsonPaste').value = ''; parsedQuestions = []; document.getElementById('step3Card').style.display = 'none'; }
+    if (saved > 0) {
+      showToast(`${saved} question${saved !== 1 ? 's' : ''} saved!`);
+      loadKnowledgeBase();
+      document.getElementById('jsonPaste').value = '';
+      parsedQuestions = [];
+      document.getElementById('step3Card').style.display = 'none';
+    }
     if (failed > 0) showToast(`${failed} question${failed !== 1 ? 's' : ''} failed to save.`, 'error');
   }
 
@@ -388,7 +399,9 @@ RULES:
   async function loadKnowledgeBase() {
     const listEl = document.getElementById('kbList');
     try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&order=created_at.desc&limit=30`, { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } });
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&order=created_at.desc&limit=30`, {
+        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+      });
       const items = await res.json();
       if (!Array.isArray(items) || !items.length) { listEl.innerHTML = '<div class="empty-state">No questions saved yet.</div>'; return; }
       const grouped = {};
