@@ -11,6 +11,9 @@
     --surface2: #1a1a26;
     --accent: #00e5a0;
     --accent2: #7b5cfa;
+    --maroon: #8B1A1A;
+    --maroon-light: #c0392b;
+    --maroon-glow: rgba(139,26,26,0.18);
     --text: #f0f0f8;
     --muted: #8888aa;
     --border: rgba(255,255,255,0.07);
@@ -32,8 +35,8 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 20% -10%, rgba(123,92,250,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,229,160,0.12) 0%, transparent 55%);
+      radial-gradient(ellipse 80% 60% at 20% -10%, rgba(139,26,26,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,229,160,0.08) 0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
   }
@@ -58,7 +61,7 @@
     text-decoration: none;
     text-transform: uppercase;
   }
-  .logo span { color: var(--accent); }
+  .logo span { color: var(--maroon-light); }
   .nav-links { display: flex; gap: 0.5rem; align-items: center; }
   .nav-btn {
     padding: 0.5rem 1.2rem;
@@ -77,13 +80,13 @@
     border: 1px solid var(--border);
     color: var(--muted);
   }
-  .nav-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn.ghost:hover { border-color: var(--maroon-light); color: var(--maroon-light); }
   .nav-btn.primary {
-    background: var(--accent);
-    border: 1px solid var(--accent);
-    color: #0a0a0f;
+    background: var(--maroon);
+    border: 1px solid var(--maroon-light);
+    color: white;
   }
-  .nav-btn.primary:hover { background: #00fdb5; }
+  .nav-btn.primary:hover { background: var(--maroon-light); }
   .hero {
     position: relative;
     z-index: 1;
@@ -99,13 +102,13 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(0,229,160,0.08);
-    border: 1px solid rgba(0,229,160,0.25);
+    background: rgba(139,26,26,0.1);
+    border: 1px solid rgba(139,26,26,0.3);
     border-radius: 100px;
     padding: 0.35rem 1rem;
     font-size: 0.78rem;
     font-weight: bold;
-    color: var(--accent);
+    color: #e88080;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 2rem;
@@ -115,8 +118,8 @@
     content: '';
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
+    background: var(--maroon-light);
+    box-shadow: 0 0 8px var(--maroon-light);
     animation: pulse 2s infinite;
   }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
@@ -131,10 +134,8 @@
     animation: fadeUp 0.6s 0.1s ease both;
   }
   h1 .highlight {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--maroon-light);
+    text-shadow: 0 0 40px var(--maroon-glow);
   }
   .hero-sub {
     font-size: clamp(0.95rem, 2vw, 1.1rem);
@@ -161,7 +162,9 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+    color: var(--maroon-light);
     margin-bottom: 0.4rem;
+    text-shadow: 0 0 20px var(--maroon-glow);
   }
   .card-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; font-weight: normal; }
   .role-tabs {
@@ -215,16 +218,16 @@
     outline: none;
   }
   input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(0,229,160,0.1);
+    border-color: var(--maroon-light);
+    box-shadow: 0 0 0 3px var(--maroon-glow);
   }
   .btn-login {
     width: 100%;
     padding: 0.9rem;
-    background: var(--accent);
+    background: var(--maroon);
     border: none;
     border-radius: 10px;
-    color: #0a0a0f;
+    color: white;
     font-family: var(--font);
     font-size: 1rem;
     font-weight: bold;
@@ -234,7 +237,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  .btn-login:hover { background: #00fdb5; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,229,160,0.25); }
+  .btn-login:hover { background: var(--maroon-light); transform: translateY(-1px); box-shadow: 0 8px 24px var(--maroon-glow); }
   .btn-login:active { transform: translateY(0); }
   .divider {
     display: flex;
@@ -266,7 +269,7 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-  .btn-demo:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-demo:hover { border-color: var(--maroon); color: #e88080; }
   .error-msg {
     background: rgba(255,77,109,0.1);
     border: 1px solid rgba(255,77,109,0.25);
@@ -290,7 +293,7 @@
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--maroon-light);
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
@@ -303,6 +306,8 @@
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 4rem;
+    color: var(--maroon-light);
+    text-shadow: 0 0 40px var(--maroon-glow);
   }
   .feat-grid {
     display: grid;
@@ -316,7 +321,7 @@
     padding: 2rem;
     transition: border-color 0.3s, transform 0.3s;
   }
-  .feat-card:hover { border-color: rgba(0,229,160,0.3); transform: translateY(-4px); }
+  .feat-card:hover { border-color: rgba(139,26,26,0.4); transform: translateY(-4px); }
   .feat-icon { font-size: 1.6rem; margin-bottom: 1.2rem; }
   .feat-title {
     font-family: var(--font);
@@ -325,6 +330,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 0.6rem;
+    color: var(--maroon-light);
   }
   .feat-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; font-weight: normal; }
   @keyframes fadeUp {
@@ -405,17 +411,15 @@
     <div class="feat-card">
       <div class="feat-icon">📊</div>
       <div class="feat-title">Training Analytics</div>
-      <div class="feat-desc">Track quiz scores, completion rates, and knowledge growth over time with detailed technician-level reporting.</div>
+      <div class="feat-desc">Track questions attempted, time invested, and knowledge growth over time with detailed technician-level reporting.</div>
     </div>
   </div>
 </section>
 
 <footer>© 2025 TechTrain Platform — Built on Supabase + Claude AI</footer>
 
+<script src="config.js"></script>
 <script>
-  const SUPABASE_URL = 'https://guszjjlvtupfdbrkpmue.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1c3pqamx2dHVwZmRicmtwbXVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3ODQ3NzAsImV4cCI6MjA5NDM2MDc3MH0.I4smC18vIZbMtpgAT4cAeO1WAfTZGYfop_ecvYPJ9eg';
-
   let currentRole = 'technician';
 
   function setRole(role, btn) {
@@ -462,12 +466,11 @@
     window.location.href = currentRole === 'admin' ? 'dashboard.html' : '3Dtest.html';
   }
 
-  // SAFE redirect — only fires if token looks valid
-try {
+  try {
     const savedToken = localStorage.getItem('tt_token');
     const savedRole = localStorage.getItem('tt_role');
-    if (savedToken && 
-        savedToken !== 'undefined' && 
+    if (savedToken &&
+        savedToken !== 'undefined' &&
         savedToken !== 'null' &&
         savedToken !== 'demo-token') {
       if (savedRole === 'admin') window.location.href = 'dashboard.html';
@@ -476,9 +479,6 @@ try {
   } catch(e) {
     localStorage.clear();
   }
-} catch(e) {
-  localStorage.clear();
-}
 </script>
 </body>
 </html>
