@@ -358,7 +358,7 @@
   <div class="nav-links">
     <a href="dashboard.html" class="nav-btn ghost">Dashboard</a>
     <a href="upload.html" class="nav-btn ghost">Upload</a>
-    <a href="3Dtest.html" class="nav-btn primary">Start Training</a>
+    <a href="training.html" class="nav-btn primary">Start Training</a>
   </div>
 </nav>
 
@@ -449,7 +449,7 @@
         localStorage.setItem('tt_token', data.access_token);
         localStorage.setItem('tt_user', JSON.stringify(data.user));
         localStorage.setItem('tt_role', currentRole);
-        window.location.href = currentRole === 'admin' ? 'dashboard.html' : '3Dtest.html';
+        window.location.href = currentRole === 'admin' ? 'dashboard.html' : 'training.html';
       } else {
         errEl.textContent = data.error_description || 'Login failed. Check credentials.';
         errEl.classList.add('show');
@@ -463,7 +463,7 @@
     localStorage.setItem('tt_role', currentRole);
     localStorage.setItem('tt_user', JSON.stringify({ email: 'demo@techtrain.app', id: 'demo-user' }));
     localStorage.setItem('tt_token', 'demo-token');
-    window.location.href = currentRole === 'admin' ? 'dashboard.html' : '3Dtest.html';
+    window.location.href = currentRole === 'admin' ? 'dashboard.html' : 'training.html';
   }
 
   try {
@@ -474,7 +474,7 @@
         savedToken !== 'null' &&
         savedToken !== 'demo-token') {
       if (savedRole === 'admin') window.location.href = 'dashboard.html';
-      else if (savedRole === 'technician') window.location.href = '3Dtest.html';
+      else if (savedRole === 'technician') window.location.href = 'training.html';
     }
   } catch(e) {
     localStorage.clear();
