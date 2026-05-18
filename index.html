@@ -464,14 +464,17 @@
 
   // SAFE redirect — only fires if token looks valid
 try {
-  const savedToken = localStorage.getItem('tt_token');
-  const savedRole = localStorage.getItem('tt_role');
-  if (savedToken && 
-      savedToken !== 'undefined' && 
-      savedToken !== 'null' &&
-      savedToken !== 'demo-token') {          // ← ignore demo tokens
-    if (savedRole === 'admin') window.location.href = 'dashboard.html';
-    else if (savedRole === 'technician') window.location.href = '3Dtest.html';
+    const savedToken = localStorage.getItem('tt_token');
+    const savedRole = localStorage.getItem('tt_role');
+    if (savedToken && 
+        savedToken !== 'undefined' && 
+        savedToken !== 'null' &&
+        savedToken !== 'demo-token') {
+      if (savedRole === 'admin') window.location.href = 'dashboard.html';
+      else if (savedRole === 'technician') window.location.href = '3Dtest.html';
+    }
+  } catch(e) {
+    localStorage.clear();
   }
 } catch(e) {
   localStorage.clear();
