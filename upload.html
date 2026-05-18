@@ -626,8 +626,12 @@ RULES:
             status: 'active'
           })
         });
-        if (res.ok || res.status === 201) saved++;
-        else failed++;
+     if (res.ok || res.status === 201 || res.status === 200) saved++;
+else {
+  const err = await res.json();
+  console.error('Save error:', err);
+  failed++;
+}
       } catch (e) { failed++; }
     }
 
