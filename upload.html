@@ -11,317 +11,104 @@
     --surface2: #1a1a26;
     --surface3: #20202e;
     --accent: #00e5a0;
-    --accent2: #7b5cfa;
+    --maroon: #8B1A1A;
+    --maroon-light: #c0392b;
+    --maroon-glow: rgba(139,26,26,0.18);
     --text: #f0f0f8;
     --muted: #8888aa;
     --border: rgba(255,255,255,0.08);
     --danger: #ff4d6d;
     --warning: #ffb347;
-    --success: #00e5a0;
     --font: 'Arial Narrow', Arial, sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--font);
-    font-weight: bold;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+  body { font-family: var(--font); font-weight: bold; background: var(--bg); color: var(--text); min-height: 100vh; }
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 70% 50% at 10% 20%, rgba(123,92,250,0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 85% 75%, rgba(0,229,160,0.07) 0%, transparent 55%);
-    pointer-events: none;
-    z-index: 0;
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 10% 20%, rgba(139,26,26,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 85% 75%, rgba(0,229,160,0.05) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
   }
-
-  /* NAV */
   nav {
     position: sticky; top: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0.9rem 2.5rem;
-    background: rgba(10,10,15,0.9);
-    backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.95); backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
   }
   .logo { font-family: var(--font); font-weight: bold; font-size: 1.4rem; color: var(--text); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
-  .logo span { color: var(--accent); }
+  .logo span { color: var(--maroon-light); }
   .nav-links { display: flex; gap: 0.5rem; align-items: center; }
   .nav-link { padding: 0.4rem 1rem; border-radius: 6px; font-size: 0.85rem; font-family: var(--font); font-weight: bold; color: var(--muted); text-decoration: none; transition: color 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
   .nav-link:hover { color: var(--text); }
-  .nav-link.active { color: var(--accent); }
+  .nav-link.active { color: var(--maroon-light); }
   .btn-sm { padding: 0.4rem 1rem; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-weight: bold; font-size: 0.82rem; cursor: pointer; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
-  .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* PAGE */
+  .btn-sm:hover { border-color: var(--maroon-light); color: var(--maroon-light); }
   .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem; }
-  .page-header { margin-bottom: 2rem; }
-  .page-title { font-family: var(--font); font-weight: bold; font-size: 2rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.4rem; }
-  .page-sub { color: var(--muted); font-size: 0.95rem; font-weight: normal; }
-
-  /* SECTION LABEL */
-  .sec-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: bold;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-  /* STEP CARDS */
+  .page-title { font-family: var(--font); font-weight: bold; font-size: 2rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.4rem; color: var(--maroon-light); text-shadow: 0 0 30px var(--maroon-glow); }
+  .page-sub { color: var(--muted); font-size: 0.95rem; font-weight: normal; margin-bottom: 2rem; }
+  .sec-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--maroon-light); font-weight: bold; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--maroon); opacity: 0.3; }
   .steps { display: flex; flex-direction: column; gap: 1.5rem; }
-
-  .step-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .step-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-  }
-  .step-num {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    background: rgba(0,229,160,0.12);
-    border: 1px solid rgba(0,229,160,0.25);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem;
-    font-weight: bold;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-  .step-title { font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .step-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .step-num { width: 32px; height: 32px; border-radius: 8px; background: var(--maroon-glow); border: 1px solid rgba(139,26,26,0.4); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold; color: var(--maroon-light); flex-shrink: 0; }
+  .step-title { font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-light); }
   .step-desc { font-size: 0.8rem; color: var(--muted); font-weight: normal; margin-top: 0.15rem; }
   .step-body { padding: 1.5rem; }
-
-  /* PROMPT BOX */
-  .prompt-box {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.2rem;
-    font-family: 'Courier New', monospace;
-    font-size: 0.78rem;
-    font-weight: normal;
-    color: var(--text);
-    line-height: 1.7;
-    white-space: pre-wrap;
-    max-height: 280px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-  }
-  .btn-copy {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.4rem;
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    color: #0a0a0f;
-    font-family: var(--font);
-    font-weight: bold;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .btn-copy:hover { background: #00fdb5; transform: translateY(-1px); }
-  .btn-copy.copied { background: var(--surface3); color: var(--accent); border: 1px solid rgba(0,229,160,0.3); }
-
-  /* AI TOOL LINKS */
-  .ai-tools {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-  }
-  .ai-link {
-    padding: 0.5rem 1.1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--muted);
-    font-family: var(--font);
-    font-weight: bold;
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .ai-link:hover { border-color: var(--accent2); color: var(--accent2); }
-
-  /* JSON PASTE AREA */
-  .paste-area {
-    width: 100%;
-    background: var(--surface2);
-    border: 1.5px dashed var(--border);
-    border-radius: 10px;
-    padding: 1rem;
-    color: var(--text);
-    font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
-    font-weight: normal;
-    resize: vertical;
-    min-height: 180px;
-    outline: none;
-    transition: border-color 0.2s;
-    line-height: 1.6;
-  }
-  .paste-area:focus { border-color: var(--accent2); border-style: solid; }
+  .prompt-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; font-family: 'Courier New', monospace; font-size: 0.78rem; font-weight: normal; color: var(--text); line-height: 1.7; white-space: pre-wrap; max-height: 280px; overflow-y: auto; margin-bottom: 1rem; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.4rem; background: var(--maroon); border: none; border-radius: 8px; color: white; font-family: var(--font); font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em; }
+  .btn-copy:hover { background: var(--maroon-light); transform: translateY(-1px); }
+  .btn-copy.copied { background: var(--surface3); color: var(--maroon-light); border: 1px solid rgba(139,26,26,0.3); }
+  .ai-tools { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+  .ai-link { padding: 0.5rem 1.1rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-family: var(--font); font-weight: bold; font-size: 0.8rem; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ai-link:hover { border-color: var(--maroon-light); color: var(--maroon-light); }
+  .paste-area { width: 100%; background: var(--surface2); border: 1.5px dashed var(--border); border-radius: 10px; padding: 1rem; color: var(--text); font-family: 'Courier New', monospace; font-size: 0.8rem; font-weight: normal; resize: vertical; min-height: 180px; outline: none; transition: border-color 0.2s; line-height: 1.6; }
+  .paste-area:focus { border-color: var(--maroon-light); border-style: solid; }
   .paste-area::placeholder { color: var(--muted); }
-
   .parse-row { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
-  .btn-parse {
-    padding: 0.7rem 1.8rem;
-    background: var(--accent2);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-family: var(--font);
-    font-weight: bold;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .btn-parse:hover { background: #9070ff; transform: translateY(-1px); }
+  .btn-parse { padding: 0.7rem 1.8rem; background: var(--maroon); border: none; border-radius: 8px; color: white; font-family: var(--font); font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em; }
+  .btn-parse:hover { background: var(--maroon-light); transform: translateY(-1px); }
   .parse-hint { font-size: 0.78rem; color: var(--muted); font-weight: normal; }
-
-  /* PARSED PREVIEW */
   .preview-section { margin-top: 2rem; display: none; }
   .preview-section.show { display: block; }
-  .preview-count {
-    background: rgba(0,229,160,0.08);
-    border: 1px solid rgba(0,229,160,0.2);
-    border-radius: 8px;
-    padding: 0.7rem 1.2rem;
-    font-size: 0.85rem;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
+  .preview-count { background: var(--maroon-glow); border: 1px solid rgba(139,26,26,0.25); border-radius: 8px; padding: 0.7rem 1.2rem; font-size: 0.85rem; color: var(--maroon-light); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
   .q-preview-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
-  .q-preview-item {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1rem 1.2rem;
-  }
-  .q-preview-item:hover { border-color: rgba(123,92,250,0.3); }
+  .q-preview-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; }
+  .q-preview-item:hover { border-color: rgba(139,26,26,0.3); }
   .q-text { font-size: 0.88rem; font-weight: bold; margin-bottom: 0.5rem; }
   .q-meta-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .q-chip {
-    padding: 0.15rem 0.55rem;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border: 1px solid;
-  }
-  .q-chip.topic { background: rgba(123,92,250,0.1); border-color: rgba(123,92,250,0.3); color: var(--accent2); }
+  .q-chip { padding: 0.15rem 0.55rem; border-radius: 4px; font-size: 0.68rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; }
+  .q-chip.topic { background: var(--maroon-glow); border-color: rgba(139,26,26,0.3); color: #e88080; }
   .q-chip.diff-beginner { background: rgba(0,229,160,0.1); border-color: rgba(0,229,160,0.3); color: var(--accent); }
   .q-chip.diff-intermediate { background: rgba(255,179,71,0.1); border-color: rgba(255,179,71,0.3); color: var(--warning); }
   .q-chip.diff-advanced { background: rgba(255,77,109,0.1); border-color: rgba(255,77,109,0.3); color: var(--danger); }
-  .q-chip.correct { background: rgba(0,229,160,0.08); border-color: rgba(0,229,160,0.2); color: var(--accent); }
+  .q-chip.correct { background: var(--maroon-glow); border-color: rgba(139,26,26,0.2); color: #e88080; }
   .q-chip.category { background: rgba(56,182,255,0.08); border-color: rgba(56,182,255,0.2); color: #38b6ff; }
   .q-answer { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; font-weight: normal; }
-
-  /* ERROR / STATUS */
-  .parse-error {
-    background: rgba(255,77,109,0.08);
-    border: 1px solid rgba(255,77,109,0.25);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    color: var(--danger);
-    font-size: 0.82rem;
-    font-weight: normal;
-    margin-top: 0.75rem;
-    display: none;
-  }
+  .parse-error { background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.25); border-radius: 8px; padding: 0.75rem 1rem; color: var(--danger); font-size: 0.82rem; font-weight: normal; margin-top: 0.75rem; display: none; }
   .parse-error.show { display: block; }
-
-  /* SAVE BUTTON */
-  .btn-save-all {
-    width: 100%;
-    padding: 1rem;
-    background: linear-gradient(135deg, var(--accent) 0%, #00c980 100%);
-    border: none;
-    border-radius: 10px;
-    color: #0a0a0f;
-    font-family: var(--font);
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .btn-save-all:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,160,0.25); }
+  .btn-save-all { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--maroon), var(--maroon-light)); border: none; border-radius: 10px; color: white; font-family: var(--font); font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.08em; }
+  .btn-save-all:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--maroon-glow); }
   .btn-save-all:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  /* SQL FALLBACK */
-  .sql-output {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.2rem;
-    font-family: 'Courier New', monospace;
-    font-size: 0.75rem;
-    font-weight: normal;
-    color: #38b6ff;
-    white-space: pre-wrap;
-    max-height: 300px;
-    overflow-y: auto;
-    margin-top: 1rem;
-    display: none;
-  }
+  .sql-output { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: normal; color: #38b6ff; white-space: pre-wrap; max-height: 300px; overflow-y: auto; margin-top: 1rem; display: none; }
   .sql-output.show { display: block; }
-
-  /* KB LIST */
   .kb-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
   .kb-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; display: flex; align-items: flex-start; gap: 1rem; }
-  .kb-item:hover { border-color: rgba(123,92,250,0.25); }
-  .kb-num { width: 28px; height: 28px; background: rgba(123,92,250,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: var(--accent2); flex-shrink: 0; }
-  .kb-content { flex: 1; }
+  .kb-item:hover { border-color: rgba(139,26,26,0.3); }
+  .kb-num { width: 28px; height: 28px; background: var(--maroon-glow); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: var(--maroon-light); flex-shrink: 0; }
   .kb-title { font-size: 0.88rem; font-weight: bold; margin-bottom: 0.2rem; }
   .kb-excerpt { font-size: 0.78rem; color: var(--muted); font-weight: normal; line-height: 1.5; }
   .kb-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
   .kb-tag { background: var(--surface2); border-radius: 4px; padding: 0.12rem 0.5rem; font-size: 0.68rem; color: var(--muted); border: 1px solid var(--border); font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em; }
   .empty-state { text-align: center; padding: 2.5rem; color: var(--muted); font-size: 0.88rem; font-weight: normal; }
-
-  /* TOAST */
   .toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.4rem; font-size: 0.85rem; font-weight: bold; box-shadow: 0 20px 50px rgba(0,0,0,0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); max-width: 320px; text-transform: uppercase; letter-spacing: 0.04em; }
   .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.success { border-color: rgba(0,229,160,0.35); color: var(--accent); }
+  .toast.success { border-color: rgba(139,26,26,0.4); color: var(--maroon-light); }
   .toast.error { border-color: rgba(255,77,109,0.35); color: var(--danger); }
 </style>
 </head>
 <body>
-
 <nav>
   <a href="index.html" class="logo">TECH<span>TRAIN</span></a>
   <div class="nav-links">
@@ -333,20 +120,16 @@
 </nav>
 
 <div class="page">
-  <div class="page-header">
-    <div class="page-title">Knowledge Upload</div>
-    <div class="page-sub">Use the AI prompt below to generate quiz questions from any document, then paste the results here to save them to the training platform.</div>
-  </div>
+  <div class="page-title">Knowledge Upload</div>
+  <div class="page-sub">Use the AI prompt below to generate quiz questions from any document, then paste the results here to save them to the training platform.</div>
 
   <div class="steps">
-
-    <!-- STEP 1: GET THE PROMPT -->
     <div class="step-card">
       <div class="step-header">
         <div class="step-num">1</div>
         <div>
           <div class="step-title">Copy the AI Prompt</div>
-          <div class="step-desc">Copy this prompt, then open Claude.ai or ChatGPT and paste it along with your document or email thread</div>
+          <div class="step-desc">Copy this prompt, then open Claude.ai and paste it along with your document or email thread</div>
         </div>
       </div>
       <div class="step-body">
@@ -418,9 +201,9 @@ RULES:
 ---
 
 [PASTE YOUR DOCUMENT TEXT BELOW THIS LINE, OR ATTACH YOUR PDF]</div>
-        <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
           <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">📋 Copy Prompt</button>
-          <span style="font-size:0.78rem; color:var(--muted); font-weight:normal;">Then open one of these and paste:</span>
+          <span style="font-size:0.78rem;color:var(--muted);font-weight:normal;">Then open Claude.ai and paste:</span>
         </div>
         <div class="ai-tools">
           <a href="https://claude.ai" target="_blank" class="ai-link">→ Claude.ai</a>
@@ -430,7 +213,6 @@ RULES:
       </div>
     </div>
 
-    <!-- STEP 2: PASTE JSON -->
     <div class="step-card">
       <div class="step-header">
         <div class="step-num">2</div>
@@ -440,10 +222,7 @@ RULES:
         </div>
       </div>
       <div class="step-body">
-        <textarea
-          class="paste-area"
-          id="jsonPaste"
-          placeholder='Paste the JSON array here. It should look like:
+        <textarea class="paste-area" id="jsonPaste" placeholder='Paste the JSON array here. It should look like:
 
 [
   {
@@ -457,9 +236,7 @@ RULES:
     "source": "hvac-manual.pdf"
   }
 ]'></textarea>
-
         <div class="parse-error" id="parseError"></div>
-
         <div class="parse-row">
           <button class="btn-parse" onclick="parseJSON()">⚡ Preview Questions</button>
           <span class="parse-hint">Validates and shows questions before saving</span>
@@ -467,7 +244,6 @@ RULES:
       </div>
     </div>
 
-    <!-- STEP 3: REVIEW + SAVE -->
     <div class="step-card" id="step3Card" style="display:none;">
       <div class="step-header">
         <div class="step-num">3</div>
@@ -482,17 +258,15 @@ RULES:
           <div class="q-preview-list" id="qPreviewList"></div>
           <button class="btn-save-all" id="saveBtn" onclick="saveToSupabase()">✓ Save All Questions to Training Platform</button>
           <div style="margin-top:1rem;">
-            <div style="font-size:0.75rem; color:var(--muted); font-weight:normal; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.06em;">Or copy as SQL to run manually in Supabase:</div>
+            <div style="font-size:0.75rem;color:var(--muted);font-weight:normal;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.06em;">Or copy as SQL to run manually in Supabase:</div>
             <button class="btn-sm" onclick="generateSQL()" style="margin-bottom:0.5rem;">Generate SQL</button>
             <div class="sql-output" id="sqlOutput"></div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- KNOWLEDGE BASE -->
   <div style="margin-top:3rem;">
     <div class="sec-label">Current Knowledge Base</div>
     <div id="kbList" class="kb-list">
@@ -503,10 +277,8 @@ RULES:
 
 <div class="toast" id="toast"></div>
 
+<script src="config.js"></script>
 <script>
-  const SUPABASE_URL = 'https://guszjjlvtupfdbrkpmue.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1c3pqamx2dHVwZmRicmtwbXVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3ODQ3NzAsImV4cCI6MjA5NDM2MDc3MH0.I4smC18vIZbMtpgAT4cAeO1WAfTZGYfop_ecvYPJ9eg';
-
   let parsedQuestions = [];
 
   function logout() { localStorage.clear(); window.location.href = 'index.html'; }
@@ -533,36 +305,22 @@ RULES:
     const errEl = document.getElementById('parseError');
     errEl.classList.remove('show');
     parsedQuestions = [];
-
-    if (!raw) {
-      errEl.textContent = 'Please paste the JSON from the AI response first.';
-      errEl.classList.add('show');
-      return;
-    }
-
-    // Try to extract JSON array even if surrounded by other text
+    if (!raw) { errEl.textContent = 'Please paste the JSON from the AI response first.'; errEl.classList.add('show'); return; }
     let jsonStr = raw;
     const match = raw.match(/\[[\s\S]*\]/);
     if (match) jsonStr = match[0];
-
     try {
       const data = JSON.parse(jsonStr);
       if (!Array.isArray(data) || data.length === 0) throw new Error('Expected a JSON array with at least one question.');
-
-      // Validate each item
       const required = ['question', 'options', 'correct_answer'];
       data.forEach((q, i) => {
-        required.forEach(field => {
-          if (!q[field]) throw new Error(`Question ${i+1} is missing the "${field}" field.`);
-        });
+        required.forEach(field => { if (!q[field]) throw new Error(`Question ${i+1} is missing the "${field}" field.`); });
         if (!Array.isArray(q.options) || q.options.length < 2) throw new Error(`Question ${i+1} options must be an array with at least 2 items.`);
       });
-
       parsedQuestions = data;
       renderPreview();
       document.getElementById('step3Card').style.display = 'block';
       document.getElementById('step3Card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
     } catch (e) {
       errEl.textContent = 'JSON Error: ' + e.message + ' — Make sure you copied the entire [ ] block from the AI response.';
       errEl.classList.add('show');
@@ -571,26 +329,19 @@ RULES:
 
   function renderPreview() {
     const count = parsedQuestions.length;
-    document.getElementById('previewCount').innerHTML = `
-      <span>✓ ${count} question${count !== 1 ? 's' : ''} ready to import</span>
-      <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">Review below before saving</span>
-    `;
-
+    document.getElementById('previewCount').innerHTML = `<span>✓ ${count} question${count !== 1 ? 's' : ''} ready to import</span><span style="font-size:0.75rem;color:var(--muted);font-weight:normal;">Review below before saving</span>`;
     document.getElementById('qPreviewList').innerHTML = parsedQuestions.map((q, i) => {
       const diff = q.difficulty || 'beginner';
-      const diffClass = `diff-${diff}`;
-      return `
-        <div class="q-preview-item">
-          <div class="q-text">${i+1}. ${q.question}</div>
-          <div class="q-meta-row">
-            ${q.topic ? `<span class="q-chip topic">${q.topic}</span>` : ''}
-            ${q.category ? `<span class="q-chip category">${q.category}</span>` : ''}
-            <span class="q-chip ${diffClass}">${diff}</span>
-            <span class="q-chip correct">Ans: ${q.correct_answer}</span>
-          </div>
-          <div class="q-answer">${q.options?.join(' · ')}</div>
+      return `<div class="q-preview-item">
+        <div class="q-text">${i+1}. ${q.question}</div>
+        <div class="q-meta-row">
+          ${q.topic ? `<span class="q-chip topic">${q.topic}</span>` : ''}
+          ${q.category ? `<span class="q-chip category">${q.category}</span>` : ''}
+          <span class="q-chip diff-${diff}">${diff}</span>
+          <span class="q-chip correct">Ans: ${q.correct_answer}</span>
         </div>
-      `;
+        <div class="q-answer">${q.options?.join(' · ')}</div>
+      </div>`;
     }).join('');
   }
 
@@ -599,53 +350,21 @@ RULES:
     const btn = document.getElementById('saveBtn');
     btn.disabled = true;
     btn.textContent = 'Saving...';
-
-    const token = localStorage.getItem('tt_token');
-const h = {
-  'Content-Type': 'application/json',
-  'apikey': SUPABASE_ANON_KEY,
-  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-};
-
+    const h = { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
     let saved = 0, failed = 0;
-
     for (const q of parsedQuestions) {
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results`, {
-          method: 'POST',
-          headers: h,
-          body: JSON.stringify({
-            question: q.question,
-            options: q.options,
-            correct_answer: q.correct_answer,
-            explanation: q.explanation || '',
-            difficulty: q.difficulty || 'beginner',
-            topic: q.topic || 'General',
-            category: q.category || '',
-            source_file: q.source || '',
-            status: 'active'
-          })
+          method: 'POST', headers: h,
+          body: JSON.stringify({ question: q.question, options: q.options, correct_answer: q.correct_answer, explanation: q.explanation || '', difficulty: q.difficulty || 'beginner', topic: q.topic || 'General', category: q.category || '', source_file: q.source || '', status: 'active' })
         });
-     if (res.ok || res.status === 201 || res.status === 200) saved++;
-else {
-  const err = await res.json();
-  console.error('Save error:', err);
-  failed++;
-}
+        if (res.ok || res.status === 201) saved++;
+        else { const err = await res.json(); console.error('Save error:', err); failed++; }
       } catch (e) { failed++; }
     }
-
     btn.disabled = false;
     btn.textContent = '✓ Save All Questions to Training Platform';
-
-    if (saved > 0) {
-      showToast(`${saved} question${saved !== 1 ? 's' : ''} saved successfully!`);
-      loadKnowledgeBase();
-      // Clear the paste area
-      document.getElementById('jsonPaste').value = '';
-      parsedQuestions = [];
-      document.getElementById('step3Card').style.display = 'none';
-    }
+    if (saved > 0) { showToast(`${saved} question${saved !== 1 ? 's' : ''} saved!`); loadKnowledgeBase(); document.getElementById('jsonPaste').value = ''; parsedQuestions = []; document.getElementById('step3Card').style.display = 'none'; }
     if (failed > 0) showToast(`${failed} question${failed !== 1 ? 's' : ''} failed to save.`, 'error');
   }
 
@@ -660,54 +379,25 @@ else {
       const source = (q.source || '').replace(/'/g, "''");
       return `INSERT INTO bst_training_results (question, options, correct_answer, explanation, difficulty, topic, category, source_file, status)\nVALUES ('${question}', '${opts}'::jsonb, '${q.correct_answer}', '${explanation}', '${q.difficulty || 'beginner'}', '${topic}', '${category}', '${source}', 'active');`;
     }).join('\n\n');
-
     const el = document.getElementById('sqlOutput');
     el.textContent = lines;
     el.classList.add('show');
-
     navigator.clipboard.writeText(lines).then(() => showToast('SQL copied to clipboard!'));
   }
 
   async function loadKnowledgeBase() {
-    const token = localStorage.getItem('tt_token');
     const listEl = document.getElementById('kbList');
     try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&order=created_at.desc&limit=30`, {
-        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${token}` }
-      });
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&order=created_at.desc&limit=30`, { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } });
       const items = await res.json();
-      if (!Array.isArray(items) || !items.length) {
-        listEl.innerHTML = '<div class="empty-state">No questions saved yet. Follow the steps above to add your first batch.</div>';
-        return;
-      }
-
-      // Group by source_file
+      if (!Array.isArray(items) || !items.length) { listEl.innerHTML = '<div class="empty-state">No questions saved yet.</div>'; return; }
       const grouped = {};
-      items.forEach(q => {
-        const src = q.source_file || 'Ungrouped';
-        if (!grouped[src]) grouped[src] = [];
-        grouped[src].push(q);
-      });
-
+      items.forEach(q => { const src = q.source_file || 'Ungrouped'; if (!grouped[src]) grouped[src] = []; grouped[src].push(q); });
       listEl.innerHTML = Object.entries(grouped).map(([src, qs], i) => {
         const topics = [...new Set(qs.map(q => q.topic).filter(Boolean))];
-        return `
-          <div class="kb-item">
-            <div class="kb-num">${i + 1}</div>
-            <div class="kb-content">
-              <div class="kb-title">${src}</div>
-              <div class="kb-excerpt">${qs.length} question${qs.length !== 1 ? 's' : ''} in knowledge base</div>
-              <div class="kb-tags">
-                ${topics.map(t => `<span class="kb-tag">${t}</span>`).join('')}
-                <span class="kb-tag">${qs.length} Q's</span>
-              </div>
-            </div>
-          </div>
-        `;
+        return `<div class="kb-item"><div class="kb-num">${i+1}</div><div><div class="kb-title">${src}</div><div class="kb-excerpt">${qs.length} question${qs.length !== 1 ? 's' : ''} in knowledge base</div><div class="kb-tags">${topics.map(t => `<span class="kb-tag">${t}</span>`).join('')}<span class="kb-tag">${qs.length} Q's</span></div></div></div>`;
       }).join('');
-    } catch (e) {
-      listEl.innerHTML = '<div class="empty-state">Connect Supabase to view saved questions.</div>';
-    }
+    } catch (e) { listEl.innerHTML = '<div class="empty-state">Could not load knowledge base.</div>'; }
   }
 
   loadKnowledgeBase();
