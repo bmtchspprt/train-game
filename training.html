@@ -38,8 +38,7 @@
   .page-headline { font-family: var(--headline-font); font-weight: bold; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-light); margin-bottom: 0.3rem; text-shadow: 0 0 30px var(--maroon-glow); }
   .page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; }
   .stats-bar { display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
-  .stat-pill { flex: 1; min-width: 120px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; display: flex; align-items: center; gap: 0.7rem; transition: border-color 0.2s; }
-  .stat-pill:hover { border-color: var(--maroon); }
+  .stat-pill { flex: 1; min-width: 120px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; display: flex; align-items: center; gap: 0.7rem; }
   .stat-icon { font-size: 1.2rem; }
   .stat-value { font-family: var(--headline-font); font-weight: bold; font-size: 1.3rem; color: var(--text); }
   .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
@@ -80,12 +79,17 @@
   .explanation-box { background: var(--surface2); border: 1px solid rgba(139,26,26,0.3); border-radius: 12px; padding: 1.2rem 1.4rem; margin-top: 1.5rem; font-size: 0.88rem; line-height: 1.7; color: var(--text); display: none; animation: fadeUp 0.3s ease; }
   .explanation-box.show { display: block; }
   .exp-label { font-family: var(--headline-font); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--maroon-light); font-weight: bold; margin-bottom: 0.5rem; }
-  .feedback-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .answer-feedback { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.2rem; border-radius: 10px; margin-top: 1.2rem; font-size: 0.9rem; font-family: var(--headline-font); font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em; display: none; }
+  .answer-feedback.correct { background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.3); color: var(--correct); }
+  .answer-feedback.wrong { background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.3); color: var(--wrong); }
+  .answer-feedback.show { display: flex; }
+  .bottom-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
   .btn-feedback { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: var(--muted); font-size: 0.82rem; cursor: pointer; transition: all 0.2s; font-family: var(--headline-font); font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em; }
   .btn-feedback:hover { border-color: var(--warning); color: var(--warning); }
   .btn-feedback.submitted { border-color: rgba(0,229,160,0.3); color: var(--accent); cursor: default; }
-  .btn-next { padding: 0.85rem 2rem; background: linear-gradient(135deg, var(--maroon), var(--maroon-light)); border: none; border-radius: 10px; color: white; font-family: var(--headline-font); font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 4px 20px rgba(139,26,26,0.3); }
+  .btn-next { padding: 0.85rem 2.5rem; background: linear-gradient(135deg, var(--maroon), var(--maroon-light)); border: none; border-radius: 10px; color: white; font-family: var(--headline-font); font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 4px 20px rgba(139,26,26,0.3); display: none; }
   .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(139,26,26,0.4); }
+  .btn-next.visible { display: inline-flex; align-items: center; gap: 0.5rem; }
   .results-card { background: var(--surface); border: 1px solid rgba(139,26,26,0.3); border-radius: 20px; padding: 2.5rem; text-align: center; animation: fadeUp 0.5s ease; }
   .results-headline { font-family: var(--headline-font); font-weight: bold; font-size: 2rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-light); margin-bottom: 0.5rem; text-shadow: 0 0 30px var(--maroon-glow); }
   .results-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 2rem; }
@@ -167,6 +171,7 @@
   let questions = [], current = 0, sessionCorrect = 0, sessionAnswered = 0;
   let sessionStartTime = Date.now(), questionStartTime = Date.now();
   let currentFeedbackQId = null, selectedFtype = null, previousBestScore = null;
+  let timerInterval = null;
 
   async function loadQuestions() {
     try {
@@ -180,7 +185,7 @@
       questions = getDemoQuestions();
     }
     await loadPreviousBest();
-    renderSession();
+    renderPage();
   }
 
   async function loadPreviousBest() {
@@ -196,7 +201,7 @@
     } catch(e) {}
   }
 
-  function renderSession() {
+  function renderPage() {
     if (questions.length === 0) {
       document.getElementById('mainContent').innerHTML = `
         <div class="empty-state">
@@ -206,10 +211,6 @@
         </div>`;
       return;
     }
-    renderPage();
-  }
-
-  function renderPage() {
     const elapsed = Math.round((Date.now() - sessionStartTime) / 60000);
     document.getElementById('mainContent').innerHTML = `
       <div class="page-headline">Training Session</div>
@@ -239,9 +240,11 @@
     const q = questions[current];
     questionStartTime = Date.now();
     const opts = Array.isArray(q.options) ? q.options : JSON.parse(q.options || '[]');
+    const isLast = current === questions.length - 1;
+
     document.getElementById('questionArea').innerHTML = `
       <div class="sec-label">Question ${current + 1}</div>
-      <div class="q-card">
+      <div class="q-card" id="qCard">
         <div class="q-meta">
           <div class="q-tags">
             ${q.topic ? `<span class="q-tag topic">${q.topic}</span>` : ''}
@@ -252,30 +255,30 @@
         </div>
         <div class="q-num">Question ${current + 1} of ${questions.length}</div>
         <div class="q-text">${q.question}</div>
-        <div class="options">
+        <div class="options" id="optionsArea">
           ${opts.map((opt, i) => {
             const letter = ['A','B','C','D'][i];
-            return `<button class="option-btn" onclick="selectAnswer('${letter}',this)" data-letter="${letter}">
+            return `<button class="option-btn" onclick="selectAnswer('${letter}',this,'${q.id}')" data-letter="${letter}">
               <div class="opt-letter">${letter}</div>
               <div class="opt-text">${opt}</div>
             </button>`;
           }).join('')}
         </div>
+        <div class="answer-feedback" id="answerFeedback"></div>
         <div class="explanation-box" id="expBox">
-          <div class="exp-label">Explanation</div>
+          <div class="exp-label">Why this is correct</div>
           <div id="expText"></div>
         </div>
-        <div class="feedback-row">
+        <div class="bottom-row">
           <button class="btn-feedback" id="fbBtn" onclick="openFeedback('${q.id}')">⚑ Flag Issue</button>
-          <button class="btn-next" id="nextBtn" style="display:none" onclick="nextQuestion()">
-            ${current < questions.length - 1 ? 'Next Question →' : 'See Results →'}
+          <button class="btn-next" id="nextBtn" onclick="nextQuestion()">
+            ${isLast ? '✓ See Results' : 'Next Question →'}
           </button>
         </div>
       </div>`;
     startTimer();
   }
 
-  let timerInterval = null;
   function startTimer() {
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
@@ -284,25 +287,45 @@
     }, 1000);
   }
 
-  function selectAnswer(letter, btn) {
+  function selectAnswer(letter, btn, qId) {
     clearInterval(timerInterval);
     const q = questions[current];
     const timeTaken = Math.round((Date.now() - questionStartTime) / 1000);
     const correct = q.correct_answer === letter;
+
     if (correct) sessionCorrect++;
     sessionAnswered++;
+
+    // Disable all options and highlight correct/wrong
     document.querySelectorAll('.option-btn').forEach(b => {
       b.disabled = true;
       if (b.dataset.letter === q.correct_answer) b.classList.add('correct');
       else if (b === btn && !correct) b.classList.add('wrong');
     });
+
+    // Show answer feedback banner
+    const fb = document.getElementById('answerFeedback');
+    if (correct) {
+      fb.textContent = '✓ Correct!';
+      fb.className = 'answer-feedback correct show';
+    } else {
+      fb.textContent = `✗ Incorrect — correct answer is ${q.correct_answer}`;
+      fb.className = 'answer-feedback wrong show';
+    }
+
+    // Show explanation if available
     if (q.explanation) {
       document.getElementById('expText').textContent = q.explanation;
       document.getElementById('expBox').classList.add('show');
     }
-    document.getElementById('nextBtn').style.display = 'inline-flex';
+
+    // Show the Next button
+    document.getElementById('nextBtn').classList.add('visible');
+
+    // Update stats
     const sa = document.getElementById('statAnswered'); if (sa) sa.textContent = sessionAnswered;
     const sc = document.getElementById('statCorrect'); if (sc) sc.textContent = sessionCorrect;
+
     logAnswer(q, correct, timeTaken);
   }
 
@@ -310,7 +333,12 @@
     try {
       await fetch(`${SUPABASE_URL}/rest/v1/training_logs`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` },
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
         body: JSON.stringify({ user_email: userEmail, question_id: q.id, is_correct: correct, time_taken_seconds: timeTaken })
       });
     } catch(e) {}
@@ -318,8 +346,10 @@
 
   function nextQuestion() {
     current++;
-    const pf = document.getElementById('progFill'); if (pf) pf.style.width = (current/questions.length*100)+'%';
-    const pfrac = document.getElementById('progFrac'); if (pfrac) pfrac.textContent = `${Math.min(current+1,questions.length)} / ${questions.length}`;
+    const pf = document.getElementById('progFill');
+    if (pf) pf.style.width = (current / questions.length * 100) + '%';
+    const pfrac = document.getElementById('progFrac');
+    if (pfrac) pfrac.textContent = `${Math.min(current + 1, questions.length)} / ${questions.length}`;
     if (current >= questions.length) { showResults(); return; }
     renderQuestion();
   }
@@ -327,18 +357,21 @@
   function showResults() {
     clearInterval(timerInterval);
     const elapsed = Math.round((Date.now() - sessionStartTime) / 60000);
-    const pct = sessionAnswered > 0 ? Math.round((sessionCorrect/sessionAnswered)*100) : 0;
+    const pct = sessionAnswered > 0 ? Math.round((sessionCorrect / sessionAnswered) * 100) : 0;
     let msg = previousBestScore !== null
-      ? pct > previousBestScore ? `📈 You improved ${pct - previousBestScore} points since your last session!`
-      : pct === previousBestScore ? `💪 Consistent performance — keep practicing!`
-      : `🔄 Every session builds long-term retention. The effort today matters more than any single score.`
+      ? pct > previousBestScore
+        ? `📈 You improved ${pct - previousBestScore} points since your last session!`
+        : pct === previousBestScore
+          ? `💪 Consistent performance — keep practicing!`
+          : `🔄 Every session builds long-term retention. The effort today matters more than any single score.`
       : `🌱 Great first session! Come back regularly — improvement comes from consistent practice.`;
+
     document.getElementById('mainContent').innerHTML = `
       <div class="page-headline">Session Complete</div>
       <div class="page-sub">Here's how this session went</div>
       <div class="results-card">
         <div class="results-headline">Well Done!</div>
-        <div class="results-sub">You completed ${sessionAnswered} question${sessionAnswered!==1?'s':''} in this session</div>
+        <div class="results-sub">You completed ${sessionAnswered} question${sessionAnswered !== 1 ? 's' : ''} in this session</div>
         <div class="results-stats">
           <div class="result-stat"><div class="result-stat-val">${sessionAnswered}</div><div class="result-stat-label">Attempted</div></div>
           <div class="result-stat"><div class="result-stat-val">${elapsed}m</div><div class="result-stat-label">Time Invested</div></div>
@@ -371,7 +404,7 @@
     try {
       await fetch(`${SUPABASE_URL}/rest/v1/question_feedback`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` },
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Prefer': 'return=minimal' },
         body: JSON.stringify({ question_id: currentFeedbackQId, question_text: q?.question||'', feedback_type: selectedFtype||'other', comment: document.getElementById('fbComment').value, author_name: userEmail, status: 'pending' })
       });
     } catch(e) {}
