@@ -601,11 +601,11 @@ RULES:
     btn.textContent = 'Saving...';
 
     const token = localStorage.getItem('tt_token');
-    const h = {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${token}`
-    };
+const h = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_ANON_KEY,
+  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+};
 
     let saved = 0, failed = 0;
 
