@@ -91,7 +91,9 @@
   .btn-action.edit { background: rgba(56,182,255,0.08); border-color: rgba(56,182,255,0.25); color: var(--accent3); }
   .btn-action.edit:hover { background: rgba(56,182,255,0.15); }
   .btn-action.deactivate { background: none; border-color: var(--border); color: var(--muted); }
-  .btn-action.deactivate:hover { border-color: var(--danger); color: var(--danger); }
+  .btn-action.deactivate:hover { border-color: var(--warning); color: var(--warning); }
+  .btn-action.delete { background: rgba(255,77,109,0.08); border-color: rgba(255,77,109,0.3); color: var(--danger); }
+  .btn-action.delete:hover { background: rgba(255,77,109,0.2); }
   .actions-cell { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .mini-bar { height: 5px; background: var(--surface3); border-radius: 3px; overflow: hidden; margin-top: 4px; }
   .mini-fill { height: 100%; border-radius: 3px; background: var(--maroon-light); }
@@ -379,6 +381,7 @@
       <td><div class="actions-cell">
         <button class="btn-action edit" onclick='openEditModal(${JSON.stringify(q).replace(/'/g,"&#39;")})'>Edit</button>
         <button class="btn-action deactivate" onclick="toggleQuestion('${q.id}','${q.status||'active'}')">${q.status==='active'?'Deactivate':'Activate'}</button>
+        <button class="btn-action delete" onclick="deleteQuestion('${q.id}')">Delete</button>
       </div></td>
     </tr>`).join('') || '<tr class="empty-row"><td colspan="5">No questions yet.</td></tr>';
   }
@@ -492,6 +495,11 @@
     await sf(`/rest/v1/bst_training_results?id=eq.${id}`, { method:'PATCH', body: JSON.stringify({ status: status==='active'?'inactive':'active' }) });
     loadQuestions();
   }
+  async function deleteQuestion(id) {
+    if (!confirm('Permanently delete this question? This cannot be undone.')) return;
+    await sf(`/rest/v1/bst_training_results?id=eq.${id}`, { method: 'DELETE' });
+    loadQuestions();
+  }
 
   let _currentFb = null;
   function openReviewModal(fb) {
@@ -541,9 +549,7 @@
     ];
   }
   function getDemoFeedback() {
-    return [
-      {id:'fb1',question_text:'When evacuating a refrigerant system, what minimum vacuum level should be achieved?',feedback_type:'wrong_answer',author_name:'j.smith@co.com',comment:'My last employer trained us to use 500 microns — please verify',status:'pending',created_at:new Date().toISOString()},
-    ];
+    return [{id:'fb1',question_text:'When evacuating a refrigerant system...',feedback_type:'wrong_answer',author_name:'j.smith@co.com',comment:'Please verify this answer',status:'pending',created_at:new Date().toISOString()}];
   }
   function getDemoDocs() {
     return [{title:'HVAC-ServiceManual-v3.pdf',file_type:'pdf',raw_questions:Array(8),created_at:new Date().toISOString()}];
