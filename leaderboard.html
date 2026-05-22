@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard — TechTrain</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080810;--surface:#0f0f1a;--surface2:#161625;--surface3:#1e1e30;
+    --maroon:#8B1A1A;--maroon-light:#c0392b;--maroon-glow:rgba(139,26,26,0.18);
+    --text:#eeeef8;--muted:#606080;--border:rgba(255,255,255,0.07);
+    --gold:#ffd700;--silver:#c0c0c0;--bronze:#cd7f32;
+    --accent:#00e5a0;--warning:#ffb347;--headline-font:'Arial Narrow',Arial,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(139,26,26,0.12) 0%,transparent 60%);pointer-events:none;z-index:0;}
+  body.theme-light{--bg:#f4f2ef;--surface:#fff;--surface2:#f0ede8;--surface3:#e8e4de;--text:#1a1410;--muted:#8a7a6a;--border:rgba(0,0,0,0.1);}
+  body.theme-light::before{background:none;}
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,8,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background 0.3s;}
+  body.theme-light nav{background:rgba(244,242,239,0.95);}
+  .logo{font-family:var(--headline-font);font-weight:bold;font-size:1.4rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
+  .logo span{color:var(--maroon-light);}
+  .nav-right{display:flex;align-items:center;gap:0.75rem;}
+  .theme-toggle{width:34px;height:34px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .theme-toggle:hover{border-color:var(--maroon-light);}
+  .btn-nav{padding:0.4rem 0.9rem;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:0.82rem;cursor:pointer;transition:all 0.2s;text-decoration:none;font-family:var(--headline-font);font-weight:bold;text-transform:uppercase;letter-spacing:0.04em;}
+  .btn-nav:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
+  .main{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:3rem 1.5rem;}
+  .page-headline{font-family:var(--headline-font);font-weight:bold;font-size:2.2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.3rem;text-shadow:0 0 30px var(--maroon-glow);}
+  .page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:0.5rem;}
+  .points-legend{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;padding:1rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+  .legend-item{font-size:0.78rem;color:var(--muted);font-weight:normal;}
+  .legend-item strong{color:var(--maroon-light);}
 
+  /* My rank card */
+  .my-rank-card{background:linear-gradient(135deg,rgba(139,26,26,0.15),rgba(192,57,43,0.08));border:1px solid rgba(139,26,26,0.4);border-radius:16px;padding:1.4rem 1.8rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+  .my-rank-num{font-family:var(--headline-font);font-weight:bold;font-size:2.5rem;color:var(--maroon-light);min-width:60px;}
+  .my-rank-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+  .my-pts{font-family:var(--headline-font);font-weight:bold;font-size:1.8rem;color:var(--text);}
+  .my-pts-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+
+  /* Leaderboard rows */
+  .lb-list{display:flex;flex-direction:column;gap:0.6rem;}
+  .lb-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;transition:border-color 0.2s,transform 0.2s;}
+  .lb-row:hover{border-color:rgba(139,26,26,0.3);transform:translateX(3px);}
+  .lb-row.is-me{border-color:rgba(139,26,26,0.5);background:var(--maroon-glow);}
+  .lb-row.rank-1{border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.04);}
+  .lb-row.rank-2{border-color:rgba(192,192,192,0.3);background:rgba(192,192,192,0.03);}
+  .lb-row.rank-3{border-color:rgba(205,127,50,0.3);background:rgba(205,127,50,0.03);}
+  .lb-rank{font-family:var(--headline-font);font-weight:bold;font-size:1.1rem;min-width:36px;text-align:center;}
+  .lb-rank.r1{color:var(--gold);}
+  .lb-rank.r2{color:var(--silver);}
+  .lb-rank.r3{color:var(--bronze);}
+  .lb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;font-family:var(--headline-font);font-weight:bold;font-size:0.9rem;color:white;flex-shrink:0;}
+  .lb-name{flex:1;min-width:0;}
+  .lb-name-text{font-weight:600;font-size:0.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lb-name-sub{font-size:0.72rem;color:var(--muted);}
+  .lb-pts{font-family:var(--headline-font);font-weight:bold;font-size:1.3rem;color:var(--maroon-light);min-width:80px;text-align:right;}
+  .lb-pts-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;text-align:right;}
+  .lb-bar-wrap{width:100px;flex-shrink:0;}
+  .lb-bar-track{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;}
+  .lb-bar-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:2px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);}
+  .me-badge{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.4);border-radius:100px;padding:0.15rem 0.55rem;font-size:0.65rem;font-family:var(--headline-font);font-weight:bold;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;}
+  .empty-lb{text-align:center;padding:3rem;color:var(--muted);font-size:0.88rem;}
+  .refresh-note{font-size:0.75rem;color:var(--muted);text-align:center;margin-top:1.5rem;font-weight:normal;}
+</style>
+</head>
+<body>
+<script src="theme.js"></script>
+<nav>
+  <a href="index.html" class="logo">TECH<span>TRAIN</span></a>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" onclick="TechTheme.toggle()">☀️</button>
+    <a href="training.html" class="btn-nav">Training</a>
+    <a href="dashboard.html" class="btn-nav">Dashboard</a>
+    <button class="btn-nav" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="page-headline">🏆 Leaderboard</div>
+  <div class="page-sub">Points reset monthly. Top performers earn rewards — keep training!</div>
+
+  <div class="points-legend">
+    <div class="legend-item"><strong>+1 pt</strong> per question attempted</div>
+    <div class="legend-item"><strong>+2 pts</strong> correct answer</div>
+    <div class="legend-item"><strong>+5 pts</strong> feedback submitted</div>
+    <div class="legend-item"><strong>+3 pts</strong> returning to train</div>
+  </div>
+
+  <div class="my-rank-card" id="myRankCard" style="display:none;">
+    <div><div class="my-rank-num" id="myRankNum">—</div><div class="my-rank-label">Your Rank</div></div>
+    <div style="width:1px;height:40px;background:var(--border);flex-shrink:0;"></div>
+    <div><div class="my-pts" id="myPtsDisplay">0</div><div class="my-pts-label">Your Points</div></div>
+    <div style="flex:1;text-align:right;font-size:0.82rem;color:var(--muted);font-weight:normal;" id="myRankMsg"></div>
+  </div>
+
+  <div class="lb-list" id="lbList">
+    <div class="empty-lb">Loading leaderboard...</div>
+  </div>
+  <div class="refresh-note">Points update live. Admin can award bonus points via the Dashboard.</div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  const user = JSON.parse(localStorage.getItem('tt_user')||'{}');
+  const userEmail = user.email||'';
+  function logout(){localStorage.clear();window.location.href='index.html';}
+
+  async function loadLeaderboard(){
+    let entries = [];
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/technician_points?select=user_email,points&order=created_at.desc&limit=500`,
+        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
+      const rows = await res.json();
+      if(Array.isArray(rows)&&rows.length){
+        const map={};
+        rows.forEach(r=>{if(!map[r.user_email])map[r.user_email]=0;map[r.user_email]+=(r.points||0);});
+        entries=Object.entries(map).map(([email,pts])=>({email,pts})).sort((a,b)=>b.pts-a.pts);
+      }
+    } catch(e){}
+
+    // Merge localStorage points for current user if not in DB yet
+    const localPts = parseInt(localStorage.getItem('tt_points_'+userEmail)||'0');
+    if(localPts>0){
+      const existing=entries.find(e=>e.email===userEmail);
+      if(existing){existing.pts=Math.max(existing.pts,localPts);}
+      else if(userEmail){entries.push({email:userEmail,pts:localPts});entries.sort((a,b)=>b.pts-a.pts);}
+    }
+
+    // Fall back to demo data if empty
+    if(!entries.length){
+      entries=[
+        {email:'j.smith@company.com',pts:142},
+        {email:'a.johnson@company.com',pts:118},
+        {email:'m.williams@company.com',pts:97},
+        {email:'r.brown@company.com',pts:74},
+        {email:'k.davis@company.com',pts:51},
+        {email:'demo@techtrain.app',pts:localPts||12},
+      ].sort((a,b)=>b.pts-a.pts);
+    }
+
+    const maxPts = entries[0]?.pts||1;
+    const myIdx = entries.findIndex(e=>e.email===userEmail);
+
+    // Show my rank card
+    if(myIdx>=0){
+      const myEntry=entries[myIdx];
+      document.getElementById('myRankCard').style.display='flex';
+      document.getElementById('myRankNum').textContent='#'+(myIdx+1);
+      document.getElementById('myPtsDisplay').textContent=myEntry.pts;
+      const ahead=entries.length-myIdx-1;
+      document.getElementById('myRankMsg').textContent=myIdx===0?'You\'re in the lead! 🎉':ahead===0?`${entries[myIdx-1].pts-myEntry.pts} pts behind #${myIdx}`:`${entries[myIdx-1].pts-myEntry.pts} pts behind #${myIdx}`;
+    }
+
+    const rankIcons=['🥇','🥈','🥉'];
+    document.getElementById('lbList').innerHTML = entries.length ? entries.map((e,i)=>{
+      const isMe=e.email===userEmail;
+      const rankClass=i<3?`rank-${i+1}`:'';
+      const meClass=isMe?'is-me':'';
+      const rankDisplay=i<3?`<span class="lb-rank r${i+1}">${rankIcons[i]}</span>`:`<span class="lb-rank" style="color:var(--muted)">${i+1}</span>`;
+      const name=e.email.split('@')[0];
+      const barW=Math.round((e.pts/maxPts)*100);
+      return `<div class="lb-row ${rankClass} ${meClass}">
+        ${rankDisplay}
+        <div class="lb-avatar">${name[0].toUpperCase()}</div>
+        <div class="lb-name">
+          <div class="lb-name-text">${name}${isMe?' (You)':''}</div>
+          <div class="lb-name-sub">${e.email}</div>
+        </div>
+        <div class="lb-bar-wrap"><div class="lb-bar-track"><div class="lb-bar-fill" style="width:${barW}%"></div></div></div>
+        <div><div class="lb-pts">${e.pts}</div><div class="lb-pts-label">pts</div></div>
+        ${isMe?'<div class="me-badge">You</div>':''}
+      </div>`;
+    }).join('') : '<div class="empty-lb">No training data yet. Start training to appear on the leaderboard!</div>';
+  }
+
+  loadLeaderboard();
+</script>
+</body>
+</html>
