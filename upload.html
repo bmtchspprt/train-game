@@ -6,101 +6,107 @@
 <title>Knowledge Upload — TechTrain</title>
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #12121a;
-    --surface2: #1a1a26;
-    --surface3: #20202e;
-    --accent: #00e5a0;
-    --maroon: #8B1A1A;
-    --maroon-light: #c0392b;
-    --maroon-glow: rgba(139,26,26,0.18);
-    --text: #f0f0f8;
-    --muted: #8888aa;
-    --border: rgba(255,255,255,0.08);
-    --danger: #ff4d6d;
-    --warning: #ffb347;
-    --font: 'Arial Narrow', Arial, sans-serif;
+    --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--surface3:#20202e;
+    --accent:#00e5a0;--maroon:#8B1A1A;--maroon-light:#c0392b;--maroon-glow:rgba(139,26,26,0.18);
+    --text:#f0f0f8;--muted:#8888aa;--border:rgba(255,255,255,0.08);
+    --danger:#ff4d6d;--warning:#ffb347;--font:'Arial Narrow',Arial,sans-serif;
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font); font-weight: bold; background: var(--bg); color: var(--text); min-height: 100vh; }
-  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 70% 50% at 10% 20%, rgba(139,26,26,0.08) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 85% 75%, rgba(0,229,160,0.05) 0%, transparent 55%); pointer-events: none; z-index: 0; }
-  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 2.5rem; background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
-  .logo { font-family: var(--font); font-weight: bold; font-size: 1.4rem; color: var(--text); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
-  .logo span { color: var(--maroon-light); }
-  .nav-links { display: flex; gap: 0.5rem; align-items: center; }
-  .nav-link { padding: 0.4rem 1rem; border-radius: 6px; font-size: 0.85rem; font-family: var(--font); font-weight: bold; color: var(--muted); text-decoration: none; transition: color 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
-  .nav-link:hover { color: var(--text); }
-  .nav-link.active { color: var(--maroon-light); }
-  .btn-sm { padding: 0.4rem 1rem; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-weight: bold; font-size: 0.82rem; cursor: pointer; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
-  .btn-sm:hover { border-color: var(--maroon-light); color: var(--maroon-light); }
-  .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem; }
-  .page-title { font-family: var(--font); font-weight: bold; font-size: 2rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.4rem; color: var(--maroon-light); text-shadow: 0 0 30px var(--maroon-glow); }
-  .page-sub { color: var(--muted); font-size: 0.95rem; font-weight: normal; margin-bottom: 2rem; }
-  .sec-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--maroon-light); font-weight: bold; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--maroon); opacity: 0.3; }
-  .steps { display: flex; flex-direction: column; gap: 1.5rem; }
-  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-  .step-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface2); }
-  .step-num { width: 32px; height: 32px; border-radius: 8px; background: var(--maroon-glow); border: 1px solid rgba(139,26,26,0.4); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold; color: var(--maroon-light); flex-shrink: 0; }
-  .step-title { font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: var(--maroon-light); }
-  .step-desc { font-size: 0.8rem; color: var(--muted); font-weight: normal; margin-top: 0.15rem; }
-  .step-body { padding: 1.5rem; }
-  .prompt-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; font-family: 'Courier New', monospace; font-size: 0.78rem; font-weight: normal; color: var(--text); line-height: 1.7; white-space: pre-wrap; max-height: 280px; overflow-y: auto; margin-bottom: 1rem; }
-  .btn-copy { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.4rem; background: var(--maroon); border: none; border-radius: 8px; color: white; font-family: var(--font); font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em; }
-  .btn-copy:hover { background: var(--maroon-light); transform: translateY(-1px); }
-  .btn-copy.copied { background: var(--surface3); color: var(--maroon-light); border: 1px solid rgba(139,26,26,0.3); }
-  .ai-tools { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
-  .ai-link { padding: 0.5rem 1.1rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-family: var(--font); font-weight: bold; font-size: 0.8rem; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
-  .ai-link:hover { border-color: var(--maroon-light); color: var(--maroon-light); }
-  .paste-area { width: 100%; background: var(--surface2); border: 1.5px dashed var(--border); border-radius: 10px; padding: 1rem; color: var(--text); font-family: 'Courier New', monospace; font-size: 0.8rem; font-weight: normal; resize: vertical; min-height: 180px; outline: none; transition: border-color 0.2s; line-height: 1.6; }
-  .paste-area:focus { border-color: var(--maroon-light); border-style: solid; }
-  .paste-area::placeholder { color: var(--muted); }
-  .parse-row { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
-  .btn-parse { padding: 0.7rem 1.8rem; background: var(--maroon); border: none; border-radius: 8px; color: white; font-family: var(--font); font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em; }
-  .btn-parse:hover { background: var(--maroon-light); transform: translateY(-1px); }
-  .parse-hint { font-size: 0.78rem; color: var(--muted); font-weight: normal; }
-  .preview-section { margin-top: 2rem; display: none; }
-  .preview-section.show { display: block; }
-  .preview-count { background: var(--maroon-glow); border: 1px solid rgba(139,26,26,0.25); border-radius: 8px; padding: 0.7rem 1.2rem; font-size: 0.85rem; color: var(--maroon-light); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-  .q-preview-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
-  .q-preview-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; }
-  .q-preview-item:hover { border-color: rgba(139,26,26,0.3); }
-  .q-text { font-size: 0.88rem; font-weight: bold; margin-bottom: 0.5rem; }
-  .q-meta-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .q-chip { padding: 0.15rem 0.55rem; border-radius: 4px; font-size: 0.68rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; }
-  .q-chip.topic { background: var(--maroon-glow); border-color: rgba(139,26,26,0.3); color: #e88080; }
-  .q-chip.diff-beginner { background: rgba(0,229,160,0.1); border-color: rgba(0,229,160,0.3); color: var(--accent); }
-  .q-chip.diff-intermediate { background: rgba(255,179,71,0.1); border-color: rgba(255,179,71,0.3); color: var(--warning); }
-  .q-chip.diff-advanced { background: rgba(255,77,109,0.1); border-color: rgba(255,77,109,0.3); color: var(--danger); }
-  .q-chip.correct { background: var(--maroon-glow); border-color: rgba(139,26,26,0.2); color: #e88080; }
-  .q-chip.category { background: rgba(56,182,255,0.08); border-color: rgba(56,182,255,0.2); color: #38b6ff; }
-  .q-answer { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; font-weight: normal; }
-  .parse-error { background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.25); border-radius: 8px; padding: 0.75rem 1rem; color: var(--danger); font-size: 0.82rem; font-weight: normal; margin-top: 0.75rem; display: none; }
-  .parse-error.show { display: block; }
-  .btn-save-all { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--maroon), var(--maroon-light)); border: none; border-radius: 10px; color: white; font-family: var(--font); font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.08em; }
-  .btn-save-all:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--maroon-glow); }
-  .btn-save-all:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .sql-output { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; font-family: 'Courier New', monospace; font-size: 0.75rem; font-weight: normal; color: #38b6ff; white-space: pre-wrap; max-height: 300px; overflow-y: auto; margin-top: 1rem; display: none; }
-  .sql-output.show { display: block; }
-  .kb-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
-  .kb-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; display: flex; align-items: flex-start; gap: 1rem; }
-  .kb-item:hover { border-color: rgba(139,26,26,0.3); }
-  .kb-num { width: 28px; height: 28px; background: var(--maroon-glow); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: var(--maroon-light); flex-shrink: 0; }
-  .kb-title { font-size: 0.88rem; font-weight: bold; margin-bottom: 0.2rem; }
-  .kb-excerpt { font-size: 0.78rem; color: var(--muted); font-weight: normal; line-height: 1.5; }
-  .kb-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
-  .kb-tag { background: var(--surface2); border-radius: 4px; padding: 0.12rem 0.5rem; font-size: 0.68rem; color: var(--muted); border: 1px solid var(--border); font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em; }
-  .empty-state { text-align: center; padding: 2.5rem; color: var(--muted); font-size: 0.88rem; font-weight: normal; }
-  .toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.4rem; font-size: 0.85rem; font-weight: bold; box-shadow: 0 20px 50px rgba(0,0,0,0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); max-width: 320px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.success { border-color: rgba(139,26,26,0.4); color: var(--maroon-light); }
-  .toast.error { border-color: rgba(255,77,109,0.35); color: var(--danger); }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);font-weight:bold;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 10% 20%,rgba(139,26,26,0.08) 0%,transparent 60%);pointer-events:none;z-index:0;}
+  body.theme-light{--bg:#f4f2ef;--surface:#fff;--surface2:#f0ede8;--surface3:#e8e4de;--text:#1a1410;--muted:#8a7a6a;--border:rgba(0,0,0,0.1);}
+  body.theme-light::before{background:none;}
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0.9rem 2.5rem;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background 0.3s;}
+  body.theme-light nav{background:rgba(244,242,239,0.95);}
+  .logo{font-family:var(--font);font-weight:bold;font-size:1.4rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
+  .logo span{color:var(--maroon-light);}
+  .nav-links{display:flex;gap:0.5rem;align-items:center;}
+  .nav-link{padding:0.4rem 1rem;border-radius:6px;font-size:0.85rem;font-family:var(--font);font-weight:bold;color:var(--muted);text-decoration:none;transition:color 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
+  .nav-link:hover{color:var(--text);}
+  .nav-link.active{color:var(--maroon-light);}
+  .btn-sm{padding:0.4rem 1rem;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-weight:bold;font-size:0.82rem;cursor:pointer;text-decoration:none;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
+  .btn-sm:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
+  .theme-toggle{width:34px;height:34px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .theme-toggle:hover{border-color:var(--maroon-light);}
+  .page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:2.5rem 2rem;}
+  .page-title{font-family:var(--font);font-weight:bold;font-size:2rem;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:0.4rem;color:var(--maroon-light);text-shadow:0 0 30px var(--maroon-glow);}
+  .page-sub{color:var(--muted);font-size:0.95rem;font-weight:normal;margin-bottom:2rem;}
+  .sec-label{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--maroon-light);font-weight:bold;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
+  .sec-label::after{content:'';flex:1;height:1px;background:var(--maroon);opacity:0.3;}
+  .steps{display:flex;flex-direction:column;gap:1.5rem;}
+  .step-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:background 0.3s;}
+  .step-header{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);background:var(--surface2);}
+  .step-num{width:32px;height:32px;border-radius:8px;background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.4);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:bold;color:var(--maroon-light);flex-shrink:0;}
+  .step-title{font-size:1rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);}
+  .step-desc{font-size:0.8rem;color:var(--muted);font-weight:normal;margin-top:0.15rem;}
+  .step-body{padding:1.5rem;}
+  .paste-area{width:100%;background:var(--surface2);border:1.5px dashed var(--border);border-radius:10px;padding:1rem;color:var(--text);font-family:'Courier New',monospace;font-size:0.8rem;font-weight:normal;resize:vertical;min-height:180px;outline:none;transition:border-color 0.2s;line-height:1.6;}
+  .paste-area:focus{border-color:var(--maroon-light);border-style:solid;}
+  .paste-area::placeholder{color:var(--muted);}
+  .char-count{font-size:0.72rem;color:var(--muted);font-weight:normal;margin-top:0.4rem;text-align:right;}
+  .btn-row{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-top:1rem;}
+  .btn-primary{display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.6rem;background:var(--maroon);border:none;border-radius:8px;color:white;font-family:var(--font);font-weight:bold;font-size:0.9rem;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.06em;}
+  .btn-primary:hover{background:var(--maroon-light);transform:translateY(-1px);}
+  .btn-primary.copied{background:var(--surface3);color:var(--maroon-light);border:1px solid rgba(139,26,26,0.3);}
+  .btn-hint{font-size:0.78rem;color:var(--muted);font-weight:normal;}
+  .ai-tools{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;}
+  .ai-link{padding:0.5rem 1.1rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:var(--font);font-weight:bold;font-size:0.8rem;text-decoration:none;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
+  .ai-link:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
+  .parse-error{background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.25);border-radius:8px;padding:0.75rem 1rem;color:var(--danger);font-size:0.82rem;font-weight:normal;margin-top:0.75rem;display:none;}
+  .parse-error.show{display:block;}
+  .preview-count{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.25);border-radius:8px;padding:0.7rem 1.2rem;font-size:0.85rem;color:var(--maroon-light);margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
+  .q-preview-list{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;}
+  .q-preview-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;}
+  .q-preview-item:hover{border-color:rgba(139,26,26,0.3);}
+  .q-text-p{font-size:0.88rem;font-weight:bold;margin-bottom:0.5rem;}
+  .q-meta-row{display:flex;gap:0.5rem;flex-wrap:wrap;}
+  .q-chip{padding:0.15rem 0.55rem;border-radius:4px;font-size:0.68rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;border:1px solid;}
+  .q-chip.topic{background:var(--maroon-glow);border-color:rgba(139,26,26,0.3);color:#e88080;}
+  .q-chip.diff-beginner{background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);color:var(--accent);}
+  .q-chip.diff-intermediate{background:rgba(255,179,71,0.1);border-color:rgba(255,179,71,0.3);color:var(--warning);}
+  .q-chip.diff-advanced{background:rgba(255,77,109,0.1);border-color:rgba(255,77,109,0.3);color:var(--danger);}
+  .q-chip.correct{background:var(--maroon-glow);border-color:rgba(139,26,26,0.2);color:#e88080;}
+  .q-chip.category{background:rgba(56,182,255,0.08);border-color:rgba(56,182,255,0.2);color:#38b6ff;}
+  .q-answer{font-size:0.78rem;color:var(--muted);margin-top:0.4rem;font-weight:normal;}
+  .btn-save-all{width:100%;padding:1rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--font);font-weight:bold;font-size:1rem;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.08em;}
+  .btn-save-all:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--maroon-glow);}
+  .btn-save-all:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+  .sql-output{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1.2rem;font-family:'Courier New',monospace;font-size:0.75rem;font-weight:normal;color:#38b6ff;white-space:pre-wrap;max-height:300px;overflow-y:auto;margin-top:1rem;display:none;}
+  .sql-output.show{display:block;}
+
+  /* Knowledge base with delete */
+  .kb-list{display:flex;flex-direction:column;gap:0.75rem;margin-top:1rem;}
+  .kb-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;display:flex;align-items:flex-start;gap:1rem;transition:border-color 0.2s;}
+  .kb-item:hover{border-color:rgba(139,26,26,0.3);}
+  .kb-num{width:28px;height:28px;background:var(--maroon-glow);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:bold;color:var(--maroon-light);flex-shrink:0;}
+  .kb-body{flex:1;min-width:0;}
+  .kb-title{font-size:0.88rem;font-weight:bold;margin-bottom:0.2rem;word-break:break-word;}
+  .kb-excerpt{font-size:0.78rem;color:var(--muted);font-weight:normal;line-height:1.5;}
+  .kb-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.4rem;}
+  .kb-tag{background:var(--surface2);border-radius:4px;padding:0.12rem 0.5rem;font-size:0.68rem;color:var(--muted);border:1px solid var(--border);font-weight:bold;text-transform:uppercase;letter-spacing:0.04em;}
+  .btn-delete-kb{padding:0.4rem 0.85rem;border-radius:6px;background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.25);color:var(--danger);font-size:0.75rem;font-family:var(--font);font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;white-space:nowrap;flex-shrink:0;align-self:center;}
+  .btn-delete-kb:hover{background:rgba(255,77,109,0.2);border-color:var(--danger);}
+  .empty-state{text-align:center;padding:2.5rem;color:var(--muted);font-size:0.88rem;font-weight:normal;}
+  .toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.9rem 1.4rem;font-size:0.85rem;font-weight:bold;box-shadow:0 20px 50px rgba(0,0,0,0.4);transform:translateY(100px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);max-width:320px;text-transform:uppercase;letter-spacing:0.04em;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.success{border-color:rgba(139,26,26,0.4);color:var(--maroon-light);}
+  .toast.error{border-color:rgba(255,77,109,0.35);color:var(--danger);}
+  .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;}
+  .confirm-overlay.hidden{display:none;}
+  .confirm-box{background:var(--surface);border:1px solid rgba(255,77,109,0.3);border-radius:16px;padding:2rem;max-width:420px;width:100%;}
+  .confirm-title{font-family:var(--font);font-size:1.1rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--danger);margin-bottom:0.5rem;}
+  .confirm-msg{font-size:0.85rem;color:var(--muted);font-weight:normal;line-height:1.6;margin-bottom:1.5rem;}
+  .confirm-actions{display:flex;gap:0.75rem;justify-content:flex-end;}
+  .btn-cancel-del{padding:0.6rem 1.2rem;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-size:0.88rem;font-family:var(--font);}
+  .btn-confirm-del{padding:0.6rem 1.4rem;background:var(--danger);border:none;border-radius:8px;color:white;font-size:0.88rem;font-weight:bold;cursor:pointer;font-family:var(--font);text-transform:uppercase;}
 </style>
 </head>
 <body>
+<script src="theme.js"></script>
 <nav>
   <a href="index.html" class="logo">TECH<span>TRAIN</span></a>
   <div class="nav-links">
+    <button class="theme-toggle" id="themeToggle" onclick="TechTheme.toggle()">☀️</button>
     <a href="training.html" class="nav-link">Training</a>
     <a href="dashboard.html" class="nav-link">Dashboard</a>
     <a href="upload.html" class="nav-link active">Upload</a>
@@ -110,89 +116,43 @@
 
 <div class="page">
   <div class="page-title">Knowledge Upload</div>
-  <div class="page-sub">Use the AI prompt below to generate quiz questions from any document, then paste the results here to save them to the training platform.</div>
+  <div class="page-sub">Paste your document text, copy the AI prompt, get quiz questions from any AI, then paste the JSON back here to save to the training platform.</div>
 
   <div class="steps">
+
+    <!-- STEP 1 -->
     <div class="step-card">
       <div class="step-header">
         <div class="step-num">1</div>
         <div>
-          <div class="step-title">Copy the AI Prompt</div>
-          <div class="step-desc">Copy this prompt, then open Claude.ai and paste it along with your document or email thread</div>
+          <div class="step-title">Paste Your Document Text</div>
+          <div class="step-desc">Copy and paste the text from your manual, email thread, or service bulletin here.</div>
         </div>
       </div>
       <div class="step-body">
-        <div class="prompt-box" id="promptBox">You are a technical training specialist creating exam content for field service technicians.
+        <textarea class="paste-area" id="docText" placeholder="Paste your document, manual, email thread, or technical text here...
 
-Analyze the enclosed document (PDF or text) and extract the most important technical knowledge from it. Then create the following structured training content:
+Example:
+FAULT CODE 54 — HIGH HEAD PRESSURE
+Cause: Condenser coil fouled, outdoor fan motor failure, or overcharge.
+Recommended action: Clean condenser coil. Check outdoor fan amp draw (should be within ±10% of nameplate). Verify subcooling is 10–15°F..." oninput="updateCharCount(this,'docCharCount')"></textarea>
+        <div class="char-count" id="docCharCount">0 characters</div>
+      </div>
+    </div>
 
----
-
-SCENARIO
-Write a realistic field scenario (3-5 sentences) that a technician might actually encounter based on the document's content. It should describe a symptom or problem without giving away the answer.
-
----
-
-FOLLOW-UP DIAGNOSTIC QUESTIONS (minimum 5)
-These are questions the technician SHOULD be asking when they arrive on site. Format each as:
-Q1: [Question]
-Q2: [Question]
-
----
-
-POSSIBLE SOLUTIONS (minimum 5)
-List plausible solutions ranked from most likely to least likely. Include a brief reason for each.
-S1: [Solution] — [Why this is likely]
-S2: [Solution] — [Why this is likely]
-
----
-
-QUIZ QUESTIONS (minimum 5, multiple choice)
-For each question use this exact format:
-
-QUESTION: [Question text]
-A) [Option]
-B) [Option]
-C) [Option]
-D) [Option]
-CORRECT: [Letter]
-EXPLANATION: [Why this is correct and why the others are wrong]
-DIFFICULTY: [beginner / intermediate / advanced]
-TOPIC: [Short topic tag]
-CATEGORY: [Diagnostics / Safety / Installation / Maintenance]
-
----
-
-JSON OUTPUT
-After all of the above, output the quiz questions ONLY in this exact JSON format:
-
-[
-  {
-    "question": "Question text here?",
-    "options": ["A) option1", "B) option2", "C) option3", "D) option4"],
-    "correct_answer": "A",
-    "explanation": "Explanation text here.",
-    "difficulty": "beginner",
-    "topic": "Topic Tag",
-    "category": "Category Name",
-    "source": "Name or title of the source document"
-  }
-]
-
----
-
-RULES:
-- Base ALL content strictly on what is in the provided document.
-- Write questions that test real field judgment, not just memorization.
-- Prioritize safety-critical knowledge.
-- The correct answer should be clearly correct to someone with proper training.
-
----
-
-[PASTE YOUR DOCUMENT TEXT BELOW THIS LINE, OR ATTACH YOUR PDF]</div>
-        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
-          <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">📋 Copy Prompt</button>
-          <span style="font-size:0.78rem;color:var(--muted);font-weight:normal;">Then open Claude.ai and paste:</span>
+    <!-- STEP 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Copy Full Prompt + Open AI</div>
+          <div class="step-desc">Copies the complete AI prompt with your document text included. Just paste it directly into Claude, ChatGPT, or Gemini.</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="btn-row">
+          <button class="btn-primary" id="copyBtn" onclick="copyFullPrompt()">📋 Copy Full Prompt</button>
+          <span class="btn-hint">Your document text is included automatically</span>
         </div>
         <div class="ai-tools">
           <a href="https://claude.ai" target="_blank" class="ai-link">→ Claude.ai</a>
@@ -202,60 +162,63 @@ RULES:
       </div>
     </div>
 
+    <!-- STEP 3 -->
     <div class="step-card">
       <div class="step-header">
-        <div class="step-num">2</div>
+        <div class="step-num">3</div>
         <div>
-          <div class="step-title">Paste the JSON Output</div>
-          <div class="step-desc">After the AI responds, scroll to the bottom of its reply and copy the JSON block. Paste it below.</div>
+          <div class="step-title">Paste AI Response Here</div>
+          <div class="step-desc">After the AI replies, scroll to the bottom of its response, copy the JSON block, and paste it below.</div>
         </div>
       </div>
       <div class="step-body">
-        <textarea class="paste-area" id="jsonPaste" placeholder='Paste the JSON array here. It should look like:
+        <textarea class="paste-area" id="jsonPaste" placeholder='Paste the JSON array from the AI response here. It should look like:
 
 [
   {
-    "question": "What is the minimum vacuum level...",
-    "options": ["A) 1000 microns", "B) 500 microns", "C) 300 microns", "D) 100 microns"],
-    "correct_answer": "C",
-    "explanation": "300 microns ensures...",
+    "question": "What should you check first when a unit trips on high pressure?",
+    "options": ["A) Replace switch", "B) Check condenser airflow", "C) Add charge", "D) Reset breaker"],
+    "correct_answer": "B",
+    "explanation": "Restricted airflow is the most common cause...",
     "difficulty": "intermediate",
-    "topic": "Refrigerant Handling",
+    "topic": "Diagnostics",
     "category": "Diagnostics",
-    "source": "hvac-manual.pdf"
+    "source": "service-manual-v3.pdf"
   }
-]'></textarea>
+]' oninput="updateCharCount(this,'jsonCharCount')"></textarea>
+        <div class="char-count" id="jsonCharCount">0 characters</div>
         <div class="parse-error" id="parseError"></div>
-        <div class="parse-row">
-          <button class="btn-parse" onclick="parseJSON()">⚡ Preview Questions</button>
-          <span class="parse-hint">Validates and shows questions before saving</span>
+        <div class="btn-row" style="margin-top:1rem;">
+          <button class="btn-primary" onclick="parseJSON()">⚡ Preview Questions</button>
+          <span class="btn-hint">Validates before saving</span>
         </div>
       </div>
     </div>
 
-    <div class="step-card" id="step3Card" style="display:none;">
+    <!-- STEP 4 -->
+    <div class="step-card" id="step4Card" style="display:none;">
       <div class="step-header">
-        <div class="step-num">3</div>
+        <div class="step-num">4</div>
         <div>
           <div class="step-title">Review &amp; Save to Platform</div>
           <div class="step-desc">Confirm the questions look correct, then save them to the question bank.</div>
         </div>
       </div>
       <div class="step-body">
-        <div class="preview-section show" id="previewSection">
-          <div class="preview-count" id="previewCount"></div>
-          <div class="q-preview-list" id="qPreviewList"></div>
-          <button class="btn-save-all" id="saveBtn" onclick="saveToSupabase()">✓ Save All Questions to Training Platform</button>
-          <div style="margin-top:1rem;">
-            <div style="font-size:0.75rem;color:var(--muted);font-weight:normal;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.06em;">Or copy as SQL to run manually in Supabase:</div>
-            <button class="btn-sm" onclick="generateSQL()" style="margin-bottom:0.5rem;">Generate SQL</button>
-            <div class="sql-output" id="sqlOutput"></div>
-          </div>
+        <div class="preview-count" id="previewCount"></div>
+        <div class="q-preview-list" id="qPreviewList"></div>
+        <button class="btn-save-all" id="saveBtn" onclick="saveToSupabase()">✓ Save All Questions to Training Platform</button>
+        <div style="margin-top:1rem;">
+          <div style="font-size:0.75rem;color:var(--muted);font-weight:normal;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.06em;">Or copy as SQL for Supabase:</div>
+          <button class="btn-sm" onclick="generateSQL()" style="margin-bottom:0.5rem;">Generate SQL</button>
+          <div class="sql-output" id="sqlOutput"></div>
         </div>
       </div>
     </div>
+
   </div>
 
+  <!-- Knowledge Base -->
   <div style="margin-top:3rem;">
     <div class="sec-label">Current Knowledge Base</div>
     <div id="kbList" class="kb-list">
@@ -266,66 +229,129 @@ RULES:
 
 <div class="toast" id="toast"></div>
 
+<!-- Delete confirm -->
+<div class="confirm-overlay hidden" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-title">Delete Questions</div>
+    <div class="confirm-msg" id="confirmMsg">Are you sure you want to delete all questions from this source? This cannot be undone.</div>
+    <div class="confirm-actions">
+      <button class="btn-cancel-del" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm-del" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script src="config.js"></script>
 <script>
   let parsedQuestions = [];
 
-  function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+  function logout(){localStorage.clear();window.location.href='index.html';}
 
-  function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = `toast ${type} show`;
-    setTimeout(() => t.classList.remove('show'), 3500);
+  function showToast(msg,type='success'){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className=`toast ${type} show`;
+    setTimeout(()=>t.classList.remove('show'),3500);
   }
 
-  function copyPrompt() {
-    const text = document.getElementById('promptBox').textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById('copyBtn');
-      btn.textContent = '✓ Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = '📋 Copy Prompt'; btn.classList.remove('copied'); }, 2500);
+  function updateCharCount(el, countId){
+    const len = el.value.length;
+    document.getElementById(countId).textContent = len.toLocaleString() + ' character' + (len!==1?'s':'');
+  }
+
+  const BASE_PROMPT = `You are a technical training specialist creating exam content for field service technicians.
+
+Analyze the enclosed document and extract the most important technical knowledge. Then create the following structured training content:
+
+---
+QUIZ QUESTIONS (minimum 5, multiple choice)
+For each question use this exact format:
+
+QUESTION: [Question text]
+A) [Option]
+B) [Option]
+C) [Option]
+D) [Option]
+CORRECT: [Letter]
+EXPLANATION: [Why this is correct]
+DIFFICULTY: [beginner / intermediate / advanced]
+TOPIC: [Short topic tag]
+CATEGORY: [Diagnostics / Safety / Installation / Maintenance]
+
+---
+JSON OUTPUT
+After the questions, output ONLY this JSON array (no extra text before or after):
+
+[
+  {
+    "question": "Question text here?",
+    "options": ["A) option1", "B) option2", "C) option3", "D) option4"],
+    "correct_answer": "A",
+    "explanation": "Explanation text here.",
+    "difficulty": "beginner",
+    "topic": "Topic Tag",
+    "category": "Category Name",
+    "source": "Name of the source document"
+  }
+]
+
+RULES:
+- Base ALL content strictly on what is in the provided document.
+- Write questions that test real field judgment, not just memorization.
+- Prioritize safety-critical knowledge.
+- Do NOT generate questions about refrigerant handling, EPA 608, or refrigerant recovery.
+
+---
+[DOCUMENT TEXT BELOW]
+
+`;
+
+  function copyFullPrompt(){
+    const docText = document.getElementById('docText').value.trim();
+    const fullPrompt = BASE_PROMPT + (docText || '[No document text pasted — please paste your document in Step 1 first]');
+    navigator.clipboard.writeText(fullPrompt).then(()=>{
+      const btn=document.getElementById('copyBtn');
+      btn.textContent='✓ Copied!';btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent='📋 Copy Full Prompt';btn.classList.remove('copied');},2500);
     });
   }
 
-  function parseJSON() {
-    const raw = document.getElementById('jsonPaste').value.trim();
-    const errEl = document.getElementById('parseError');
+  function parseJSON(){
+    const raw=document.getElementById('jsonPaste').value.trim();
+    const errEl=document.getElementById('parseError');
     errEl.classList.remove('show');
-    parsedQuestions = [];
-    if (!raw) { errEl.textContent = 'Please paste the JSON from the AI response first.'; errEl.classList.add('show'); return; }
-    let jsonStr = raw;
-    const match = raw.match(/\[[\s\S]*\]/);
-    if (match) jsonStr = match[0];
-    try {
-      const data = JSON.parse(jsonStr);
-      if (!Array.isArray(data) || data.length === 0) throw new Error('Expected a JSON array with at least one question.');
-      const required = ['question', 'options', 'correct_answer'];
-      data.forEach((q, i) => {
-        required.forEach(field => { if (!q[field]) throw new Error(`Question ${i+1} is missing the "${field}" field.`); });
-        if (!Array.isArray(q.options) || q.options.length < 2) throw new Error(`Question ${i+1} options must be an array with at least 2 items.`);
+    parsedQuestions=[];
+    if(!raw){errEl.textContent='Please paste the JSON from the AI response first.';errEl.classList.add('show');return;}
+    let jsonStr=raw;
+    const match=raw.match(/\[[\s\S]*\]/);
+    if(match)jsonStr=match[0];
+    try{
+      const data=JSON.parse(jsonStr);
+      if(!Array.isArray(data)||!data.length)throw new Error('Expected a JSON array with at least one question.');
+      data.forEach((q,i)=>{
+        if(!q.question)throw new Error(`Question ${i+1} is missing "question".`);
+        if(!q.options||!Array.isArray(q.options)||q.options.length<2)throw new Error(`Question ${i+1} needs at least 2 options.`);
+        if(!q.correct_answer)throw new Error(`Question ${i+1} is missing "correct_answer".`);
       });
-      parsedQuestions = data;
+      parsedQuestions=data;
       renderPreview();
-      document.getElementById('step3Card').style.display = 'block';
-      document.getElementById('step3Card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch (e) {
-      errEl.textContent = 'JSON Error: ' + e.message + ' — Make sure you copied the entire [ ] block from the AI response.';
+      document.getElementById('step4Card').style.display='block';
+      document.getElementById('step4Card').scrollIntoView({behavior:'smooth',block:'start'});
+    }catch(e){
+      errEl.textContent='JSON Error: '+e.message+' — Make sure you copied the entire [ ] block.';
       errEl.classList.add('show');
     }
   }
 
-  function renderPreview() {
-    const count = parsedQuestions.length;
-    document.getElementById('previewCount').innerHTML = `<span>✓ ${count} question${count !== 1 ? 's' : ''} ready to import</span><span style="font-size:0.75rem;color:var(--muted);font-weight:normal;">Review below before saving</span>`;
-    document.getElementById('qPreviewList').innerHTML = parsedQuestions.map((q, i) => {
-      const diff = q.difficulty || 'beginner';
+  function renderPreview(){
+    const count=parsedQuestions.length;
+    document.getElementById('previewCount').innerHTML=`<span>✓ ${count} question${count!==1?'s':''} ready to import</span><span style="font-size:0.75rem;color:var(--muted);font-weight:normal;">Review below before saving</span>`;
+    document.getElementById('qPreviewList').innerHTML=parsedQuestions.map((q,i)=>{
+      const diff=q.difficulty||'beginner';
       return `<div class="q-preview-item">
-        <div class="q-text">${i+1}. ${q.question}</div>
+        <div class="q-text-p">${i+1}. ${q.question}</div>
         <div class="q-meta-row">
-          ${q.topic ? `<span class="q-chip topic">${q.topic}</span>` : ''}
-          ${q.category ? `<span class="q-chip category">${q.category}</span>` : ''}
+          ${q.topic?`<span class="q-chip topic">${q.topic}</span>`:''}
+          ${q.category?`<span class="q-chip category">${q.category}</span>`:''}
           <span class="q-chip diff-${diff}">${diff}</span>
           <span class="q-chip correct">Ans: ${q.correct_answer}</span>
         </div>
@@ -334,83 +360,80 @@ RULES:
     }).join('');
   }
 
-  async function saveToSupabase() {
-    if (!parsedQuestions.length) return;
-    const btn = document.getElementById('saveBtn');
-    btn.disabled = true;
-    btn.textContent = 'Saving...';
-    const h = {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      'Prefer': 'return=minimal'
-    };
-    let saved = 0, failed = 0;
-    for (const q of parsedQuestions) {
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results`, {
-          method: 'POST',
-          headers: h,
-          body: JSON.stringify({
-            question: q.question,
-            options: q.options,
-            correct_answer: q.correct_answer,
-            explanation: q.explanation || '',
-            difficulty: q.difficulty || 'beginner',
-            topic: q.topic || 'General',
-            category: q.category || '',
-            source_file: q.source || '',
-            status: 'active'
-          })
-        });
-        if (res.ok || res.status === 201 || res.status === 204) saved++;
-        else { const err = await res.text(); console.error('Save error:', err); failed++; }
-      } catch (e) { console.error(e); failed++; }
+  async function saveToSupabase(){
+    if(!parsedQuestions.length)return;
+    const btn=document.getElementById('saveBtn');
+    btn.disabled=true;btn.textContent='Saving...';
+    const h={'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'};
+    let saved=0,failed=0;
+    for(const q of parsedQuestions){
+      try{
+        const res=await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results`,{method:'POST',headers:h,body:JSON.stringify({question:q.question,options:q.options,correct_answer:q.correct_answer,explanation:q.explanation||'',difficulty:q.difficulty||'beginner',topic:q.topic||'General',category:q.category||'',source_file:q.source||'',status:'active'})});
+        if(res.ok||res.status===201||res.status===204)saved++;else failed++;
+      }catch(e){failed++;}
     }
-    btn.disabled = false;
-    btn.textContent = '✓ Save All Questions to Training Platform';
-    if (saved > 0) {
-      showToast(`${saved} question${saved !== 1 ? 's' : ''} saved!`);
-      loadKnowledgeBase();
-      document.getElementById('jsonPaste').value = '';
-      parsedQuestions = [];
-      document.getElementById('step3Card').style.display = 'none';
-    }
-    if (failed > 0) showToast(`${failed} question${failed !== 1 ? 's' : ''} failed to save.`, 'error');
+    btn.disabled=false;btn.textContent='✓ Save All Questions to Training Platform';
+    if(saved>0){showToast(`${saved} question${saved!==1?'s':''} saved!`);loadKnowledgeBase();document.getElementById('jsonPaste').value='';parsedQuestions=[];document.getElementById('step4Card').style.display='none';}
+    if(failed>0)showToast(`${failed} failed to save.`,'error');
   }
 
-  function generateSQL() {
-    if (!parsedQuestions.length) return;
-    const lines = parsedQuestions.map(q => {
-      const opts = JSON.stringify(q.options).replace(/'/g, "''");
-      const question = (q.question || '').replace(/'/g, "''");
-      const explanation = (q.explanation || '').replace(/'/g, "''");
-      const topic = (q.topic || 'General').replace(/'/g, "''");
-      const category = (q.category || '').replace(/'/g, "''");
-      const source = (q.source || '').replace(/'/g, "''");
-      return `INSERT INTO bst_training_results (question, options, correct_answer, explanation, difficulty, topic, category, source_file, status)\nVALUES ('${question}', '${opts}'::jsonb, '${q.correct_answer}', '${explanation}', '${q.difficulty || 'beginner'}', '${topic}', '${category}', '${source}', 'active');`;
+  function generateSQL(){
+    if(!parsedQuestions.length)return;
+    const lines=parsedQuestions.map(q=>{
+      const opts=JSON.stringify(q.options).replace(/'/g,"''");
+      const question=(q.question||'').replace(/'/g,"''");
+      const explanation=(q.explanation||'').replace(/'/g,"''");
+      return `INSERT INTO bst_training_results (question,options,correct_answer,explanation,difficulty,topic,category,source_file,status) VALUES ('${question}','${opts}'::jsonb,'${q.correct_answer}','${explanation}','${q.difficulty||'beginner'}','${(q.topic||'General').replace(/'/g,"''")}','${(q.category||'').replace(/'/g,"''")}','${(q.source||'').replace(/'/g,"''")}','active');`;
     }).join('\n\n');
-    const el = document.getElementById('sqlOutput');
-    el.textContent = lines;
-    el.classList.add('show');
-    navigator.clipboard.writeText(lines).then(() => showToast('SQL copied to clipboard!'));
+    const el=document.getElementById('sqlOutput');
+    el.textContent=lines;el.classList.add('show');
+    navigator.clipboard.writeText(lines).then(()=>showToast('SQL copied!'));
   }
 
-  async function loadKnowledgeBase() {
-    const listEl = document.getElementById('kbList');
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&order=created_at.desc&limit=30`, {
-        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
-      });
-      const items = await res.json();
-      if (!Array.isArray(items) || !items.length) { listEl.innerHTML = '<div class="empty-state">No questions saved yet.</div>'; return; }
-      const grouped = {};
-      items.forEach(q => { const src = q.source_file || 'Ungrouped'; if (!grouped[src]) grouped[src] = []; grouped[src].push(q); });
-      listEl.innerHTML = Object.entries(grouped).map(([src, qs], i) => {
-        const topics = [...new Set(qs.map(q => q.topic).filter(Boolean))];
-        return `<div class="kb-item"><div class="kb-num">${i+1}</div><div><div class="kb-title">${src}</div><div class="kb-excerpt">${qs.length} question${qs.length !== 1 ? 's' : ''} in knowledge base</div><div class="kb-tags">${topics.map(t => `<span class="kb-tag">${t}</span>`).join('')}<span class="kb-tag">${qs.length} Q's</span></div></div></div>`;
+  async function loadKnowledgeBase(){
+    const listEl=document.getElementById('kbList');
+    try{
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&order=created_at.desc&limit=50`,{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
+      const items=await res.json();
+      if(!Array.isArray(items)||!items.length){listEl.innerHTML='<div class="empty-state">No questions saved yet.</div>';return;}
+      const grouped={};
+      items.forEach(q=>{const src=q.source_file||'Ungrouped';if(!grouped[src])grouped[src]=[];grouped[src].push(q);});
+      listEl.innerHTML=Object.entries(grouped).map(([src,qs],i)=>{
+        const topics=[...new Set(qs.map(q=>q.topic).filter(Boolean))];
+        const ids=qs.map(q=>q.id);
+        return `<div class="kb-item">
+          <div class="kb-num">${i+1}</div>
+          <div class="kb-body">
+            <div class="kb-title">${src}</div>
+            <div class="kb-excerpt">${qs.length} question${qs.length!==1?'s':''} in knowledge base</div>
+            <div class="kb-tags">${topics.map(t=>`<span class="kb-tag">${t}</span>`).join('')}<span class="kb-tag">${qs.length} Q's</span></div>
+          </div>
+          <button class="btn-delete-kb" onclick="confirmDelete('${src.replace(/'/g,"\\'")}',${JSON.stringify(ids)})">🗑 Delete</button>
+        </div>`;
       }).join('');
-    } catch (e) { listEl.innerHTML = '<div class="empty-state">Could not load knowledge base.</div>'; }
+    }catch(e){listEl.innerHTML='<div class="empty-state">Could not load knowledge base.</div>';}
+  }
+
+  let _deleteCallback = null;
+  function confirmDelete(src, ids){
+    document.getElementById('confirmMsg').textContent=`Delete all ${ids.length} question${ids.length!==1?'s':''} from "${src}"? This cannot be undone.`;
+    _deleteCallback=()=>deleteSource(src,ids);
+    document.getElementById('confirmDeleteBtn').onclick=_deleteCallback;
+    document.getElementById('confirmOverlay').classList.remove('hidden');
+  }
+  function closeConfirm(){document.getElementById('confirmOverlay').classList.add('hidden');}
+
+  async function deleteSource(src,ids){
+    closeConfirm();
+    let deleted=0;
+    for(const id of ids){
+      try{
+        const res=await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'}});
+        if(res.ok||res.status===204)deleted++;
+      }catch(e){}
+    }
+    showToast(`${deleted} question${deleted!==1?'s':''} deleted.`);
+    loadKnowledgeBase();
   }
 
   loadKnowledgeBase();
