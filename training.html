@@ -31,17 +31,15 @@
   .main{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:3rem 1.5rem;min-height:calc(100vh - 65px);}
   .page-headline{font-family:var(--headline-font);font-weight:bold;font-size:2.2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.3rem;text-shadow:0 0 30px var(--maroon-glow);}
   .page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:2rem;}
-
-  /* Points banner */
   .points-banner{background:linear-gradient(135deg,rgba(139,26,26,0.15),rgba(192,57,43,0.08));border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:0.9rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
   .points-total{font-family:var(--headline-font);font-weight:bold;font-size:1.5rem;color:var(--maroon-light);}
   .points-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
   .points-earned{font-size:0.82rem;color:#e88080;font-weight:normal;}
   .points-toast{position:fixed;top:80px;right:2rem;z-index:999;background:var(--surface);border:1px solid rgba(139,26,26,0.4);border-radius:10px;padding:0.6rem 1.2rem;font-family:var(--headline-font);font-weight:bold;font-size:0.9rem;color:var(--maroon-light);box-shadow:0 8px 30px rgba(0,0,0,0.4);transform:translateY(-20px);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;text-transform:uppercase;letter-spacing:0.06em;}
   .points-toast.show{transform:translateY(0);opacity:1;}
-
+  .mastery-banner{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:12px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;font-size:0.82rem;color:var(--correct);display:flex;align-items:center;gap:0.75rem;}
   .stats-bar{display:flex;gap:1rem;margin-bottom:2.5rem;flex-wrap:wrap;}
-  .stat-pill{flex:1;min-width:120px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1rem;display:flex;align-items:center;gap:0.7rem;}
+  .stat-pill{flex:1;min-width:100px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1rem;display:flex;align-items:center;gap:0.7rem;}
   .stat-icon{font-size:1.2rem;}
   .stat-value{font-family:var(--headline-font);font-weight:bold;font-size:1.3rem;color:var(--text);}
   .stat-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
@@ -64,6 +62,9 @@
   .q-tag.difficulty.beginner{background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);color:var(--correct);}
   .q-tag.difficulty.intermediate{background:rgba(255,179,71,0.1);border-color:rgba(255,179,71,0.3);color:var(--warning);}
   .q-tag.difficulty.advanced{background:rgba(255,77,109,0.1);border-color:rgba(255,77,109,0.3);color:var(--wrong);}
+  .q-tag.new{background:rgba(56,182,255,0.1);border-color:rgba(56,182,255,0.3);color:#38b6ff;}
+  .q-tag.struggling{background:rgba(255,77,109,0.1);border-color:rgba(255,77,109,0.3);color:var(--wrong);}
+  .q-tag.mastered{background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);color:var(--correct);}
   .q-timer{display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);}
   .timer-dot{width:6px;height:6px;border-radius:50%;background:var(--maroon-light);animation:pulse 1s infinite;}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
@@ -93,11 +94,21 @@
   .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.5rem;text-shadow:0 0 30px var(--maroon-glow);}
   .results-sub{font-size:0.9rem;color:var(--muted);margin-bottom:2rem;}
   .results-stats{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
-  .result-stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.8rem;min-width:130px;}
+  .result-stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.8rem;min-width:120px;}
   .result-stat-val{font-family:var(--headline-font);font-weight:bold;font-size:2rem;color:var(--maroon-light);margin-bottom:0.2rem;}
   .result-stat-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
   .result-stat.points-stat{border-color:rgba(139,26,26,0.4);background:var(--maroon-glow);}
   .improvement-msg{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.25);border-radius:10px;padding:1rem 1.4rem;font-size:0.88rem;color:#e88080;margin-bottom:1.5rem;font-style:italic;}
+  .mastery-progress{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;text-align:left;}
+  .mastery-progress-title{font-family:var(--headline-font);font-weight:bold;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.75rem;}
+  .mastery-bar-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;font-size:0.78rem;}
+  .mastery-bar-label{color:var(--muted);min-width:80px;}
+  .mastery-bar-track{flex:1;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;}
+  .mastery-bar-fill{height:100%;border-radius:3px;transition:width 0.8s ease;}
+  .mastery-bar-fill.mastered{background:var(--correct);}
+  .mastery-bar-fill.active{background:var(--maroon-light);}
+  .mastery-bar-fill.unseen{background:var(--surface3);}
+  .mastery-bar-count{color:var(--text);font-weight:600;min-width:30px;text-align:right;}
   .results-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
   .btn-restart{padding:0.9rem 2.5rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:1rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.08em;box-shadow:0 4px 20px rgba(139,26,26,0.3);}
   .btn-restart:hover{transform:translateY(-2px);}
@@ -136,9 +147,13 @@
     <button class="btn-nav" onclick="logout()">Sign Out</button>
   </div>
 </nav>
+
 <div class="main" id="mainContent">
-  <div class="loading-state"><div style="font-family:'Arial Narrow',Arial,sans-serif;font-weight:bold;font-size:1.1rem;color:#c0392b;text-transform:uppercase;letter-spacing:0.1em;">Loading Training Questions...</div></div>
+  <div class="loading-state">
+    <div style="font-family:'Arial Narrow',Arial,sans-serif;font-weight:bold;font-size:1.1rem;color:#c0392b;text-transform:uppercase;letter-spacing:0.1em;">Loading Training Questions...</div>
+  </div>
 </div>
+
 <div class="modal-backdrop hidden" id="feedbackModal">
   <div class="modal">
     <div class="modal-title">Report an Issue</div>
@@ -156,7 +171,9 @@
     </div>
   </div>
 </div>
+
 <div class="points-toast" id="pointsToast"></div>
+
 <script src="config.js"></script>
 <script>
   const user = JSON.parse(localStorage.getItem('tt_user')||'{}');
@@ -165,38 +182,27 @@
   document.getElementById('userAvatar').textContent = (userEmail[0]||'T').toUpperCase();
   function logout(){localStorage.clear();window.location.href='index.html';}
 
-  // Points config
-  const PTS = { attempt:1, correct:2, feedback:5, return_session:3 };
+  const SESSION_SIZE = 10;
+  const MASTERY_THRESHOLD = 2; // correct answers to retire a question
+
+  const PTS = {attempt:1,correct:2,feedback:5,return_session:3};
   let sessionPoints = 0;
   let totalPoints = parseInt(localStorage.getItem('tt_points_'+userEmail)||'0');
-  let isReturnSession = parseInt(localStorage.getItem('tt_session_count_'+userEmail)||'0') > 0;
 
-  function awardPoints(type, label) {
-    const pts = PTS[type]||0;
-    if (!pts) return;
-    sessionPoints += pts;
-    totalPoints += pts;
-    localStorage.setItem('tt_points_'+userEmail, totalPoints);
+  function awardPoints(type,label){
+    const pts=PTS[type]||0; if(!pts)return;
+    sessionPoints+=pts; totalPoints+=pts;
+    localStorage.setItem('tt_points_'+userEmail,totalPoints);
     showPointsToast(`+${pts} pts — ${label}`);
-    savePointsToSupabase(pts, type);
-    const el = document.getElementById('statPoints');
-    if (el) el.textContent = totalPoints;
+    savePointsToSupabase(pts,type);
+    const el=document.getElementById('statPoints'); if(el)el.textContent=totalPoints;
   }
-
-  async function savePointsToSupabase(pts, reason) {
-    try {
-      await fetch(`${SUPABASE_URL}/rest/v1/technician_points`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'},
-        body:JSON.stringify({user_email:userEmail,points:pts,reason,created_at:new Date().toISOString()})
-      });
-    } catch(e){}
+  async function savePointsToSupabase(pts,reason){
+    try{await fetch(`${SUPABASE_URL}/rest/v1/technician_points`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({user_email:userEmail,points:pts,reason,created_at:new Date().toISOString()})});}catch(e){}
   }
-
-  function showPointsToast(msg) {
-    const t = document.getElementById('pointsToast');
-    t.textContent = msg;
-    t.classList.add('show');
+  function showPointsToast(msg){
+    const t=document.getElementById('pointsToast');
+    t.textContent=msg; t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'),2500);
   }
 
@@ -204,78 +210,186 @@
   let sessionStartTime=Date.now(), questionStartTime=Date.now();
   let currentFeedbackQId=null, selectedFtype=null, previousBestScore=null;
   let timerInterval=null;
+  let masteryMap = {}; // questionId -> { correct: N, attempts: N }
 
-  const REFRIGERANT_KEYWORDS = ['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
-  function isRefrigerantQuestion(q) {
-    const text = ((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
+  const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
+  function isRefrigerantQuestion(q){
+    const text=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
     return REFRIGERANT_KEYWORDS.some(k=>text.includes(k));
   }
 
-  async function loadQuestions() {
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&limit=30`,
+  // Load this technician's answer history to build mastery map
+  async function loadMasteryMap(){
+    try{
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/training_logs?select=question_id,is_correct&user_email=eq.${encodeURIComponent(userEmail)}&limit=1000`,
         {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
-      const data = await res.json();
-      questions = Array.isArray(data)&&data.length>0 ? data.filter(q=>!isRefrigerantQuestion(q)) : getDemoQuestions();
-    } catch(e){questions=getDemoQuestions();}
-    if (!questions.length) questions = getDemoQuestions();
+      const logs=await res.json();
+      if(Array.isArray(logs)){
+        logs.forEach(l=>{
+          if(!l.question_id)return;
+          if(!masteryMap[l.question_id])masteryMap[l.question_id]={correct:0,attempts:0};
+          masteryMap[l.question_id].attempts++;
+          if(l.is_correct)masteryMap[l.question_id].correct++;
+        });
+      }
+    }catch(e){}
+  }
+
+  // Smart question selection logic
+  function selectSessionQuestions(allQuestions){
+    // Filter out refrigerant questions
+    const eligible = allQuestions.filter(q=>!isRefrigerantQuestion(q));
+
+    // Categorize each question
+    const unseen    = [];  // never attempted
+    const struggling= [];  // attempted but correct < MASTERY_THRESHOLD and wrong answers exist
+    const learning  = [];  // attempted, making progress but not mastered
+    const mastered  = [];  // correct >= MASTERY_THRESHOLD — retired
+
+    eligible.forEach(q=>{
+      const m = masteryMap[q.id];
+      if(!m || m.attempts===0){
+        unseen.push(q);
+      } else if(m.correct >= MASTERY_THRESHOLD){
+        mastered.push(q);
+      } else if(m.attempts > 0 && m.correct < m.attempts){
+        struggling.push(q); // has wrong answers
+      } else {
+        learning.push(q); // attempted but all correct so far, not yet at threshold
+      }
+    });
+
+    // Shuffle each bucket
+    [unseen,struggling,learning,mastered].forEach(arr=>{
+      for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+    });
+
+    // Build session: prioritize struggling > unseen > learning > mastered (fallback)
+    let session = [];
+    const add = (arr)=>{ for(const q of arr){ if(session.length>=SESSION_SIZE)break; session.push(q); } };
+
+    add(struggling);  // highest priority — questions they've gotten wrong
+    add(unseen);      // second — fresh questions
+    add(learning);    // third — seen but not mastered
+    add(mastered);    // last resort fallback if not enough questions
+
+    return session.slice(0, SESSION_SIZE);
+  }
+
+  function getMasteryStats(allQuestions){
+    const eligible=allQuestions.filter(q=>!isRefrigerantQuestion(q));
+    let masteredCount=0, activeCount=0, unseenCount=0;
+    eligible.forEach(q=>{
+      const m=masteryMap[q.id];
+      if(!m||m.attempts===0) unseenCount++;
+      else if(m.correct>=MASTERY_THRESHOLD) masteredCount++;
+      else activeCount++;
+    });
+    return{total:eligible.length,mastered:masteredCount,active:activeCount,unseen:unseenCount};
+  }
+
+  function getQuestionStatus(q){
+    const m=masteryMap[q.id];
+    if(!m||m.attempts===0)return'new';
+    if(m.correct>=MASTERY_THRESHOLD)return'mastered';
+    if(m.attempts>0&&m.correct<m.attempts)return'struggling';
+    return'learning';
+  }
+
+  async function loadQuestions(){
+    let allQuestions=[];
+    try{
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&limit=200`,
+        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
+      const data=await res.json();
+      allQuestions=Array.isArray(data)&&data.length>0?data:getDemoQuestions();
+    }catch(e){allQuestions=getDemoQuestions();}
+
+    await loadMasteryMap();
     await loadPreviousBest();
+
+    questions=selectSessionQuestions(allQuestions);
+    window._allQuestions=allQuestions; // save for results screen
+
     // Award return session points
-    const sessionCount = parseInt(localStorage.getItem('tt_session_count_'+userEmail)||'0');
-    if (sessionCount > 0) { setTimeout(()=>awardPoints('return_session','Returning to train'), 1000); }
-    localStorage.setItem('tt_session_count_'+userEmail, sessionCount+1);
+    const sessionCount=parseInt(localStorage.getItem('tt_session_count_'+userEmail)||'0');
+    if(sessionCount>0)setTimeout(()=>awardPoints('return_session','Returning to train'),1000);
+    localStorage.setItem('tt_session_count_'+userEmail,sessionCount+1);
+
     renderPage();
   }
 
-  async function loadPreviousBest() {
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/training_logs?select=is_correct&user_email=eq.${encodeURIComponent(userEmail)}&limit=100`,
+  async function loadPreviousBest(){
+    try{
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/training_logs?select=is_correct&user_email=eq.${encodeURIComponent(userEmail)}&limit=100`,
         {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
-      const logs = await res.json();
-      if (Array.isArray(logs)&&logs.length>0) previousBestScore=Math.round((logs.filter(l=>l.is_correct).length/logs.length)*100);
-    } catch(e){}
+      const logs=await res.json();
+      if(Array.isArray(logs)&&logs.length>0)
+        previousBestScore=Math.round((logs.filter(l=>l.is_correct).length/logs.length)*100);
+    }catch(e){}
   }
 
-  function renderPage() {
-    if (!questions.length) { document.getElementById('mainContent').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📚</div><h2>No Training Questions Yet</h2><p>Your admin hasn't uploaded any training material yet. Check back soon.</p></div>`; return; }
+  function renderPage(){
+    if(!questions.length){
+      document.getElementById('mainContent').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📚</div><h2>No Training Questions Yet</h2><p>Your admin hasn't uploaded any training material yet. Check back soon.</p></div>`;
+      return;
+    }
+    const stats=getMasteryStats(window._allQuestions||questions);
+    const masteryPct=stats.total?Math.round((stats.mastered/stats.total)*100):0;
     const elapsed=Math.round((Date.now()-sessionStartTime)/60000);
+
     document.getElementById('mainContent').innerHTML=`
       <div class="page-headline">Training Session</div>
-      <div class="page-sub">Questions drawn from your team's knowledge base</div>
+      <div class="page-sub">10 questions selected based on your progress</div>
       <div class="points-banner">
         <div><div class="points-total" id="statPoints">${totalPoints}</div><div class="points-label">Total Points</div></div>
         <div style="text-align:right"><div class="points-earned">+${sessionPoints} this session</div><div class="points-label">1pt attempt · 2pt correct · 5pt feedback · 3pt return</div></div>
       </div>
-      <div class="effort-banner"><span style="font-size:1.2rem">💪</span><div><strong>Keep Going</strong> — Every question earns points. Correct answers earn bonus points!</div></div>
+      ${stats.mastered>0?`<div class="mastery-banner">🎓 You've mastered ${stats.mastered} of ${stats.total} questions (${masteryPct}%). Keep going!</div>`:''}
+      <div class="effort-banner"><span style="font-size:1.2rem">💪</span><div><strong>Smart Queue</strong> — Questions you've struggled with appear first. Master a question by getting it right ${MASTERY_THRESHOLD} times.</div></div>
       <div class="stats-bar">
-        <div class="stat-pill"><span class="stat-icon">📝</span><div><div class="stat-value" id="statAnswered">${sessionAnswered}</div><div class="stat-label">Attempted</div></div></div>
+        <div class="stat-pill"><span class="stat-icon">📝</span><div><div class="stat-value" id="statAnswered">${sessionAnswered}</div><div class="stat-label">Answered</div></div></div>
         <div class="stat-pill"><span class="stat-icon">✅</span><div><div class="stat-value" id="statCorrect">${sessionCorrect}</div><div class="stat-label">Correct</div></div></div>
+        <div class="stat-pill"><span class="stat-icon">🎓</span><div><div class="stat-value">${stats.mastered}</div><div class="stat-label">Mastered</div></div></div>
         <div class="stat-pill"><span class="stat-icon">⏱</span><div><div class="stat-value" id="statTime">${elapsed}m</div><div class="stat-label">Time</div></div></div>
       </div>
       <div class="session-progress">
-        <div class="prog-header"><span class="prog-label">Progress</span><span class="prog-frac" id="progFrac">${current+1} / ${questions.length}</span></div>
-        <div class="prog-track"><div class="prog-fill" id="progFill" style="width:${current/questions.length*100}%"></div></div>
+        <div class="prog-header"><span class="prog-label">Session Progress</span><span class="prog-frac" id="progFrac">1 / ${questions.length}</span></div>
+        <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
       </div>
       <div id="questionArea"></div>`;
     renderQuestion();
   }
 
-  function renderQuestion() {
-    if (current>=questions.length){showResults();return;}
+  function renderQuestion(){
+    if(current>=questions.length){showResults();return;}
     const q=questions[current];
     questionStartTime=Date.now();
     const opts=Array.isArray(q.options)?q.options:JSON.parse(q.options||'[]');
     const isLast=current===questions.length-1;
+    const status=getQuestionStatus(q);
+    const statusTag = status==='new'?`<span class="q-tag new">New</span>`:
+                      status==='struggling'?`<span class="q-tag struggling">Needs Work</span>`:
+                      status==='mastered'?`<span class="q-tag mastered">Mastered</span>`:'';
+    const m=masteryMap[q.id];
+    const correctCount=m?m.correct:0;
+    const progressHint = status!=='new'&&status!=='mastered'
+      ? `<span style="font-size:0.72rem;color:var(--muted)">${correctCount}/${MASTERY_THRESHOLD} correct to master</span>`
+      : status==='mastered'?`<span style="font-size:0.72rem;color:var(--correct)">✓ Mastered</span>`:'';
+
     document.getElementById('questionArea').innerHTML=`
       <div class="sec-label">Question ${current+1}</div>
       <div class="q-card" id="qCard">
         <div class="q-meta">
           <div class="q-tags">
             ${q.topic?`<span class="q-tag topic">${q.topic}</span>`:''}
-            ${q.category?`<span class="q-tag topic">${q.category}</span>`:''}
             <span class="q-tag difficulty ${q.difficulty||'beginner'}">${q.difficulty||'beginner'}</span>
+            ${statusTag}
           </div>
-          <div class="q-timer"><div class="timer-dot"></div><span id="timerDisplay">0s</span></div>
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            ${progressHint}
+            <div class="q-timer"><div class="timer-dot"></div><span id="timerDisplay">0s</span></div>
+          </div>
         </div>
         <div class="q-num">Question ${current+1} of ${questions.length}</div>
         <div class="q-text">${q.question}</div>
@@ -303,13 +417,29 @@
     const correct=q.correct_answer===letter;
     if(correct)sessionCorrect++;
     sessionAnswered++;
-    document.querySelectorAll('.option-btn').forEach(b=>{b.disabled=true;if(b.dataset.letter===q.correct_answer)b.classList.add('correct');else if(b===btn&&!correct)b.classList.add('wrong');});
+
+    // Update local mastery map immediately so results screen is accurate
+    if(!masteryMap[q.id])masteryMap[q.id]={correct:0,attempts:0};
+    masteryMap[q.id].attempts++;
+    if(correct)masteryMap[q.id].correct++;
+
+    document.querySelectorAll('.option-btn').forEach(b=>{
+      b.disabled=true;
+      if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
+      else if(b===btn&&!correct)b.classList.add('wrong');
+    });
     if(q.explanation){document.getElementById('expText').textContent=q.explanation;document.getElementById('expBox').classList.add('show');}
     document.getElementById('nextBtn').classList.add('visible');
     const sa=document.getElementById('statAnswered');if(sa)sa.textContent=sessionAnswered;
     const sc=document.getElementById('statCorrect');if(sc)sc.textContent=sessionCorrect;
     awardPoints('attempt','Question attempted');
     if(correct)setTimeout(()=>awardPoints('correct','Correct answer!'),600);
+
+    // Check if just mastered
+    if(correct&&masteryMap[q.id].correct>=MASTERY_THRESHOLD){
+      setTimeout(()=>showPointsToast('🎓 Question Mastered!'),1300);
+    }
+
     logAnswer(q,correct,timeTaken);
   }
 
@@ -329,28 +459,58 @@
     clearInterval(timerInterval);
     const elapsed=Math.round((Date.now()-sessionStartTime)/60000);
     const pct=sessionAnswered>0?Math.round((sessionCorrect/sessionAnswered)*100):0;
-    let msg=previousBestScore!==null?(pct>previousBestScore?`📈 Improved ${pct-previousBestScore} points since last session!`:pct===previousBestScore?`💪 Consistent performance — keep practicing!`:`🔄 Every session builds long-term retention.`):`🌱 Great first session! Come back regularly to earn more points.`;
+    const stats=getMasteryStats(window._allQuestions||questions);
+    const newlyMastered=questions.filter(q=>masteryMap[q.id]?.correct>=MASTERY_THRESHOLD).length;
+
+    let msg=previousBestScore!==null
+      ?(pct>previousBestScore?`📈 Improved ${pct-previousBestScore} points since last session!`
+        :pct===previousBestScore?`💪 Consistent — keep at it!`
+        :`🔄 Every session builds retention. The effort today counts.`)
+      :`🌱 Great first session! Come back regularly — improvement comes from repetition.`;
+
     document.getElementById('mainContent').innerHTML=`
       <div class="page-headline">Session Complete</div>
       <div class="page-sub">Here's how this session went</div>
       <div class="results-card">
         <div class="results-headline">Well Done!</div>
-        <div class="results-sub">You completed ${sessionAnswered} question${sessionAnswered!==1?'s':''} in this session</div>
+        <div class="results-sub">You completed ${sessionAnswered} question${sessionAnswered!==1?'s':''} in ${elapsed} minute${elapsed!==1?'s':''}</div>
         <div class="results-stats">
-          <div class="result-stat"><div class="result-stat-val">${sessionAnswered}</div><div class="result-stat-label">Attempted</div></div>
+          <div class="result-stat"><div class="result-stat-val">${sessionAnswered}</div><div class="result-stat-label">Answered</div></div>
           <div class="result-stat"><div class="result-stat-val">${sessionCorrect}</div><div class="result-stat-label">Correct</div></div>
           <div class="result-stat"><div class="result-stat-val">${elapsed}m</div><div class="result-stat-label">Time</div></div>
           <div class="result-stat points-stat"><div class="result-stat-val">+${sessionPoints}</div><div class="result-stat-label">Points Earned</div></div>
         </div>
+        <div class="mastery-progress">
+          <div class="mastery-progress-title">Overall Mastery — ${stats.total} Questions</div>
+          <div class="mastery-bar-row">
+            <div class="mastery-bar-label" style="color:var(--correct)">Mastered</div>
+            <div class="mastery-bar-track"><div class="mastery-bar-fill mastered" style="width:${stats.total?stats.mastered/stats.total*100:0}%"></div></div>
+            <div class="mastery-bar-count">${stats.mastered}</div>
+          </div>
+          <div class="mastery-bar-row">
+            <div class="mastery-bar-label" style="color:var(--warning)">In Progress</div>
+            <div class="mastery-bar-track"><div class="mastery-bar-fill active" style="width:${stats.total?stats.active/stats.total*100:0}%"></div></div>
+            <div class="mastery-bar-count">${stats.active}</div>
+          </div>
+          <div class="mastery-bar-row">
+            <div class="mastery-bar-label" style="color:var(--muted)">Not Seen</div>
+            <div class="mastery-bar-track"><div class="mastery-bar-fill" style="width:${stats.total?stats.unseen/stats.total*100:0}%;background:var(--muted);opacity:0.3"></div></div>
+            <div class="mastery-bar-count">${stats.unseen}</div>
+          </div>
+        </div>
+        ${newlyMastered>0?`<div style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);border-radius:10px;padding:0.8rem 1.2rem;margin-bottom:1rem;font-size:0.85rem;color:var(--correct);">🎓 You mastered ${newlyMastered} new question${newlyMastered!==1?'s':''} this session!</div>`:''}
         <div class="improvement-msg">${msg}</div>
         <div class="results-actions">
           <button class="btn-restart" onclick="restartSession()">Train Again →</button>
-          <a href="leaderboard.html" class="btn-leaderboard">🏆 View Leaderboard</a>
+          <a href="leaderboard.html" class="btn-leaderboard">🏆 Leaderboard</a>
         </div>
       </div>`;
   }
 
-  function restartSession(){current=0;sessionCorrect=0;sessionAnswered=0;sessionPoints=0;sessionStartTime=Date.now();loadQuestions();}
+  function restartSession(){
+    current=0;sessionCorrect=0;sessionAnswered=0;sessionPoints=0;sessionStartTime=Date.now();
+    loadQuestions();
+  }
 
   function openFeedback(qId){
     currentFeedbackQId=qId;selectedFtype=null;
@@ -370,11 +530,12 @@
   }
 
   function getDemoQuestions(){
-    return [
-      {id:'q1',question:'A customer reports the unit trips on high pressure after 10 minutes of operation. What is the FIRST thing to check?',topic:'Diagnostics',difficulty:'intermediate',options:['A) Replace the high pressure switch','B) Check condenser airflow and coil cleanliness','C) Add refrigerant charge','D) Reset the circuit breaker'],correct_answer:'B',explanation:'Restricted condenser airflow is the most common cause of high pressure trips. Always check mechanical causes before electrical.',status:'active'},
-      {id:'q2',question:'What does a compressor amp draw significantly above nameplate rating typically indicate?',topic:'Electrical Diagnostics',difficulty:'intermediate',options:['A) Normal operation','B) Low voltage supply','C) Mechanical restriction or winding failure','D) Oversized breaker'],correct_answer:'C',explanation:'High amp draw indicates the motor is working harder than normal — usually a mechanical issue or winding problem.',status:'active'},
-      {id:'q3',question:'A unit blows warm air but the outdoor unit is running. Which check comes FIRST?',topic:'Diagnostics',difficulty:'beginner',options:['A) Check indoor coil for freeze-up','B) Replace expansion valve','C) Check disconnect voltage','D) Replace thermostat'],correct_answer:'A',explanation:'A frozen indoor coil blocks airflow and causes warm air delivery even with the system running.',status:'active'},
-      {id:'q4',question:'What is the proper sequence when commissioning a new installation?',topic:'Installation',difficulty:'advanced',options:['A) Power on, check pressures, verify airflow','B) Verify electrical, check airflow, then power on','C) Pressure test, pull vacuum, verify electrical, then start','D) Start unit, then check all systems'],correct_answer:'C',explanation:'Always pressure test for leaks and pull vacuum before energizing. Skipping these steps risks equipment damage.',status:'active'},
+    return[
+      {id:'q1',question:'A unit trips on high pressure after 10 minutes. What is FIRST to check?',topic:'Diagnostics',difficulty:'intermediate',options:['A) Replace pressure switch','B) Check condenser airflow','C) Add charge','D) Reset breaker'],correct_answer:'B',explanation:'Restricted condenser airflow is the most common cause of high pressure trips.',status:'active'},
+      {id:'q2',question:'What does compressor amp draw above nameplate rating typically indicate?',topic:'Electrical',difficulty:'intermediate',options:['A) Normal operation','B) Low voltage','C) Mechanical restriction or winding failure','D) Oversized breaker'],correct_answer:'C',explanation:'High amp draw means the motor is working harder than normal.',status:'active'},
+      {id:'q3',question:'A unit blows warm air but the outdoor unit is running. What do you check first?',topic:'Diagnostics',difficulty:'beginner',options:['A) Indoor coil for freeze-up','B) Replace expansion valve','C) Check disconnect voltage','D) Replace thermostat'],correct_answer:'A',explanation:'A frozen indoor coil blocks airflow and causes warm air even with the system running.',status:'active'},
+      {id:'q4',question:'What is the proper sequence when commissioning a new installation?',topic:'Installation',difficulty:'advanced',options:['A) Power on, check pressures, verify airflow','B) Verify electrical, check airflow, then power on','C) Pressure test, pull vacuum, verify electrical, then start','D) Start unit, then check all systems'],correct_answer:'C',explanation:'Always pressure test and pull vacuum before energizing.',status:'active'},
+      {id:'q5',question:'A contactor shows pitting and burn marks. What should you do?',topic:'Electrical',difficulty:'beginner',options:['A) Clean with sandpaper and reuse','B) Replace the contactor','C) Apply dielectric grease','D) Ignore if it still closes'],correct_answer:'B',explanation:'A pitted or burned contactor must be replaced — it will fail under load.',status:'active'},
     ];
   }
 
