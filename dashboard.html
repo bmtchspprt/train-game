@@ -76,6 +76,8 @@
   .status-chip.resolved{background:rgba(0,229,160,0.1);color:var(--success);border:1px solid rgba(0,229,160,0.25);}
   .status-chip.dismissed{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border);}
   .status-chip.active{background:rgba(0,229,160,0.1);color:var(--success);border:1px solid rgba(0,229,160,0.25);}
+  .status-chip.admin{background:rgba(139,26,26,0.15);color:var(--maroon-light);border:1px solid rgba(139,26,26,0.3);}
+  .status-chip.technician{background:rgba(56,182,255,0.08);color:var(--accent3);border:1px solid rgba(56,182,255,0.2);}
   .btn-action{padding:0.3rem 0.75rem;border-radius:6px;font-size:0.75rem;cursor:pointer;transition:all 0.15s;border:1px solid;font-weight:500;font-family:'DM Sans',sans-serif;}
   .btn-action.review{background:rgba(123,92,250,0.1);border-color:rgba(123,92,250,0.3);color:var(--accent2);}
   .btn-action.review:hover{background:rgba(123,92,250,0.2);}
@@ -91,6 +93,8 @@
   .btn-action.delete:hover{background:rgba(255,77,109,0.2);}
   .btn-action.award{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.3);color:#ffd700;}
   .btn-action.award:hover{background:rgba(255,215,0,0.18);}
+  .btn-action.primary{background:var(--maroon);border-color:var(--maroon-light);color:white;}
+  .btn-action.primary:hover{background:var(--maroon-light);}
   .actions-cell{display:flex;gap:0.4rem;flex-wrap:wrap;}
   .mini-bar{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-top:4px;}
   .mini-fill{height:100%;border-radius:3px;background:var(--maroon-light);}
@@ -104,8 +108,8 @@
   .modal-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;}
   .form-group{margin-bottom:1.2rem;}
   label{display:block;font-size:0.75rem;font-weight:600;color:var(--muted);margin-bottom:0.45rem;letter-spacing:0.05em;text-transform:uppercase;font-family:var(--headline-font);}
-  input[type=text],input[type=number],textarea,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:0.75rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
-  input[type=text]:focus,input[type=number]:focus,textarea:focus,select:focus{border-color:var(--maroon-light);}
+  input[type=text],input[type=email],input[type=password],input[type=number],textarea,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:0.75rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+  input[type=text]:focus,input[type=email]:focus,input[type=password]:focus,input[type=number]:focus,textarea:focus,select:focus{border-color:var(--maroon-light);}
   textarea{resize:vertical;min-height:80px;}
   select{cursor:pointer;}
   .option-input{display:flex;gap:0.5rem;margin-bottom:0.5rem;align-items:center;}
@@ -114,13 +118,20 @@
   .btn-cancel{padding:0.6rem 1.2rem;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-size:0.88rem;font-family:'DM Sans',sans-serif;}
   .btn-save{padding:0.6rem 1.5rem;background:var(--maroon);border:none;border-radius:8px;color:white;font-size:0.88rem;font-weight:bold;cursor:pointer;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;}
   .btn-save:hover{background:var(--maroon-light);}
+  .btn-save:disabled{opacity:0.5;cursor:not-allowed;}
   .fb-detail{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-top:0.5rem;font-size:0.83rem;line-height:1.65;color:var(--text);}
   .fb-meta{font-size:0.75rem;color:var(--muted);margin-top:0.4rem;}
   .empty-row td{text-align:center;padding:3rem;color:var(--muted);font-size:0.88rem;}
   .effort-note{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.25);border-radius:10px;padding:0.8rem 1.2rem;font-size:0.82rem;color:#e88080;margin-bottom:1.2rem;font-style:italic;}
-  /* Points section */
   .pts-input-row{display:flex;gap:0.75rem;align-items:flex-end;flex-wrap:wrap;}
   .pts-input-row .form-group{flex:1;min-width:120px;margin-bottom:0;}
+  .key-warning{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.3);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;font-size:0.83rem;color:var(--warning);line-height:1.7;}
+  .key-warning strong{display:block;font-size:0.9rem;margin-bottom:0.4rem;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;}
+  .key-warning code{background:rgba(0,0,0,0.3);padding:0.15rem 0.5rem;border-radius:4px;font-size:0.8rem;color:#ffd700;}
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1.2rem;font-size:0.85rem;z-index:999;animation:fadeUp 0.25s ease;display:none;}
+  .toast.show{display:block;}
+  .toast.success{border-color:rgba(0,229,160,0.4);color:var(--success);}
+  .toast.error{border-color:rgba(255,77,109,0.4);color:var(--danger);}
 </style>
 </head>
 <body>
@@ -132,6 +143,7 @@
     <ul class="sidebar-nav">
       <li><button id="nav-overview" class="active" onclick="navTo('overview')">📊 Overview</button></li>
       <li><button id="nav-technicians" onclick="navTo('technicians')">👥 Technicians</button></li>
+      <li><button id="nav-users" onclick="navTo('users')">🔐 User Management</button></li>
       <li><button id="nav-points" onclick="navTo('points')">🏆 Points Manager</button></li>
     </ul>
     <div class="sidebar-section">Content</div>
@@ -195,6 +207,29 @@
       </div>
     </section>
 
+    <!-- USER MANAGEMENT -->
+    <section class="section" id="section-users">
+      <div id="serviceKeyWarning" class="key-warning">
+        <strong>⚙️ Setup Required</strong>
+        To manage users from this page, add your Supabase service role key to <code>config.js</code> as <code>SUPABASE_SERVICE_KEY</code>.
+        Find it in Supabase → Project Settings → API → service_role key. Keep this key private — do not commit it to a public GitHub repo.
+        <div style="margin-top:0.6rem;font-size:0.78rem;opacity:0.8">Once added, this warning will disappear and all user management features will work.</div>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">All Users</div>
+          <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+            <input class="search-input" placeholder="Search users..." oninput="filterTable('usersTable',this.value)">
+            <button class="btn-action primary" style="padding:0.45rem 1rem;font-size:0.8rem;" onclick="openAddUserModal()">+ Add User</button>
+          </div>
+        </div>
+        <table id="usersTable">
+          <thead><tr><th>Email</th><th>Role</th><th>Created</th><th>Last Sign In</th><th>Actions</th></tr></thead>
+          <tbody id="usersTableBody"><tr class="empty-row"><td colspan="5">Loading users...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- POINTS MANAGER -->
     <section class="section" id="section-points">
       <div class="effort-note">🏆 Points are earned automatically during training. Use this panel to award bonus points (e.g. monthly rewards, exceptional performance) or make corrections.</div>
@@ -238,6 +273,50 @@
         <tbody id="kbReportTable"><tr class="empty-row"><td colspan="4">Loading...</td></tr></tbody></table>
       </div>
     </section>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal-backdrop hidden" id="addUserModal">
+  <div class="modal">
+    <div class="modal-title">Add User</div>
+    <div class="modal-sub">Create a new account. The user will be confirmed automatically.</div>
+    <div class="form-group"><label>Email Address</label><input type="email" id="newUserEmail" placeholder="technician@company.com"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="newUserPassword" placeholder="Min 6 characters"></div>
+    <div class="form-group"><label>Role</label>
+      <select id="newUserRole">
+        <option value="technician">Technician</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Full Name (optional)</label><input type="text" id="newUserName" placeholder="e.g. John Smith"></div>
+    <div id="addUserError" style="color:var(--danger);font-size:0.82rem;margin-bottom:0.5rem;display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddUserModal()">Cancel</button>
+      <button class="btn-save" id="addUserSaveBtn" onclick="submitAddUser()">Create User</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal-backdrop hidden" id="editUserModal">
+  <div class="modal">
+    <div class="modal-title">Edit User</div>
+    <div class="modal-sub" id="editUserSub">Update this user's details.</div>
+    <input type="hidden" id="editUserId">
+    <div class="form-group"><label>Email Address</label><input type="email" id="editUserEmail"></div>
+    <div class="form-group"><label>New Password <span style="color:var(--muted);font-size:0.72rem;text-transform:none;letter-spacing:0">(leave blank to keep current)</span></label><input type="password" id="editUserPassword" placeholder="Enter new password to change"></div>
+    <div class="form-group"><label>Role</label>
+      <select id="editUserRole">
+        <option value="technician">Technician</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div id="editUserError" style="color:var(--danger);font-size:0.82rem;margin-bottom:0.5rem;display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeEditUserModal()">Cancel</button>
+      <button class="btn-save" id="editUserSaveBtn" onclick="submitEditUser()">Save Changes</button>
+    </div>
   </div>
 </div>
 
@@ -302,6 +381,9 @@
   </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script src="config.js"></script>
 <script>
   const user=JSON.parse(localStorage.getItem('tt_user')||'{}');
@@ -309,8 +391,22 @@
   document.getElementById('adminAvatar').textContent=(user.email||'A')[0].toUpperCase();
   function logout(){localStorage.clear();window.location.href='index.html';}
 
-  const sectionMeta={overview:['Overview','Platform activity at a glance'],technicians:['Technicians','Effort, practice, and improvement'],points:['Points Manager','Award bonus points and manage monthly rewards'],questions:['Question Bank','Manage and edit quiz questions'],feedback:['Feedback Reports','Review and resolve question issues'],reports:['Reports','Analytics and knowledge insights']};
-  const sectionLoaders={overview:loadOverview,technicians:loadTechnicians,points:loadPoints,questions:loadQuestions,feedback:loadFeedback,reports:loadReports};
+  function showToast(msg,type='success'){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className='toast show '+(type==='error'?'error':'success');
+    setTimeout(()=>t.className='toast',3000);
+  }
+
+  const sectionMeta={
+    overview:['Overview','Platform activity at a glance'],
+    technicians:['Technicians','Effort, practice, and improvement'],
+    users:['User Management','Add, edit, and remove platform users'],
+    points:['Points Manager','Award bonus points and manage monthly rewards'],
+    questions:['Question Bank','Manage and edit quiz questions'],
+    feedback:['Feedback Reports','Review and resolve question issues'],
+    reports:['Reports','Analytics and knowledge insights']
+  };
+  const sectionLoaders={overview:loadOverview,technicians:loadTechnicians,users:loadUsers,points:loadPoints,questions:loadQuestions,feedback:loadFeedback,reports:loadReports};
 
   function navTo(id){
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -331,6 +427,139 @@
       return null;
     }catch{return null;}
   }
+
+  async function sfAdmin(path,opts={}){
+    const key=typeof SUPABASE_SERVICE_KEY!=='undefined'?SUPABASE_SERVICE_KEY:null;
+    if(!key)return{error:'No service key configured'};
+    try{
+      const res=await fetch(SUPABASE_URL+path,{
+        headers:{'Content-Type':'application/json','apikey':key,'Authorization':`Bearer ${key}`,...opts.headers},
+        ...opts
+      });
+      const data=await res.json().catch(()=>({}));
+      if(res.ok)return data;
+      return{error:data.message||data.error||'Request failed'};
+    }catch(e){return{error:e.message};}
+  }
+
+  // ── USER MANAGEMENT ──────────────────────────────────────────
+
+  async function loadUsers(){
+    const hasKey=typeof SUPABASE_SERVICE_KEY!=='undefined'&&SUPABASE_SERVICE_KEY;
+    document.getElementById('serviceKeyWarning').style.display=hasKey?'none':'block';
+    if(!hasKey){
+      document.getElementById('usersTableBody').innerHTML='<tr class="empty-row"><td colspan="5">Add SUPABASE_SERVICE_KEY to config.js to manage users.</td></tr>';
+      return;
+    }
+    document.getElementById('usersTableBody').innerHTML='<tr class="empty-row"><td colspan="5">Loading...</td></tr>';
+    const data=await sfAdmin('/auth/v1/admin/users?per_page=200');
+    if(data.error){
+      document.getElementById('usersTableBody').innerHTML=`<tr class="empty-row"><td colspan="5">Error: ${data.error}</td></tr>`;
+      return;
+    }
+    const users=data.users||[];
+    if(!users.length){
+      document.getElementById('usersTableBody').innerHTML='<tr class="empty-row"><td colspan="5">No users found.</td></tr>';
+      return;
+    }
+    document.getElementById('usersTableBody').innerHTML=users.map(u=>{
+      const role=u.user_metadata?.role||'technician';
+      const created=u.created_at?new Date(u.created_at).toLocaleDateString():'—';
+      const lastSignIn=u.last_sign_in_at?new Date(u.last_sign_in_at).toLocaleDateString():'Never';
+      const isSelf=u.email===user.email;
+      return `<tr>
+        <td>
+          <div class="tech-name">${u.user_metadata?.full_name||u.email.split('@')[0]}${isSelf?' <span style="font-size:0.7rem;color:var(--muted)">(you)</span>':''}</div>
+          <div class="tech-email">${u.email}</div>
+        </td>
+        <td><span class="status-chip ${role}">${role}</span></td>
+        <td style="font-size:0.8rem;color:var(--muted)">${created}</td>
+        <td style="font-size:0.8rem;color:var(--muted)">${lastSignIn}</td>
+        <td><div class="actions-cell">
+          <button class="btn-action edit" onclick='openEditUserModal(${JSON.stringify({id:u.id,email:u.email,role,name:u.user_metadata?.full_name||""}).replace(/'/g,"&#39;")})'>Edit</button>
+          ${!isSelf?`<button class="btn-action delete" onclick="deleteUser('${u.id}','${u.email}')">Delete</button>`:''}
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function openAddUserModal(){
+    document.getElementById('newUserEmail').value='';
+    document.getElementById('newUserPassword').value='';
+    document.getElementById('newUserName').value='';
+    document.getElementById('newUserRole').value='technician';
+    document.getElementById('addUserError').style.display='none';
+    document.getElementById('addUserSaveBtn').disabled=false;
+    document.getElementById('addUserSaveBtn').textContent='Create User';
+    document.getElementById('addUserModal').classList.remove('hidden');
+  }
+  function closeAddUserModal(){document.getElementById('addUserModal').classList.add('hidden');}
+
+  async function submitAddUser(){
+    const email=document.getElementById('newUserEmail').value.trim();
+    const password=document.getElementById('newUserPassword').value;
+    const role=document.getElementById('newUserRole').value;
+    const name=document.getElementById('newUserName').value.trim();
+    const errEl=document.getElementById('addUserError');
+    const btn=document.getElementById('addUserSaveBtn');
+    if(!email||!password){errEl.textContent='Email and password are required.';errEl.style.display='block';return;}
+    if(password.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';return;}
+    btn.disabled=true;btn.textContent='Creating...';
+    const result=await sfAdmin('/auth/v1/admin/users',{
+      method:'POST',
+      body:JSON.stringify({email,password,email_confirm:true,user_metadata:{role,full_name:name}})
+    });
+    btn.disabled=false;btn.textContent='Create User';
+    if(result.error){errEl.textContent=result.error;errEl.style.display='block';return;}
+    closeAddUserModal();
+    showToast('User created successfully');
+    loadUsers();
+  }
+
+  function openEditUserModal(u){
+    document.getElementById('editUserId').value=u.id;
+    document.getElementById('editUserEmail').value=u.email;
+    document.getElementById('editUserPassword').value='';
+    document.getElementById('editUserRole').value=u.role||'technician';
+    document.getElementById('editUserSub').textContent='Editing: '+u.email;
+    document.getElementById('editUserError').style.display='none';
+    document.getElementById('editUserSaveBtn').disabled=false;
+    document.getElementById('editUserSaveBtn').textContent='Save Changes';
+    document.getElementById('editUserModal').classList.remove('hidden');
+  }
+  function closeEditUserModal(){document.getElementById('editUserModal').classList.add('hidden');}
+
+  async function submitEditUser(){
+    const id=document.getElementById('editUserId').value;
+    const email=document.getElementById('editUserEmail').value.trim();
+    const password=document.getElementById('editUserPassword').value;
+    const role=document.getElementById('editUserRole').value;
+    const errEl=document.getElementById('editUserError');
+    const btn=document.getElementById('editUserSaveBtn');
+    if(!email){errEl.textContent='Email is required.';errEl.style.display='block';return;}
+    const payload={email,user_metadata:{role}};
+    if(password){
+      if(password.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';return;}
+      payload.password=password;
+    }
+    btn.disabled=true;btn.textContent='Saving...';
+    const result=await sfAdmin(`/auth/v1/admin/users/${id}`,{method:'PUT',body:JSON.stringify(payload)});
+    btn.disabled=false;btn.textContent='Save Changes';
+    if(result.error){errEl.textContent=result.error;errEl.style.display='block';return;}
+    closeEditUserModal();
+    showToast('User updated successfully');
+    loadUsers();
+  }
+
+  async function deleteUser(id,email){
+    if(!confirm('Permanently delete '+email+'? This cannot be undone.'))return;
+    const result=await sfAdmin(`/auth/v1/admin/users/${id}`,{method:'DELETE'});
+    if(result&&result.error){showToast('Error: '+result.error,'error');return;}
+    showToast('User deleted');
+    loadUsers();
+  }
+
+  // ── EXISTING SECTIONS ────────────────────────────────────────
 
   async function loadOverview(){
     const[logs,questions,feedback]=await Promise.all([sf('/rest/v1/training_logs?select=*&order=created_at.desc&limit=500'),sf('/rest/v1/bst_training_results?select=*&status=eq.active'),sf('/rest/v1/question_feedback?select=*&status=eq.pending')]);
@@ -421,8 +650,7 @@
     const reason=document.getElementById('awardReason').value||'Admin adjustment';
     if(!pts){alert('Please enter a point value.');return;}
     await sf('/rest/v1/technician_points',{method:'POST',body:JSON.stringify({user_email:email,points:pts,reason,created_at:new Date().toISOString()})});
-    closeAwardModal();
-    loadPoints();
+    closeAwardModal();loadPoints();
   }
 
   async function loadQuestions(){
