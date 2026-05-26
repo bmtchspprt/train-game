@@ -1141,9 +1141,8 @@
 
   // ── CHARTS & UTILS ────────────────────────────────────────
   function filterTable(tableId,query){document.querySelectorAll(`#${tableId} tbody tr`).forEach(row=>{row.style.display=row.textContent.toLowerCase().includes(query.toLowerCase())?'':'none';});}
-  function getLast14Days(logs){const labels=[],data=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));const ds=d.toISOString().split('T')[0];data.push(logs.filter(l=>l.created_at?.startsWith(ds)).length||Math.floor(Math.random()*15+1));}return{labels,data};}
-  function getTopicAccuracy(questions){const topics=[...new Set(questions.map(q=>q.topic).filter(Boolean))].slice(0,6);return{labels:topics.length?topics:['Electrical','Safety','Compressor','Installation'],data:(topics.length?topics:['a','b','c','d']).map(()=>Math.floor(Math.random()*35+55));};}
-  function drawBarChart(canvasId,chartData,color){
+function getLast14Days(logs){const labels=[],data=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));const ds=d.toISOString().split('T')[0];data.push(logs.filter(l=>l.created_at?.startsWith(ds)).length||Math.floor(Math.random()*15+1));}return{labels,data};}
+  function getTopicAccuracy(questions){const topics=[...new Set(questions.map(q=>q.topic).filter(Boolean))].slice(0,6);return{labels:topics.length?topics:['Electrical','Safety','Compressor','Installation'],data:(topics.length?topics:['a','b','c','d']).map(()=>Math.floor(Math.random()*35+55));};}  function drawBarChart(canvasId,chartData,color){
     const canvas=document.getElementById(canvasId);if(!canvas)return;
     canvas.width=canvas.offsetWidth||400;
     const ctx=canvas.getContext('2d');const{labels,data}=chartData;
