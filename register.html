@@ -1,1 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechTrain — Field Technician Knowledge Platform</title>
+<style>
+  :root {
+    --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;
+    --maroon:#8B1A1A;--maroon-light:#c0392b;--maroon-glow:rgba(139,26,26,0.18);
+    --text:#f0f0f8;--muted:#8888aa;--border:rgba(255,255,255,0.07);
+    --danger:#ff4d6d;--success:#00e5a0;--font:'Arial Narrow',Arial,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font);font-weight:bold;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(139,26,26,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 90% 80%,rgba(0,229,160,0.08) 0%,transparent 55%);pointer-events:none;z-index:0;}
+  body.theme-light{--bg:#f4f2ef;--surface:#fff;--surface2:#f0ede8;--text:#1a1410;--muted:#8a7a6a;--border:rgba(0,0,0,0.1);}
+  body.theme-light::before{background:none;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);background:rgba(10,10,15,0.7);transition:background 0.3s;}
+  body.theme-light nav{background:rgba(244,242,239,0.85);}
+  .logo{font-family:var(--font);font-weight:bold;font-size:1.4rem;letter-spacing:0.04em;color:var(--text);text-decoration:none;text-transform:uppercase;}
+  .logo span{color:var(--maroon-light);}
+  .nav-links{display:flex;gap:0.5rem;align-items:center;}
+  .theme-toggle{width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .theme-toggle:hover{border-color:var(--maroon-light);}
+  .nav-btn{padding:0.5rem 1.2rem;border-radius:8px;font-family:var(--font);font-size:0.88rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-decoration:none;text-transform:uppercase;letter-spacing:0.04em;}
+  .nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+  .nav-btn.ghost:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
+  .nav-btn.primary{background:var(--maroon);border:1px solid var(--maroon-light);color:white;}
+  .nav-btn.primary:hover{background:var(--maroon-light);}
+  .hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:8rem 2rem 4rem;}
+  .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(139,26,26,0.1);border:1px solid rgba(139,26,26,0.3);border-radius:100px;padding:0.35rem 1rem;font-size:0.78rem;font-weight:bold;color:#e88080;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem;animation:fadeUp 0.6s ease both;}
+  .hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--maroon-light);box-shadow:0 0 8px var(--maroon-light);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  h1{font-family:var(--font);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:bold;line-height:1.05;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp 0.6s 0.1s ease both;}
+  h1 .highlight{color:var(--maroon-light);text-shadow:0 0 40px var(--maroon-glow);}
+  .hero-sub{font-size:clamp(0.95rem,2vw,1.1rem);color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:3rem;font-weight:normal;animation:fadeUp 0.6s 0.2s ease both;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;animation:fadeUp 0.6s 0.3s ease both;box-shadow:0 40px 80px rgba(0,0,0,0.4);transition:background 0.3s;}
 
+  /* Mode tabs — Sign In / Change Password */
+  .mode-tabs{display:flex;gap:0.5rem;margin-bottom:1.8rem;background:var(--surface2);padding:0.3rem;border-radius:10px;}
+  .mode-tab{flex:1;padding:0.55rem;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--font);font-size:0.82rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
+  .mode-tab.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+
+  .role-tabs{display:flex;gap:0.5rem;margin-bottom:1.8rem;background:var(--surface2);padding:0.3rem;border-radius:10px;}
+  .role-tab{flex:1;padding:0.55rem;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--font);font-size:0.88rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
+  .role-tab.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+  .card-title{font-family:var(--font);font-size:1.3rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.4rem;}
+  .card-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;font-weight:normal;}
+  .form-group{margin-bottom:1.2rem;}
+  label{display:block;font-size:0.75rem;font-weight:bold;color:var(--muted);margin-bottom:0.5rem;letter-spacing:0.08em;text-transform:uppercase;}
+  input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.8rem 1rem;color:var(--text);font-family:var(--font);font-size:0.95rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;}
+  input:focus{border-color:var(--maroon-light);box-shadow:0 0 0 3px var(--maroon-glow);}
+  .btn-login{width:100%;padding:0.9rem;background:var(--maroon);border:none;border-radius:10px;color:white;font-family:var(--font);font-size:1rem;font-weight:bold;cursor:pointer;margin-top:0.5rem;transition:all 0.2s;letter-spacing:0.08em;text-transform:uppercase;}
+  .btn-login:hover{background:var(--maroon-light);transform:translateY(-1px);box-shadow:0 8px 24px var(--maroon-glow);}
+  .btn-login:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+  .divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0;color:var(--muted);font-size:0.8rem;font-weight:normal;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .btn-demo{width:100%;padding:0.8rem;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:var(--font);font-size:0.88rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
+  .btn-demo:hover{border-color:var(--maroon);color:#e88080;}
+  .btn-register{display:block;width:100%;padding:0.8rem;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:var(--font);font-size:0.88rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;text-decoration:none;text-align:center;margin-top:0.75rem;}
+  .btn-register:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
+  .msg{padding:0.7rem 1rem;border-radius:8px;font-size:0.85rem;font-weight:normal;margin-bottom:1rem;display:none;}
+  .msg.error{background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.25);color:var(--danger);display:block;}
+  .msg.success{background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.25);color:var(--success);display:block;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .password-strength{margin-top:0.5rem;height:4px;border-radius:2px;background:var(--surface2);overflow:hidden;}
+  .password-strength-fill{height:100%;border-radius:2px;transition:width 0.3s,background 0.3s;}
+  .strength-label{font-size:0.7rem;color:var(--muted);margin-top:0.3rem;font-weight:normal;}
+  .features{position:relative;z-index:1;padding:6rem 3rem;max-width:1200px;margin:0 auto;}
+  .section-label{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--maroon-light);font-weight:bold;margin-bottom:1rem;text-align:center;}
+  .section-title{font-family:var(--font);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:bold;letter-spacing:0.04em;text-transform:uppercase;text-align:center;margin-bottom:4rem;color:var(--maroon-light);text-shadow:0 0 40px var(--maroon-glow);}
+  .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+  .feat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:border-color 0.3s,transform 0.3s;}
+  .feat-card:hover{border-color:rgba(139,26,26,0.4);transform:translateY(-4px);}
+  .feat-icon{font-size:1.6rem;margin-bottom:1.2rem;}
+  .feat-title{font-family:var(--font);font-size:1rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.6rem;color:var(--maroon-light);}
+  .feat-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;font-weight:normal;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  footer{position:relative;z-index:1;text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;font-weight:normal;border-top:1px solid var(--border);text-transform:uppercase;letter-spacing:0.06em;}
+</style>
+</head>
+<body>
+<script src="theme.js"></script>
+<nav>
+  <a href="index.html" class="logo">TECH<span>TRAIN</span></a>
+  <div class="nav-links">
+    <button class="theme-toggle" id="themeToggle" onclick="TechTheme.toggle()">☀️</button>
+    <a href="leaderboard.html" class="nav-btn ghost">🏆 Leaderboard</a>
+    <a href="dashboard.html" class="nav-btn ghost">Dashboard</a>
+    <a href="training.html" class="nav-btn primary">Start Training</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">AI-Powered Field Training</div>
+  <h1>Turn Manuals Into<br><span class="highlight">Field Expertise</span></h1>
+  <p class="hero-sub">Upload email threads and PDF manuals. AI generates smart quizzes. Earn points, climb the leaderboard, and track your team's growing knowledge.</p>
+
+  <div class="card">
+
+    <!-- Mode tabs: shown after login for password change -->
+    <div class="mode-tabs" id="modeTabs" style="display:none;">
+      <button class="mode-tab active" onclick="switchMode('signin',this)">Sign In</button>
+      <button class="mode-tab" onclick="switchMode('changepass',this)">Change Password</button>
+    </div>
+
+    <!-- SIGN IN PANEL -->
+    <div class="panel active" id="panel-signin">
+      <div class="card-title">Welcome Back</div>
+      <div class="card-sub">Sign in to continue your training</div>
+      <div class="role-tabs">
+        <button class="role-tab active" onclick="setRole('technician',this)">Technician</button>
+        <button class="role-tab" onclick="setRole('admin',this)">Admin</button>
+      </div>
+      <div class="msg" id="loginMsg"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="emailInput" placeholder="you@company.com" oninput="clearMsg('loginMsg')">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="passwordInput" placeholder="••••••••" oninput="clearMsg('loginMsg')">
+      </div>
+      <button class="btn-login" id="loginBtn" onclick="handleLogin()">Sign In →</button>
+      <div class="divider">or</div>
+      <button class="btn-demo" onclick="demoLogin()">Continue with Demo Access</button>
+      <a href="register.html" class="btn-register">Create New Account →</a>
+    </div>
+
+    <!-- CHANGE PASSWORD PANEL -->
+    <div class="panel" id="panel-changepass">
+      <div class="card-title">Change Password</div>
+      <div class="card-sub" id="changePassSub">Enter your current password and choose a new one.</div>
+      <div class="msg" id="changePassMsg"></div>
+      <div id="changePassForm">
+        <div class="form-group">
+          <label>Current Password</label>
+          <input type="password" id="currentPassword" placeholder="Your current password" oninput="clearMsg('changePassMsg')">
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="newPassword" placeholder="At least 8 characters" oninput="checkNewPassword(this.value)">
+          <div class="password-strength"><div class="password-strength-fill" id="newStrengthFill" style="width:0%"></div></div>
+          <div class="strength-label" id="newStrengthLabel"></div>
+        </div>
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <input type="password" id="confirmNewPassword" placeholder="Repeat new password" oninput="clearMsg('changePassMsg')">
+        </div>
+        <button class="btn-login" id="changePassBtn" onclick="handleChangePassword()">Update Password →</button>
+      </div>
+      <div id="changePassSuccess" style="display:none;text-align:center;padding:1rem 0;">
+        <div style="font-size:2rem;margin-bottom:0.75rem;">✅</div>
+        <div style="font-family:var(--font);font-size:1rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.06em;color:var(--success);margin-bottom:0.5rem;">Password Updated!</div>
+        <div style="font-size:0.85rem;color:var(--muted);font-weight:normal;margin-bottom:1.5rem;">Your password has been changed successfully.</div>
+        <button class="btn-login" onclick="goToTraining()">Continue Training →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="features">
+  <div class="section-label">Platform Features</div>
+  <div class="section-title">Everything Your Team Needs</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-icon">📄</div><div class="feat-title">Smart Document Ingestion</div><div class="feat-desc">Upload PDFs and email threads. AI parses, indexes, and extracts key knowledge automatically into the knowledge base.</div></div>
+    <div class="feat-card"><div class="feat-icon">🧠</div><div class="feat-title">AI Quiz Generation</div><div class="feat-desc">Claude generates contextual, multi-format questions from your uploaded materials — no manual authoring required.</div></div>
+    <div class="feat-card"><div class="feat-icon">🏆</div><div class="feat-title">Points & Leaderboard</div><div class="feat-desc">Earn points for training, correct answers, and improving questions. Compete on the team leaderboard and earn monthly rewards.</div></div>
+    <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Training Analytics</div><div class="feat-desc">Track questions attempted, time invested, and knowledge growth over time with detailed technician-level reporting.</div></div>
+  </div>
+</section>
+
+<footer>© 2025 TechTrain Platform — Built on Supabase + Claude AI</footer>
+
+<script src="config.js"></script>
+<script>
+  let currentRole='technician';
+  let _sessionToken=null;
+
+  function setRole(role,btn){
+    currentRole=role;
+    document.querySelectorAll('.role-tab').forEach(function(t){t.classList.remove('active');});
+    btn.classList.add('active');
+  }
+
+  function clearMsg(id){
+    const m=document.getElementById(id);
+    if(m){m.className='msg';m.textContent='';}
+  }
+
+  function showMsg(id,text,type){
+    const m=document.getElementById(id);
+    if(m){m.textContent=text;m.className='msg '+type;}
+  }
+
+  function switchMode(mode,btn){
+    document.querySelectorAll('.mode-tab').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+    btn.classList.add('active');
+    document.getElementById('panel-'+mode).classList.add('active');
+  }
+
+  function goToTraining(){
+    const role=localStorage.getItem('tt_role');
+    window.location.href=role==='admin'?'dashboard.html':'training.html';
+  }
+
+  async function handleLogin(){
+    const email=document.getElementById('emailInput').value.trim();
+    const password=document.getElementById('passwordInput').value;
+    clearMsg('loginMsg');
+    if(!email||!password){showMsg('loginMsg','Please enter your email and password.','error');return;}
+    const btn=document.getElementById('loginBtn');
+    btn.disabled=true;btn.textContent='Signing In...';
+    try{
+      const res=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY},
+        body:JSON.stringify({email:email,password:password})
+      });
+      const data=await res.json();
+      if(data.access_token){
+        _sessionToken=data.access_token;
+        localStorage.setItem('tt_token',data.access_token);
+        localStorage.setItem('tt_user',JSON.stringify(data.user));
+        localStorage.setItem('tt_role',currentRole);
+        // Show Change Password tab option
+        document.getElementById('modeTabs').style.display='flex';
+        window.location.href=currentRole==='admin'?'dashboard.html':'training.html';
+      } else {
+        showMsg('loginMsg',data.error_description||'Login failed. Check your credentials.','error');
+        btn.disabled=false;btn.textContent='Sign In →';
+      }
+    }catch(e){
+      demoLogin();
+    }
+  }
+
+  function demoLogin(){
+    localStorage.setItem('tt_role',currentRole);
+    localStorage.setItem('tt_user',JSON.stringify({email:'demo@techtrain.app',id:'demo-user'}));
+    localStorage.setItem('tt_token','demo-token');
+    window.location.href=currentRole==='admin'?'dashboard.html':'training.html';
+  }
+
+  function checkNewPassword(val){
+    const fill=document.getElementById('newStrengthFill');
+    const label=document.getElementById('newStrengthLabel');
+    const hasLength=val.length>=8;
+    const hasUpper=/[A-Z]/.test(val);
+    const hasNumber=/[0-9]/.test(val);
+    const score=!val?0:(val.length<4?1:(hasLength&&hasUpper&&hasNumber?3:hasLength?2:1));
+    const configs=[
+      {w:'0%',bg:'transparent',text:''},
+      {w:'33%',bg:'#ff4d6d',text:'Weak'},
+      {w:'66%',bg:'#ffb347',text:'Fair'},
+      {w:'100%',bg:'#00e5a0',text:'Strong'}
+    ];
+    fill.style.width=configs[score].w;
+    fill.style.background=configs[score].bg;
+    label.textContent=configs[score].text;
+    label.style.color=configs[score].bg||'var(--muted)';
+  }
+
+  async function handleChangePassword(){
+    const currentPass=document.getElementById('currentPassword').value;
+    const newPass=document.getElementById('newPassword').value;
+    const confirmPass=document.getElementById('confirmNewPassword').value;
+    clearMsg('changePassMsg');
+
+    if(!currentPass){showMsg('changePassMsg','Please enter your current password.','error');return;}
+    if(!newPass||newPass.length<8){showMsg('changePassMsg','New password must be at least 8 characters.','error');return;}
+    if(newPass!==confirmPass){showMsg('changePassMsg','New passwords do not match.','error');return;}
+    if(currentPass===newPass){showMsg('changePassMsg','New password must be different from your current password.','error');return;}
+
+    const btn=document.getElementById('changePassBtn');
+    btn.disabled=true;btn.textContent='Updating...';
+
+    // First re-authenticate with current password to verify it
+    const user=JSON.parse(localStorage.getItem('tt_user')||'{}');
+    const email=user.email;
+    if(!email||email==='demo@techtrain.app'){
+      showMsg('changePassMsg','Password change is not available in demo mode.','error');
+      btn.disabled=false;btn.textContent='Update Password →';
+      return;
+    }
+
+    try{
+      // Verify current password by signing in
+      const verifyRes=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY},
+        body:JSON.stringify({email:email,password:currentPass})
+      });
+      const verifyData=await verifyRes.json();
+      if(!verifyData.access_token){
+        showMsg('changePassMsg','Current password is incorrect.','error');
+        btn.disabled=false;btn.textContent='Update Password →';
+        return;
+      }
+
+      // Update password using the fresh token
+      const updateRes=await fetch(SUPABASE_URL+'/auth/v1/user',{
+        method:'PUT',
+        headers:{
+          'Content-Type':'application/json',
+          'apikey':SUPABASE_ANON_KEY,
+          'Authorization':'Bearer '+verifyData.access_token
+        },
+        body:JSON.stringify({password:newPass})
+      });
+      const updateData=await updateRes.json();
+
+      if(updateData.id||updateData.email){
+        // Update stored token
+        localStorage.setItem('tt_token',verifyData.access_token);
+        document.getElementById('changePassForm').style.display='none';
+        document.getElementById('changePassSuccess').style.display='block';
+      } else {
+        showMsg('changePassMsg',updateData.message||updateData.msg||'Password update failed. Please try again.','error');
+        btn.disabled=false;btn.textContent='Update Password →';
+      }
+    }catch(e){
+      showMsg('changePassMsg','Connection error. Please try again.','error');
+      btn.disabled=false;btn.textContent='Update Password →';
+    }
+  }
+
+  // Check if already logged in
+  try{
+    const savedToken=localStorage.getItem('tt_token');
+    const savedRole=localStorage.getItem('tt_role');
+    // If logged in as real user, show the Change Password tab
+    if(savedToken&&savedToken!=='undefined'&&savedToken!=='null'){
+      if(savedToken!=='demo-token'){
+        document.getElementById('modeTabs').style.display='flex';
+        _sessionToken=savedToken;
+      }
+      // Auto-redirect if already logged in
+      if(savedRole==='admin')window.location.href='dashboard.html';
+      else if(savedRole==='technician')window.location.href='training.html';
+    }
+  }catch(e){localStorage.clear();}
+
+  // Enter key support
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+      const activePanel=document.querySelector('.panel.active');
+      if(activePanel&&activePanel.id==='panel-signin')handleLogin();
+      else if(activePanel&&activePanel.id==='panel-changepass')handleChangePassword();
+    }
+  });
+</script>
+</body>
+</html>
