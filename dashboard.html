@@ -332,7 +332,7 @@
               <button class="add-tech-tab" onclick="switchAddTab('password',this)">🔑 Set Password Directly</button>
             </div>
             <div class="add-tech-panel active" id="panel-invite">
-              <p style="font-size:0.82rem;color:var(--muted);font-weight:normal;margin-bottom:1.2rem;line-height:1.6;">Supabase will send the technician an email with a link to set their own password.</p>
+              <p style="font-size:0.82rem;color:var(--muted);font-weight:normal;margin-bottom:1.2rem;line-height:1.6;">Opens your email app with a pre-filled invite message containing the registration link. Enter the technician's email and click Send Invite.</p>
               <div class="inline-form">
                 <div class="form-group"><label>Technician Email</label><input type="email" id="inviteEmail" placeholder="tech@yourcompany.com"></div>
                 <button class="btn-add" id="inviteBtn" onclick="sendInvite()">Send Invite →</button>
@@ -485,11 +485,12 @@
 
   function logout(){localStorage.clear();window.location.href='index.html';}
 
-  function showToast(msg,type='success'){
+  function showToast(msg,type){
+    type=type||'success';
     const t=document.getElementById('toastGlobal');
     t.textContent=msg;
     t.className='toast-global '+type+' show';
-    setTimeout(()=>t.classList.remove('show'),3500);
+    setTimeout(function(){t.classList.remove('show');},3500);
   }
 
   const sectionMeta={
@@ -513,8 +514,8 @@
   };
 
   function navTo(id){
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.sidebar-nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+    document.querySelectorAll('.sidebar-nav button').forEach(function(b){b.classList.remove('active');});
     document.getElementById('section-'+id).classList.add('active');
     const navBtn=document.getElementById('nav-'+id);
     if(navBtn)navBtn.classList.add('active');
@@ -531,44 +532,46 @@
     if(sectionLoaders[id])sectionLoaders[id]();
   }
 
-  async function sf(path,opts={}){
+  async function sf(path,opts){
+    opts=opts||{};
     try{
       const res=await fetch(SUPABASE_URL+path,{
         headers:{
           'Content-Type':'application/json',
           'apikey':SUPABASE_ANON_KEY,
           'Authorization':'Bearer '+SUPABASE_ANON_KEY,
-          'Prefer':'return=minimal',
-          ...(opts.headers||{})
+          'Prefer':'return=minimal'
         },
-        ...opts
+        method:opts.method||'GET',
+        body:opts.body||undefined
       });
       if([200,201,204].includes(res.status)){
-        try{return await res.json();}catch{return true;}
+        try{return await res.json();}catch(e){return true;}
       }
       return null;
-    }catch{return null;}
+    }catch(e){return null;}
   }
 
-  async function sfAdmin(path,opts={}){
+  async function sfAdmin(path,opts){
+    opts=opts||{};
     const key=typeof SUPABASE_SERVICE_KEY!=='undefined'?SUPABASE_SERVICE_KEY:SUPABASE_ANON_KEY;
     try{
       const res=await fetch(SUPABASE_URL+path,{
         headers:{
           'Content-Type':'application/json',
           'apikey':key,
-          'Authorization':'Bearer '+key,
-          ...(opts.headers||{})
+          'Authorization':'Bearer '+key
         },
-        ...opts
+        method:opts.method||'GET',
+        body:opts.body||undefined
       });
       const text=await res.text();
       try{return{ok:res.ok,status:res.status,data:JSON.parse(text)};}
-      catch{return{ok:res.ok,status:res.status,data:text};}
+      catch(e){return{ok:res.ok,status:res.status,data:text};}
     }catch(e){return{ok:false,status:0,data:e.message};}
   }
 
-  // ── DIFFICULTY METRICS ────────────────────────────────────
+  // ── DIFFICULTY ────────────────────────────────────────────
 
   function computedDiffLabel(metrics){
     if(!metrics||metrics.first.total<5)return null;
@@ -599,7 +602,8 @@
       });
     }
     let updated=0;
-    for(const q of questions){
+    for(let i=0;i<questions.length;i++){
+      const q=questions[i];
       const m=metricsMap[q.id];
       const newDiff=computedDiffLabel(m);
       if(newDiff&&newDiff!==q.difficulty){
@@ -622,16 +626,13 @@
   // ── QUESTIONS ─────────────────────────────────────────────
 
   async function loadQuestions(){
-    const results=await Promise.all([
-      sf('/rest/v1/bst_training_results?select=*&order=created_at.desc&limit=500'),
-      sf('/rest/v1/training_logs?select=question_id,is_correct,user_email&limit=5000')
-    ]);
-    const qArr=Array.isArray(results[0])?results[0]:getDemoQuestions();
-    const logs=results[1];
+    const qRes=await sf('/rest/v1/bst_training_results?select=*&order=created_at.desc&limit=500');
+    const logRes=await sf('/rest/v1/training_logs?select=question_id,is_correct,user_email&limit=5000');
+    const qArr=Array.isArray(qRes)?qRes:getDemoQuestions();
     const userQSeen={};
     const metricsMap={};
-    if(Array.isArray(logs)){
-      logs.forEach(function(l){
+    if(Array.isArray(logRes)){
+      logRes.forEach(function(l){
         const key=l.user_email+'|'+l.question_id;
         if(!metricsMap[l.question_id])metricsMap[l.question_id]={first:{correct:0,total:0},all:{correct:0,total:0}};
         if(!userQSeen[key]){
@@ -672,7 +673,8 @@
       const typeLabel=q.question_type==='simulator'?'sim':'mc';
       const typeBadge='<span class="q-type-badge '+typeLabel+'">'+(typeLabel==='sim'?'🖥 Sim':'MC')+'</span>';
       return '<tr>'
-        +'<td style="max-width:260px;white-space:normal;font-size:0.82rem">'+(q.question||'').substring(0,90)+((q.question||'').length>90?'…':'')+'<div style="font-size:0.7rem;color:var(--muted);margin-top:2px">'+(q.topic||'')+'</div></td>'
+        +'<td style="max-width:260px;white-space:normal;font-size:0.82rem">'+(q.question||'').substring(0,90)+((q.question||'').length>90?'…':'')
+        +'<div style="font-size:0.7rem;color:var(--muted);margin-top:2px">'+(q.topic||'')+'</div></td>'
         +'<td>'+typeBadge+'</td>'
         +'<td>'+thumbHTML+'</td>'
         +'<td>'+meterHTML+'</td>'
@@ -745,9 +747,7 @@
         headers:{'apikey':key,'Authorization':'Bearer '+key,'Content-Type':file.type,'x-upsert':'true'},
         body:file
       });
-      if(res.ok){
-        return{path:path,url:SUPABASE_URL+'/storage/v1/object/public/question-images/'+path};
-      }
+      if(res.ok)return{path:path,url:SUPABASE_URL+'/storage/v1/object/public/question-images/'+path};
     }catch(e){}
     return null;
   }
@@ -806,19 +806,16 @@
   async function saveQuestion(){
     const id=document.getElementById('editId').value;
     const btn=document.getElementById('editSaveBtn');
-    btn.disabled=true;
-    btn.textContent='Saving...';
+    btn.disabled=true;btn.textContent='Saving...';
     let imageUrl=document.getElementById('editImageUrl').value||null;
     let imagePath=document.getElementById('editImagePath').value||null;
     if(_pendingImageFile){
       const uploaded=await uploadImageToSupabase(_pendingImageFile,id);
       if(uploaded){imageUrl=uploaded.url;imagePath=uploaded.path;}
-      else{showToast('Image upload failed — saving without image','error');}
+      else showToast('Image upload failed — saving without image','error');
     }
     const preview=document.getElementById('imgPreview');
-    if(!preview.src||preview.style.display==='none'){
-      imageUrl=null;imagePath=null;
-    }
+    if(!preview.src||preview.style.display==='none'){imageUrl=null;imagePath=null;}
     await sf('/rest/v1/bst_training_results?id=eq.'+id,{
       method:'PATCH',
       body:JSON.stringify({
@@ -838,18 +835,12 @@
         image_path:imagePath
       })
     });
-    btn.disabled=false;
-    btn.textContent='Save Changes';
-    closeEditModal();
-    showToast('Question saved!');
-    loadQuestions();
+    btn.disabled=false;btn.textContent='Save Changes';
+    closeEditModal();showToast('Question saved!');loadQuestions();
   }
 
   async function toggleQuestion(id,status){
-    await sf('/rest/v1/bst_training_results?id=eq.'+id,{
-      method:'PATCH',
-      body:JSON.stringify({status:status==='active'?'inactive':'active'})
-    });
+    await sf('/rest/v1/bst_training_results?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:status==='active'?'inactive':'active'})});
     loadQuestions();
   }
 
@@ -881,12 +872,8 @@
   }
 
   async function loadPoints(){
-    const results=await Promise.all([
-      sf('/rest/v1/technician_points?select=user_email,points,reason,created_at&order=created_at.desc&limit=500'),
-      sf('/rest/v1/points_history?select=*&order=snapshot_at.desc&limit=200')
-    ]);
-    const ptsRows=results[0];
-    const history=results[1];
+    const ptsRows=await sf('/rest/v1/technician_points?select=user_email,points,reason,created_at&order=created_at.desc&limit=500');
+    const history=await sf('/rest/v1/points_history?select=*&order=snapshot_at.desc&limit=200');
     const rows=Array.isArray(ptsRows)?ptsRows:[];
     const map={};
     rows.forEach(function(r){
@@ -906,8 +893,7 @@
         +'<td><div class="actions-cell">'
         +'<button class="btn-action award" onclick="openAwardModal(\''+t.email+'\')">+ Award</button>'
         +'<button class="btn-action dismiss" onclick="openAwardModal(\''+t.email+'\',\'deduct\')">− Deduct</button>'
-        +'</div></td>'
-        +'</tr>';
+        +'</div></td></tr>';
     }).join('')||'<tr class="empty-row"><td colspan="4">No points this month yet.</td></tr>';
     const histEl=document.getElementById('pointsHistory');
     if(!Array.isArray(history)||!history.length){
@@ -918,10 +904,10 @@
     history.forEach(function(h){if(!byMonth[h.month_label])byMonth[h.month_label]=[];byMonth[h.month_label].push(h);});
     histEl.innerHTML=Object.entries(byMonth).map(function(entry){
       const month=entry[0];
-      const entries=entry[1];
-      const s=entries.sort(function(a,b){return b.total_points-a.total_points;});
-      const top3=s.slice(0,3).map(function(e,i){return ['🥇','🥈','🥉'][i]+' '+e.user_email.split('@')[0]+' ('+e.total_points+'pts)';}).join(' · ');
-      return '<div class="history-row"><div><div class="history-month">'+month+'</div><div class="history-winners">'+top3+'</div></div><div style="font-size:0.78rem;color:var(--muted)">'+s.length+' technician'+(s.length!==1?'s':'')+'</div></div>';
+      const ents=entry[1].sort(function(a,b){return b.total_points-a.total_points;});
+      const top3=ents.slice(0,3).map(function(e,i){return ['🥇','🥈','🥉'][i]+' '+e.user_email.split('@')[0]+' ('+e.total_points+'pts)';}).join(' · ');
+      return '<div class="history-row"><div><div class="history-month">'+month+'</div><div class="history-winners">'+top3+'</div></div>'
+        +'<div style="font-size:0.78rem;color:var(--muted)">'+ents.length+' technician'+(ents.length!==1?'s':'')+'</div></div>';
     }).join('');
   }
 
@@ -942,27 +928,21 @@
     const pts=parseInt(document.getElementById('awardPoints').value)||0;
     const reason=document.getElementById('awardReason').value||'Admin adjustment';
     if(!pts){alert('Please enter a point value.');return;}
-    await sf('/rest/v1/technician_points',{
-      method:'POST',
-      body:JSON.stringify({user_email:email,points:pts,reason:reason,created_at:new Date().toISOString()})
-    });
-    closeAwardModal();
-    showToast('Points updated!');
-    loadPoints();
+    await sf('/rest/v1/technician_points',{method:'POST',body:JSON.stringify({user_email:email,points:pts,reason:reason,created_at:new Date().toISOString()})});
+    closeAwardModal();showToast('Points updated!');loadPoints();
   }
 
   // ── OVERVIEW ──────────────────────────────────────────────
 
   async function loadOverview(){
-    const results=await Promise.all([
-      sf('/rest/v1/training_logs?select=*&order=created_at.desc&limit=500'),
-      sf('/rest/v1/bst_training_results?select=*&status=eq.active'),
-      sf('/rest/v1/question_feedback?select=*&status=eq.pending')
-    ]);
-    const logsArr=Array.isArray(results[0])?results[0]:getDemoLogs();
-    const qArr=Array.isArray(results[1])?results[1]:getDemoQuestions();
-    const fbArr=Array.isArray(results[2])?results[2]:getDemoFeedback();
-    const techEmails=[...new Set(logsArr.map(function(l){return l.user_email;}).filter(Boolean))];
+    const logsRes=await sf('/rest/v1/training_logs?select=*&order=created_at.desc&limit=500');
+    const qRes=await sf('/rest/v1/bst_training_results?select=*&status=eq.active');
+    const fbRes=await sf('/rest/v1/question_feedback?select=*&status=eq.pending');
+    const logsArr=Array.isArray(logsRes)?logsRes:getDemoLogs();
+    const qArr=Array.isArray(qRes)?qRes:getDemoQuestions();
+    const fbArr=Array.isArray(fbRes)?fbRes:getDemoFeedback();
+    const techEmails=[];
+    logsArr.forEach(function(l){if(l.user_email&&techEmails.indexOf(l.user_email)===-1)techEmails.push(l.user_email);});
     const totalCorrect=logsArr.filter(function(l){return l.is_correct;}).length;
     const accuracy=logsArr.length?Math.round((totalCorrect/logsArr.length)*100):0;
     const ptsRes=await sf('/rest/v1/technician_points?select=points');
@@ -988,25 +968,20 @@
       const pct=t.total?Math.round((t.correct/t.total)*100):0;
       return '<tr>'
         +'<td><div class="tech-name">'+t.email.split('@')[0]+'</div><div class="tech-email">'+t.email+'</div></td>'
-        +'<td>'+t.total+'</td>'
-        +'<td style="font-weight:600">'+pct+'%</td>'
+        +'<td>'+t.total+'</td><td style="font-weight:600">'+pct+'%</td>'
         +'<td style="color:var(--muted);font-size:0.8rem">'+(t.last?new Date(t.last).toLocaleDateString():'—')+'</td>'
-        +'<td style="min-width:120px"><div style="font-size:0.75rem;color:var(--muted);margin-bottom:3px">'+t.correct+'/'+t.total+'</div><div class="mini-bar"><div class="mini-fill" style="width:'+pct+'%"></div></div></td>'
-        +'</tr>';
+        +'<td style="min-width:120px"><div style="font-size:0.75rem;color:var(--muted);margin-bottom:3px">'+t.correct+'/'+t.total+'</div>'
+        +'<div class="mini-bar"><div class="mini-fill" style="width:'+pct+'%"></div></div></td></tr>';
     });
     document.getElementById('recentActivityTable').innerHTML=techRows.join('')||'<tr class="empty-row"><td colspan="5">No training activity yet.</td></tr>';
   }
 
   async function loadTechnicians(){
-    const results=await Promise.all([
-      sf('/rest/v1/training_logs?select=*&order=created_at.desc&limit=1000'),
-      sf('/rest/v1/technician_points?select=user_email,points')
-    ]);
-    const logsArr=Array.isArray(results[0])?results[0]:getDemoLogs();
+    const logsRes=await sf('/rest/v1/training_logs?select=*&order=created_at.desc&limit=1000');
+    const ptsRes=await sf('/rest/v1/technician_points?select=user_email,points');
+    const logsArr=Array.isArray(logsRes)?logsRes:getDemoLogs();
     const ptsMap={};
-    if(Array.isArray(results[1])){
-      results[1].forEach(function(r){if(!ptsMap[r.user_email])ptsMap[r.user_email]=0;ptsMap[r.user_email]+=(r.points||0);});
-    }
+    if(Array.isArray(ptsRes))ptsRes.forEach(function(r){if(!ptsMap[r.user_email])ptsMap[r.user_email]=0;ptsMap[r.user_email]+=(r.points||0);});
     const techMap={};
     logsArr.forEach(function(l){
       const e=l.user_email||'unknown@demo.com';
@@ -1029,8 +1004,7 @@
         +'<td><span style="font-weight:600;color:#ffd700">'+pts+' pts</span></td>'
         +'<td>'+avgTime+'s</td>'
         +'<td style="font-size:0.8rem;color:var(--muted)">'+(t.last?new Date(t.last).toLocaleDateString():'—')+'</td>'
-        +'<td><span style="font-size:0.78rem;font-weight:600;color:'+trendColor+'">'+trend+'</span></td>'
-        +'</tr>';
+        +'<td><span style="font-size:0.78rem;font-weight:600;color:'+trendColor+'">'+trend+'</span></td></tr>';
     });
     document.getElementById('techTableBody').innerHTML=rows.join('')||'<tr class="empty-row"><td colspan="7">No data yet.</td></tr>';
   }
@@ -1050,25 +1024,18 @@
         +'<td><div class="actions-cell">'
         +'<button class="btn-action review" onclick=\'openReviewModal('+safeF+')\'>Review</button>'
         +'<button class="btn-action dismiss" onclick="quickDismiss(\''+f.id+'\')">Dismiss</button>'
-        +'</div></td>'
-        +'</tr>';
+        +'</div></td></tr>';
     });
     document.getElementById('feedbackTableBody').innerHTML=rows.join('')||'<tr class="empty-row"><td colspan="6">No feedback yet.</td></tr>';
   }
 
   async function loadReports(){
-    const results=await Promise.all([
-      sf('/rest/v1/bst_training_results?select=difficulty,topic,computed_difficulty'),
-      sf('/rest/v1/knowledge_base?select=*')
-    ]);
-    const qArr=Array.isArray(results[0])?results[0]:getDemoQuestions();
-    const kbArr=Array.isArray(results[1])?results[1]:getDemoDocs();
+    const qRes=await sf('/rest/v1/bst_training_results?select=difficulty,topic,computed_difficulty');
+    const kbRes=await sf('/rest/v1/knowledge_base?select=*');
+    const qArr=Array.isArray(qRes)?qRes:getDemoQuestions();
+    const kbArr=Array.isArray(kbRes)?kbRes:getDemoDocs();
     const counts={beginner:0,intermediate:0,advanced:0};
-    qArr.forEach(function(q){
-      const d=q.computed_difficulty||q.difficulty||'beginner';
-      if(counts[d]!==undefined)counts[d]++;
-      else counts.beginner++;
-    });
+    qArr.forEach(function(q){const d=q.computed_difficulty||q.difficulty||'beginner';if(counts[d]!==undefined)counts[d]++;else counts.beginner++;});
     drawBarChart('diffChart',{labels:['Beginner','Intermediate','Advanced'],data:[counts.beginner,counts.intermediate,counts.advanced]},'#c0392b');
     drawBarChart('fbTrendChart',{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],data:[1,2,0,3,1,2,1]},'#8B1A1A');
     const kbRows=kbArr.map(function(doc){
@@ -1076,8 +1043,7 @@
         +'<td>'+(doc.title||doc.source_filename||'Untitled')+'</td>'
         +'<td style="font-size:0.75rem;color:var(--muted);text-transform:uppercase">'+(doc.file_type||'—')+'</td>'
         +'<td>'+((doc.raw_questions||[]).length)+'</td>'
-        +'<td style="font-size:0.78rem;color:var(--muted)">'+(doc.created_at?new Date(doc.created_at).toLocaleDateString():'—')+'</td>'
-        +'</tr>';
+        +'<td style="font-size:0.78rem;color:var(--muted)">'+(doc.created_at?new Date(doc.created_at).toLocaleDateString():'—')+'</td></tr>';
     });
     document.getElementById('kbReportTable').innerHTML=kbRows.join('')||'<tr class="empty-row"><td colspan="4">No documents yet.</td></tr>';
   }
@@ -1093,24 +1059,32 @@
     document.getElementById('panel-'+tab).classList.add('active');
   }
 
-  async function sendInvite(){
+  // ── MAILTO INVITE ─────────────────────────────────────────
+
+  function sendInvite(){
     const email=document.getElementById('inviteEmail').value.trim();
     const resultEl=document.getElementById('inviteResult');
     resultEl.className='result-msg';
-    if(!email){resultEl.textContent='Please enter an email address.';resultEl.className='result-msg error';return;}
-    const btn=document.getElementById('inviteBtn');
-    btn.disabled=true;btn.textContent='Sending...';
-    const res=await sfAdmin('/auth/v1/invite',{method:'POST',body:JSON.stringify({email:email})});
-    btn.disabled=false;btn.textContent='Send Invite →';
-    if(res.ok){
-      resultEl.textContent='✓ Invite sent to '+email+'.';
-      resultEl.className='result-msg success';
-      document.getElementById('inviteEmail').value='';
-      loadSettingsTechs();
-    } else {
-      resultEl.textContent='Error: '+(res.data&&(res.data.msg||res.data.message)||'Check your service role key.');
+    if(!email){
+      resultEl.textContent='Please enter an email address.';
       resultEl.className='result-msg error';
+      return;
     }
+    const registerUrl='https://bmtchspprt.github.io/train-game/register.html';
+    const subject='You are invited to join the BST Technical Training Challenge';
+    const body='Hi,\n\n'
+      +'You have been invited to join the BST Technical Training Challenge.\n\n'
+      +'Create your account here:\n'
+      +registerUrl+'\n\n'
+      +'Once registered, sign in and start training right away.\n\n'
+      +'Questions? Reply to this email.\n\n'
+      +'BST Training';
+    window.location.href='mailto:'+email
+      +'?subject='+encodeURIComponent(subject)
+      +'&body='+encodeURIComponent(body);
+    resultEl.textContent='✓ Your email app opened with the invite for '+email+'. Hit send from there.';
+    resultEl.className='result-msg success';
+    document.getElementById('inviteEmail').value='';
   }
 
   async function createTechAccount(){
@@ -1131,7 +1105,7 @@
       document.getElementById('createPassword').value='';
       loadSettingsTechs();
     } else {
-      resultEl.textContent='Error: '+(res.data&&(res.data.msg||res.data.message)||'Check your service role key.');
+      resultEl.textContent='Error: '+((res.data&&(res.data.msg||res.data.message))||'Check your service role key.');
       resultEl.className='result-msg error';
     }
   }
@@ -1159,9 +1133,7 @@
         +'<span>Remove '+u.email.split('@')[0]+'?</span>'
         +'<button class="btn-confirm-yes" onclick="deleteTech(\''+u.id+'\',\''+u.email+'\')">Yes</button>'
         +'<button class="btn-confirm-no" onclick="cancelDeleteTech(\''+u.id+'\')">Cancel</button>'
-        +'</div>'
-        +'</td>'
-        +'</tr>';
+        +'</div></td></tr>';
     }).join('');
   }
 
@@ -1219,12 +1191,8 @@
 
   async function resolveFeedback(status){
     const id=document.getElementById('reviewFbId').value;
-    await sf('/rest/v1/question_feedback?id=eq.'+id,{
-      method:'PATCH',
-      body:JSON.stringify({status:status,admin_notes:document.getElementById('reviewNotes').value})
-    });
-    closeReviewModal();
-    loadFeedback();
+    await sf('/rest/v1/question_feedback?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:status,admin_notes:document.getElementById('reviewNotes').value})});
+    closeReviewModal();loadFeedback();
   }
 
   async function quickDismiss(id){
@@ -1235,11 +1203,7 @@
   function goEditFromReview(){
     if(_currentFb&&_currentFb.question_id){
       sf('/rest/v1/bst_training_results?id=eq.'+_currentFb.question_id).then(function(q){
-        if(Array.isArray(q)&&q[0]){
-          closeReviewModal();
-          navTo('questions');
-          openEditModal(q[0]);
-        }
+        if(Array.isArray(q)&&q[0]){closeReviewModal();navTo('questions');openEditModal(q[0]);}
       });
     }
   }
@@ -1266,9 +1230,10 @@
   }
 
   function getTopicAccuracy(questions){
-    const topics=[...new Set(questions.map(function(q){return q.topic;}).filter(Boolean))].slice(0,6);
-    const defaultTopics=['Electrical','Safety','Compressor','Installation'];
-    const useTopics=topics.length?topics:defaultTopics;
+    const seen={};
+    const topics=[];
+    questions.forEach(function(q){if(q.topic&&!seen[q.topic]){seen[q.topic]=true;topics.push(q.topic);}});
+    const useTopics=topics.slice(0,6).length?topics.slice(0,6):['Electrical','Safety','Compressor','Installation'];
     return{
       labels:useTopics,
       data:useTopics.map(function(){return Math.floor(Math.random()*35+55);})
@@ -1282,8 +1247,7 @@
     const ctx=canvas.getContext('2d');
     const labels=chartData.labels;
     const data=chartData.data;
-    const W=canvas.width;
-    const H=canvas.height;
+    const W=canvas.width,H=canvas.height;
     const padL=40,padB=30,padR=10,padT=10;
     const maxVal=Math.max.apply(null,data)||1;
     ctx.clearRect(0,0,W,H);
@@ -1295,9 +1259,9 @@
     }
     const gap=(W-padL-padR)/labels.length;
     const barW=gap*0.6;
-    labels.forEach(function(label,i){
-      const x=padL+i*gap+gap*0.2;
-      const h=(data[i]/maxVal)*(H-padT-padB);
+    for(let j=0;j<labels.length;j++){
+      const x=padL+j*gap+gap*0.2;
+      const h=(data[j]/maxVal)*(H-padT-padB);
       const y=padT+(H-padT-padB)-h;
       const grad=ctx.createLinearGradient(0,y,0,H-padB);
       grad.addColorStop(0,color);
@@ -1305,37 +1269,37 @@
       ctx.fillStyle=grad;
       const r=4;
       ctx.beginPath();
-      ctx.moveTo(x+r,y);
-      ctx.lineTo(x+barW-r,y);
+      ctx.moveTo(x+r,y);ctx.lineTo(x+barW-r,y);
       ctx.arcTo(x+barW,y,x+barW,y+r,r);
-      ctx.lineTo(x+barW,H-padB);
-      ctx.lineTo(x,H-padB);
+      ctx.lineTo(x+barW,H-padB);ctx.lineTo(x,H-padB);
       ctx.arcTo(x,y,x+r,y,r);
-      ctx.closePath();
-      ctx.fill();
+      ctx.closePath();ctx.fill();
       ctx.fillStyle='#606080';
       ctx.font='10px Arial,sans-serif';
       ctx.textAlign='center';
-      ctx.fillText(label.length>8?label.substring(0,7)+'..':label,x+barW/2,H-padB+16);
-    });
+      const lbl=labels[j];
+      ctx.fillText(lbl.length>8?lbl.substring(0,7)+'..':lbl,x+barW/2,H-padB+16);
+    }
     ctx.fillStyle='#606080';
     ctx.font='10px Arial,sans-serif';
     ctx.textAlign='right';
-    for(let i=0;i<=4;i++){
-      ctx.fillText(Math.round(maxVal*i/4),padL-4,padT+(H-padT-padB)*(1-i/4)+4);
+    for(let k=0;k<=4;k++){
+      ctx.fillText(Math.round(maxVal*k/4),padL-4,padT+(H-padT-padB)*(1-k/4)+4);
     }
   }
 
   function getDemoLogs(){
     const techs=['j.smith@co.com','a.johnson@co.com','m.williams@co.com'];
-    return Array.from({length:40},function(_,i){
-      return{
+    const arr=[];
+    for(let i=0;i<40;i++){
+      arr.push({
         user_email:techs[i%techs.length],
         is_correct:Math.random()>0.35,
         time_taken_seconds:Math.floor(Math.random()*45+8),
         created_at:new Date(Date.now()-Math.random()*14*86400000).toISOString()
-      };
-    });
+      });
+    }
+    return arr;
   }
 
   function getDemoQuestions(){
