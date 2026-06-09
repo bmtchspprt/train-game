@@ -1095,7 +1095,6 @@ function goHome(){localStorage.clear();}
       resultEl.textContent='Error: '+((res.data&&(res.data.msg||res.data.message))||'Check your service role key.');
       resultEl.className='result-msg error';
     }
-  }
 
   // ── STEP 2: SEND LOGIN EMAIL ──────────────────────────────
 
@@ -1204,7 +1203,6 @@ function goHome(){localStorage.clear();}
     } else {
       showToast('Could not remove user. Check service role key.','error');
     }
-  }
 
   async function confirmClearLogs(){
     if(!confirm('Delete ALL training logs and points?'))return;
