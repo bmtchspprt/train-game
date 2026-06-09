@@ -524,6 +524,9 @@
   document.getElementById('adminAvatar').textContent=(user.email||'A')[0].toUpperCase();
 
   function logout(){localStorage.clear();window.location.href='index.html';}
+  function logout(){localStorage.clear();window.location.href='index.html';}
+
+function goHome(){localStorage.clear();}
 
   function showToast(msg,type){
     type=type||'success';
