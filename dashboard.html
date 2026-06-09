@@ -154,11 +154,6 @@
   .settings-card-title{font-family:var(--headline-font);font-size:1rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);}
   .settings-card-sub{font-size:0.78rem;color:var(--muted);margin-top:0.15rem;font-weight:normal;}
   .settings-card-body{padding:1.5rem;}
-  .add-tech-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;background:var(--surface2);padding:0.3rem;border-radius:10px;}
-  .add-tech-tab{flex:1;padding:0.55rem;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--headline-font);font-size:0.85rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;}
-  .add-tech-tab.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
-  .add-tech-panel{display:none;}
-  .add-tech-panel.active{display:block;}
   .inline-form{display:flex;gap:0.75rem;flex-wrap:wrap;align-items:flex-end;}
   .inline-form .form-group{flex:1;min-width:200px;margin-bottom:0;}
   .btn-add{padding:0.75rem 1.4rem;background:var(--maroon);border:none;border-radius:8px;color:white;font-family:var(--headline-font);font-weight:bold;font-size:0.88rem;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
@@ -188,8 +183,6 @@
   .toast-global.show{transform:translateY(0);opacity:1;}
   .toast-global.success{border-color:rgba(139,26,26,0.4);color:var(--maroon-light);}
   .toast-global.error{border-color:rgba(255,77,109,0.35);color:var(--danger);}
-
-  /* ── SETTINGS STEP FLOW ── */
   .step-flow{display:flex;flex-direction:column;gap:1.2rem;}
   .step-block{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;}
   .step-block-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}
@@ -197,6 +190,15 @@
   .step-block-title{font-family:var(--headline-font);font-size:0.88rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);}
   .step-block-sub{font-size:0.75rem;color:var(--muted);font-weight:normal;margin-top:0.1rem;}
   .step-divider{text-align:center;font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;padding:0.25rem 0;}
+  /* Password reveal */
+  .pw-cell{display:flex;align-items:center;gap:0.5rem;}
+  .pw-dots{font-size:1rem;letter-spacing:2px;color:var(--muted);}
+  .pw-text{font-family:'Courier New',monospace;font-size:0.82rem;color:var(--text);display:none;}
+  .pw-cell.revealed .pw-dots{display:none;}
+  .pw-cell.revealed .pw-text{display:inline;}
+  .btn-reveal{padding:0.2rem 0.55rem;border-radius:5px;background:var(--surface3);border:1px solid var(--border);color:var(--muted);font-size:0.7rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+  .btn-reveal:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
+  .no-pw{font-size:0.72rem;color:var(--muted);font-style:italic;}
 </style>
 </head>
 <body>
@@ -339,7 +341,7 @@
     <section class="section" id="section-settings">
       <div class="settings-grid">
 
-        <!-- ADD TECHNICIAN — step flow -->
+        <!-- ADD TECHNICIAN -->
         <div class="settings-card">
           <div class="settings-card-header">
             <div>
@@ -349,14 +351,12 @@
           </div>
           <div class="settings-card-body">
             <div class="step-flow">
-
-              <!-- STEP 1: Create account -->
               <div class="step-block">
                 <div class="step-block-header">
                   <div class="step-circle">1</div>
                   <div>
                     <div class="step-block-title">Create Account</div>
-                    <div class="step-block-sub">Creates the account in Supabase with email confirmation already set — no confirmation email needed</div>
+                    <div class="step-block-sub">Creates the account instantly — no confirmation email needed</div>
                   </div>
                 </div>
                 <div class="inline-form" style="flex-wrap:wrap;">
@@ -366,16 +366,13 @@
                 </div>
                 <div class="result-msg" id="createResult"></div>
               </div>
-
               <div class="step-divider">↓ then</div>
-
-              <!-- STEP 2: Send login email -->
               <div class="step-block">
                 <div class="step-block-header">
                   <div class="step-circle">2</div>
                   <div>
                     <div class="step-block-title">Send Login Details</div>
-                    <div class="step-block-sub">Opens your email app with the login URL, email, and password pre-filled. Just hit send.</div>
+                    <div class="step-block-sub">Opens your email app with the login URL, email, and password pre-filled</div>
                   </div>
                 </div>
                 <div class="inline-form">
@@ -385,7 +382,6 @@
                 </div>
                 <div class="result-msg" id="inviteResult"></div>
               </div>
-
             </div>
           </div>
         </div>
@@ -393,12 +389,12 @@
         <!-- MANAGE TECHNICIANS -->
         <div class="settings-card">
           <div class="settings-card-header">
-            <div><div class="settings-card-title">Manage Technicians</div><div class="settings-card-sub">View all accounts and remove access</div></div>
+            <div><div class="settings-card-title">Manage Technicians</div><div class="settings-card-sub">View accounts, passwords, and remove access</div></div>
             <button class="btn-add" style="padding:0.5rem 1rem;font-size:0.8rem;" onclick="loadSettingsTechs()">↻ Refresh</button>
           </div>
           <div class="settings-card-body" style="padding:0;">
-            <table><thead><tr><th>Email</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
-            <tbody id="settingsTechBody"><tr class="empty-row"><td colspan="4">Loading...</td></tr></tbody></table>
+            <table><thead><tr><th>Email</th><th>Status</th><th>Password</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody id="settingsTechBody"><tr class="empty-row"><td colspan="5">Loading...</td></tr></tbody></table>
           </div>
         </div>
 
@@ -421,7 +417,6 @@
 
       </div>
     </section>
-
   </div>
 </div>
 
@@ -654,12 +649,7 @@
       if(newDiff&&newDiff!==q.difficulty){
         await sf('/rest/v1/bst_training_results?id=eq.'+q.id,{
           method:'PATCH',
-          body:JSON.stringify({
-            difficulty:newDiff,
-            computed_difficulty:newDiff,
-            first_attempt_pct:m?Math.round((m.first.correct/m.first.total)*100):null,
-            total_attempts:m?m.all.total:0
-          })
+          body:JSON.stringify({difficulty:newDiff,computed_difficulty:newDiff,first_attempt_pct:m?Math.round((m.first.correct/m.first.total)*100):null,total_attempts:m?m.all.total:0})
         });
         updated++;
       }
@@ -728,8 +718,7 @@
         +'<button class="btn-action edit" onclick=\'openEditModal('+safeQ+')\'>Edit</button>'
         +'<button class="btn-action deactivate" onclick="toggleQuestion(\''+q.id+'\',\''+(q.status||'active')+'\')">'+(q.status==='active'?'Deactivate':'Activate')+'</button>'
         +'<button class="btn-action delete" onclick="deleteQuestion(\''+q.id+'\')">Delete</button>'
-        +'</div></td>'
-        +'</tr>';
+        +'</div></td></tr>';
     });
     document.getElementById('questionTableBody').innerHTML=rows.join('')||'<tr class="empty-row"><td colspan="6">No questions yet.</td></tr>';
   }
@@ -1071,22 +1060,12 @@
 
   function loadSettings(){loadSettingsTechs();}
 
-  // Auto-sync email from Step 1 to Step 2
-  document.addEventListener('DOMContentLoaded',function(){
-    const createEmailEl=document.getElementById('createEmail');
-    if(createEmailEl){
-      createEmailEl.addEventListener('input',function(){
-        document.getElementById('inviteEmail').value=this.value;
-      });
-    }
-  });
-
   function syncInvitePassword(){
-    const pw=document.getElementById('createPassword').value;
-    document.getElementById('invitePassword').value=pw;
+    document.getElementById('invitePassword').value=document.getElementById('createPassword').value;
   }
 
   // ── STEP 1: CREATE ACCOUNT ────────────────────────────────
+
   async function createTechAccount(){
     const email=document.getElementById('createEmail').value.trim();
     const password=document.getElementById('createPassword').value;
@@ -1099,9 +1078,13 @@
     const res=await sfAdmin('/auth/v1/admin/users',{method:'POST',body:JSON.stringify({email:email,password:password,email_confirm:true})});
     btn.disabled=false;btn.textContent='Create Account →';
     if(res.ok){
-      resultEl.textContent='✓ Account created for '+email+'. Now fill in Step 2 and send their login details.';
+      // Save password to technician_notes table
+      await sfAdmin('/rest/v1/technician_notes',{
+        method:'POST',
+        body:JSON.stringify({user_email:email,temp_password:password})
+      });
+      resultEl.textContent='✓ Account created for '+email+'. Now complete Step 2 to send their login details.';
       resultEl.className='result-msg success';
-      // Auto-fill Step 2 fields
       document.getElementById('inviteEmail').value=email;
       document.getElementById('invitePassword').value=password;
       loadSettingsTechs();
@@ -1112,28 +1095,26 @@
   }
 
   // ── STEP 2: SEND LOGIN EMAIL ──────────────────────────────
+
   function sendInvite(){
     const email=document.getElementById('inviteEmail').value.trim();
     const password=document.getElementById('invitePassword').value.trim();
     const resultEl=document.getElementById('inviteResult');
     resultEl.className='result-msg';
     if(!email){resultEl.textContent='Please enter the technician email.';resultEl.className='result-msg error';return;}
-    if(!password){resultEl.textContent='Please enter their password so it can be included in the email.';resultEl.className='result-msg error';return;}
+    if(!password){resultEl.textContent='Please enter their password.';resultEl.className='result-msg error';return;}
     const loginUrl='https://bmtchspprt.github.io/train-game/index.html';
     const subject='Your BST Technical Training Challenge Login';
     const body='Hi,\n\n'
       +'You have been set up on the BST Technical Training Challenge.\n\n'
-      +'Sign in here:\n'
-      +loginUrl+'\n\n'
+      +'Sign in here:\n'+loginUrl+'\n\n'
       +'Email: '+email+'\n'
       +'Password: '+password+'\n\n'
       +'Tip: You can change your password after signing in.\n\n'
-      +'Questions? Reply to this email.\n\n'
-      +'BST Training';
+      +'Questions? Reply to this email.\n\nBST Training';
     window.location.href='mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
     resultEl.textContent='✓ Email app opened for '+email+'. Hit send from there.';
     resultEl.className='result-msg success';
-    // Clear fields after sending
     setTimeout(function(){
       document.getElementById('createEmail').value='';
       document.getElementById('createPassword').value='';
@@ -1143,23 +1124,45 @@
     },3000);
   }
 
-  // ── MANAGE TECHS ──────────────────────────────────────────
+  // ── MANAGE TECHS WITH PASSWORD REVEAL ────────────────────
+
   async function loadSettingsTechs(){
     const tbody=document.getElementById('settingsTechBody');
-    tbody.innerHTML='<tr class="empty-row"><td colspan="4">Loading...</td></tr>';
-    const res=await sfAdmin('/auth/v1/admin/users?per_page=100');
-    if(!res.ok||!res.data||!res.data.users){
-      tbody.innerHTML='<tr class="empty-row"><td colspan="4" style="color:var(--warning);">Add SUPABASE_SERVICE_KEY to config.js to enable user management.<br><br><a href="https://supabase.com/dashboard/project/_/settings/api" target="_blank" style="color:var(--accent3);">Get service role key →</a></td></tr>';
+    tbody.innerHTML='<tr class="empty-row"><td colspan="5">Loading...</td></tr>';
+
+    // Load users and passwords in parallel
+    const userRes=await sfAdmin('/auth/v1/admin/users?per_page=100');
+    const notesRes=await sfAdmin('/rest/v1/technician_notes?select=user_email,temp_password');
+
+    if(!userRes.ok||!userRes.data||!userRes.data.users){
+      tbody.innerHTML='<tr class="empty-row"><td colspan="5" style="color:var(--warning);">Add SUPABASE_SERVICE_KEY to config.js to enable user management.<br><br><a href="https://supabase.com/dashboard/project/_/settings/api" target="_blank" style="color:var(--accent3);">Get service role key →</a></td></tr>';
       return;
     }
-    const users=res.data.users;
-    if(!users.length){tbody.innerHTML='<tr class="empty-row"><td colspan="4">No technicians yet.</td></tr>';return;}
+
+    // Build password lookup map
+    const pwMap={};
+    if(notesRes.ok&&Array.isArray(notesRes.data)){
+      notesRes.data.forEach(function(n){pwMap[n.user_email]=n.temp_password;});
+    }
+
+    const users=userRes.data.users;
+    if(!users.length){tbody.innerHTML='<tr class="empty-row"><td colspan="5">No technicians yet.</td></tr>';return;}
+
     tbody.innerHTML=users.map(function(u){
       const created=u.created_at?new Date(u.created_at).toLocaleDateString():'—';
       const confirmed=u.email_confirmed_at?'active':'invited';
+      const pw=pwMap[u.email];
+      const pwHTML=pw
+        ?'<div class="pw-cell" id="pwcell-'+u.id+'">'
+          +'<span class="pw-dots">••••••••</span>'
+          +'<span class="pw-text">'+pw+'</span>'
+          +'<button class="btn-reveal" onclick="togglePassword(\''+u.id+'\')" id="pwbtn-'+u.id+'">👁 Show</button>'
+          +'</div>'
+        :'<span class="no-pw">Not on record</span>';
       return '<tr id="row-'+u.id+'">'
         +'<td><div class="tech-name">'+u.email.split('@')[0]+'</div><div class="tech-email">'+u.email+'</div></td>'
         +'<td><span class="status-chip '+confirmed+'">'+confirmed+'</span></td>'
+        +'<td>'+pwHTML+'</td>'
         +'<td style="color:var(--muted);font-size:0.8rem">'+created+'</td>'
         +'<td>'
         +'<div class="actions-cell"><button class="btn-action delete" onclick="promptDeleteTech(\''+u.id+'\',\''+u.email+'\')">Remove</button></div>'
@@ -1169,6 +1172,15 @@
         +'<button class="btn-confirm-no" onclick="cancelDeleteTech(\''+u.id+'\')">Cancel</button>'
         +'</div></td></tr>';
     }).join('');
+  }
+
+  function togglePassword(userId){
+    const cell=document.getElementById('pwcell-'+userId);
+    const btn=document.getElementById('pwbtn-'+userId);
+    if(!cell)return;
+    const isRevealed=cell.classList.contains('revealed');
+    cell.classList.toggle('revealed');
+    btn.textContent=isRevealed?'👁 Show':'🙈 Hide';
   }
 
   function promptDeleteTech(id){
@@ -1184,6 +1196,7 @@
       showToast(email.split('@')[0]+' removed.');
       await sf('/rest/v1/training_logs?user_email=eq.'+encodeURIComponent(email),{method:'DELETE'});
       await sf('/rest/v1/technician_points?user_email=eq.'+encodeURIComponent(email),{method:'DELETE'});
+      await sfAdmin('/rest/v1/technician_notes?user_email=eq.'+encodeURIComponent(email),{method:'DELETE'});
       loadSettingsTechs();
     } else {
       showToast('Could not remove user. Check service role key.','error');
@@ -1301,7 +1314,8 @@
   }
 
   function getDemoFeedback(){
-    return[{id:'fb1',question_text:'A unit trips on high pressure...',feedback_type:'wrong_answer',author_name:'j.smith@co.com',comment:'Please verify',status:'pending',created_at:new Date().toISOString()}];
+    return[{id:'fb1',question_text:'A unit trips on high pressure...',feedback_type:'wrong_answer
+      return[{id:'fb1',question_text:'A unit trips on high pressure...',feedback_type:'wrong_answer',author_name:'j.smith@co.com',comment:'Please verify',status:'pending',created_at:new Date().toISOString()}];
   }
 
   function getDemoDocs(){
