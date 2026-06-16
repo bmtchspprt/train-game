@@ -30,15 +30,40 @@
   .btn-nav:hover{border-color:var(--maroon-light);color:var(--maroon-light);}
   .main{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:3rem 1.5rem;min-height:calc(100vh - 65px);}
   .page-headline{font-family:var(--headline-font);font-weight:bold;font-size:2.2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.3rem;text-shadow:0 0 30px var(--maroon-glow);}
-  .page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:2rem;}
-  .points-banner{background:linear-gradient(135deg,rgba(139,26,26,0.15),rgba(192,57,43,0.08));border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:0.9rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+  .page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;}
+
+  /* ATTEMPT BANNER */
+  .attempt-banner{border-radius:12px;padding:1rem 1.4rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;}
+  .attempt-banner.a1{background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.25);}
+  .attempt-banner.a2{background:rgba(255,179,71,0.07);border:1px solid rgba(255,179,71,0.25);}
+  .attempt-banner.a3{background:rgba(255,77,109,0.07);border:1px solid rgba(255,77,109,0.25);}
+  .attempt-banner.a-done{background:rgba(255,255,255,0.02);border:1px solid var(--border);}
+  .attempt-label{font-family:var(--headline-font);font-weight:bold;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.06em;}
+  .attempt-banner.a1 .attempt-label{color:var(--correct);}
+  .attempt-banner.a2 .attempt-label{color:var(--warning);}
+  .attempt-banner.a3 .attempt-label{color:var(--wrong);}
+  .attempt-banner.a-done .attempt-label{color:var(--muted);}
+  .attempt-sub{font-size:0.78rem;color:var(--muted);margin-top:0.2rem;font-weight:normal;line-height:1.4;}
+  .mult-badge{padding:0.3rem 0.85rem;border-radius:100px;font-family:var(--headline-font);font-weight:bold;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em;}
+  .attempt-banner.a1 .mult-badge{background:rgba(0,229,160,0.12);color:var(--correct);border:1px solid rgba(0,229,160,0.3);}
+  .attempt-banner.a2 .mult-badge{background:rgba(255,179,71,0.12);color:var(--warning);border:1px solid rgba(255,179,71,0.3);}
+  .attempt-banner.a3 .mult-badge{background:rgba(255,77,109,0.12);color:var(--wrong);border:1px solid rgba(255,77,109,0.3);}
+  .attempt-banner.a-done .mult-badge{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+
+  /* POINTS TOAST */
+  .pts-toast{position:fixed;top:80px;right:2rem;z-index:999;background:var(--surface);border:1px solid rgba(139,26,26,0.4);border-radius:10px;padding:0.6rem 1.2rem;font-family:var(--headline-font);font-weight:bold;font-size:0.9rem;color:var(--maroon-light);box-shadow:0 8px 30px rgba(0,0,0,0.4);transform:translateY(-20px);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;text-transform:uppercase;letter-spacing:0.06em;}
+  .pts-toast.show{transform:translateY(0);opacity:1;}
+
+  /* POINTS BANNER */
+  .points-banner{background:linear-gradient(135deg,rgba(139,26,26,0.15),rgba(192,57,43,0.08));border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:0.9rem 1.4rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
   .points-total{font-family:var(--headline-font);font-weight:bold;font-size:1.5rem;color:var(--maroon-light);}
   .points-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
-  .points-earned{font-size:0.82rem;color:#e88080;font-weight:normal;}
-  .points-toast{position:fixed;top:80px;right:2rem;z-index:999;background:var(--surface);border:1px solid rgba(139,26,26,0.4);border-radius:10px;padding:0.6rem 1.2rem;font-family:var(--headline-font);font-weight:bold;font-size:0.9rem;color:var(--maroon-light);box-shadow:0 8px 30px rgba(0,0,0,0.4);transform:translateY(-20px);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;text-transform:uppercase;letter-spacing:0.06em;}
-  .points-toast.show{transform:translateY(0);opacity:1;}
-  .mastery-banner{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:12px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;font-size:0.82rem;color:var(--correct);display:flex;align-items:center;gap:0.75rem;}
-  .stats-bar{display:flex;gap:1rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+  .points-earned{font-size:0.82rem;color:#e88080;font-weight:normal;margin-top:0.15rem;}
+
+  .mastery-banner{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:12px;padding:0.8rem 1.2rem;margin-bottom:1.25rem;font-size:0.82rem;color:var(--correct);display:flex;align-items:center;gap:0.75rem;}
+  .effort-banner{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:0.9rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem;font-size:0.83rem;color:#e88080;line-height:1.5;}
+  .effort-banner strong{font-family:var(--headline-font);font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;color:var(--maroon-light);}
+  .stats-bar{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;}
   .stat-pill{flex:1;min-width:100px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1rem;display:flex;align-items:center;gap:0.7rem;}
   .stat-icon{font-size:1.2rem;}
   .stat-value{font-family:var(--headline-font);font-weight:bold;font-size:1.3rem;color:var(--text);}
@@ -51,8 +76,6 @@
   .prog-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:3px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
   .sec-label{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--maroon-light);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
   .sec-label::after{content:'';flex:1;height:1px;background:var(--maroon);opacity:0.3;}
-  .effort-banner{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem;font-size:0.85rem;color:#e88080;}
-  .effort-banner strong{font-family:var(--headline-font);font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;color:var(--maroon-light);}
   .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.2rem;margin-bottom:1.5rem;animation:fadeUp 0.4s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   .q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.5rem;}
@@ -69,6 +92,7 @@
   .timer-dot{width:6px;height:6px;border-radius:50%;background:var(--maroon-light);animation:pulse 1s infinite;}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
   .q-num{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .q-image{width:100%;max-height:280px;object-fit:contain;border-radius:12px;border:1px solid var(--border);margin-bottom:1.5rem;cursor:pointer;}
   .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.25rem;line-height:1.45;margin-bottom:1.8rem;color:var(--text);}
   .options{display:flex;flex-direction:column;gap:0.75rem;}
   .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.2rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:0.93rem;color:var(--text);transition:all 0.2s;width:100%;}
@@ -90,15 +114,32 @@
   .btn-next{padding:0.85rem 2.5rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:1rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.08em;box-shadow:0 4px 20px rgba(139,26,26,0.3);display:none;}
   .btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(139,26,26,0.4);}
   .btn-next.visible{display:inline-flex;align-items:center;gap:0.5rem;}
+
+  /* RESULTS */
   .results-card{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2.5rem;text-align:center;animation:fadeUp 0.5s ease;}
   .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.5rem;text-shadow:0 0 30px var(--maroon-glow);}
   .results-sub{font-size:0.9rem;color:var(--muted);margin-bottom:2rem;}
-  .results-stats{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
-  .result-stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.8rem;min-width:120px;}
+  .results-stats{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .result-stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.8rem;min-width:110px;}
   .result-stat-val{font-family:var(--headline-font);font-weight:bold;font-size:2rem;color:var(--maroon-light);margin-bottom:0.2rem;}
   .result-stat-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
-  .result-stat.points-stat{border-color:rgba(139,26,26,0.4);background:var(--maroon-glow);}
-  .improvement-msg{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.25);border-radius:10px;padding:1rem 1.4rem;font-size:0.88rem;color:#e88080;margin-bottom:1.5rem;font-style:italic;}
+  .result-stat.pts-stat{border-color:rgba(139,26,26,0.4);background:var(--maroon-glow);}
+
+  /* ATTEMPT TRACKER in results */
+  .attempt-tracker{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;text-align:left;}
+  .attempt-tracker-title{font-family:var(--headline-font);font-weight:bold;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.85rem;}
+  .attempt-steps{display:flex;gap:0.75rem;flex-wrap:wrap;}
+  .attempt-step{flex:1;min-width:80px;padding:0.65rem 0.75rem;border-radius:9px;text-align:center;border:1px solid;}
+  .attempt-step.done{background:rgba(0,229,160,0.07);border-color:rgba(0,229,160,0.25);}
+  .attempt-step.current-done{background:rgba(255,179,71,0.08);border-color:rgba(255,179,71,0.3);}
+  .attempt-step.future{background:var(--surface3);border-color:var(--border);}
+  .attempt-step-label{font-family:var(--headline-font);font-weight:bold;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;}
+  .attempt-step.done .attempt-step-label{color:var(--correct);}
+  .attempt-step.current-done .attempt-step-label{color:var(--warning);}
+  .attempt-step.future .attempt-step-label{color:var(--muted);}
+  .attempt-step-pts{font-size:0.68rem;color:var(--muted);margin-top:0.2rem;}
+  .attempt-tracker-note{font-size:0.78rem;color:var(--muted);margin-top:0.85rem;line-height:1.5;}
+
   .mastery-progress{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;text-align:left;}
   .mastery-progress-title{font-family:var(--headline-font);font-weight:bold;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.75rem;}
   .mastery-bar-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;font-size:0.78rem;}
@@ -107,8 +148,8 @@
   .mastery-bar-fill{height:100%;border-radius:3px;transition:width 0.8s ease;}
   .mastery-bar-fill.mastered{background:var(--correct);}
   .mastery-bar-fill.active{background:var(--maroon-light);}
-  .mastery-bar-fill.unseen{background:var(--surface3);}
   .mastery-bar-count{color:var(--text);font-weight:600;min-width:30px;text-align:right;}
+  .improvement-msg{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.25);border-radius:10px;padding:1rem 1.4rem;font-size:0.88rem;color:#e88080;margin-bottom:1.5rem;font-style:italic;}
   .results-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
   .btn-restart{padding:0.9rem 2.5rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:1rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.08em;box-shadow:0 4px 20px rgba(139,26,26,0.3);}
   .btn-restart:hover{transform:translateY(-2px);}
@@ -118,6 +159,8 @@
   .empty-state-icon{font-size:3rem;margin-bottom:1rem;opacity:0.5;}
   .empty-state h2{font-family:var(--headline-font);font-weight:bold;font-size:1.4rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.5rem;}
   .empty-state p{font-size:0.88rem;line-height:1.7;max-width:400px;margin:0 auto;}
+
+  /* FEEDBACK MODAL */
   .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;}
   .modal-backdrop.hidden{display:none;}
   .modal{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2rem;width:100%;max-width:480px;animation:fadeUp 0.3s ease;}
@@ -132,6 +175,9 @@
   .btn-cancel{padding:0.6rem 1.2rem;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-size:0.88rem;}
   .btn-submit-fb{padding:0.6rem 1.4rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:8px;color:white;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:var(--headline-font);text-transform:uppercase;}
   .loading-state{text-align:center;padding:4rem;color:var(--muted);}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .lightbox.hidden{display:none;}
+  .lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;object-fit:contain;}
 </style>
 </head>
 <body>
@@ -157,389 +203,488 @@
 <div class="modal-backdrop hidden" id="feedbackModal">
   <div class="modal">
     <div class="modal-title">Report an Issue</div>
-    <div class="modal-sub">Help improve the question bank — earn 5 points for each valid report!</div>
+    <div class="modal-sub">Help improve the question bank — earn <strong style="color:var(--warning)">+10 pts</strong> for each valid report. Feedback always earns full points.</div>
     <div class="feedback-types">
       <button class="ftype-btn" onclick="selectFtype(this,'wrong_answer')">Wrong Answer</button>
       <button class="ftype-btn" onclick="selectFtype(this,'unclear_question')">Unclear</button>
       <button class="ftype-btn" onclick="selectFtype(this,'outdated_info')">Outdated</button>
       <button class="ftype-btn" onclick="selectFtype(this,'other')">Other</button>
     </div>
-    <textarea id="fbComment" placeholder="Describe the issue (optional)..."></textarea>
+    <textarea id="fbComment" placeholder="Describe the issue clearly — specific feedback earns full points..."></textarea>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeFeedback()">Cancel</button>
-      <button class="btn-submit-fb" onclick="submitFeedback()">Submit Report</button>
+      <button class="btn-submit-fb" onclick="submitFeedback()">Submit Report (+10 pts)</button>
     </div>
   </div>
 </div>
 
-<div class="points-toast" id="pointsToast"></div>
+<div class="pts-toast" id="ptsToast"></div>
+<div class="lightbox hidden" id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="Question image">
+</div>
 
 <script src="config.js"></script>
 <script>
-  const user = JSON.parse(localStorage.getItem('tt_user')||'{}');
-  const userEmail = user.email||'technician@techtrain.app';
-  document.getElementById('userLabel').textContent = userEmail.split('@')[0];
-  document.getElementById('userAvatar').textContent = (userEmail[0]||'T').toUpperCase();
-  function logout(){localStorage.clear();window.location.href='index.html';}
+// ============================================================
+// USER
+// ============================================================
+const user=JSON.parse(localStorage.getItem('tt_user')||'{}');
+const userEmail=user.email||'technician@techtrain.app';
+document.getElementById('userLabel').textContent=userEmail.split('@')[0];
+document.getElementById('userAvatar').textContent=(userEmail[0]||'T').toUpperCase();
+function logout(){localStorage.clear();window.location.href='index.html';}
 
-  const SESSION_SIZE = 10;
-  const MASTERY_THRESHOLD = 2; // correct answers to retire a question
+// ============================================================
+// ATTEMPT / POINTS SYSTEM
+// 3 attempts per day. Multipliers: 1.0 → 0.5 → 0.25 → 0 (practice)
+// Feedback always awards full 10 pts regardless of attempt.
+// ============================================================
+const MAX_ATTEMPTS=3;
+const MULTIPLIERS=[1.0,0.5,0.25];
+const BASE_PTS={attempt:2,correct:5,feedback:10};
 
-  const PTS = {attempt:1,correct:2,feedback:5,return_session:3};
-  let sessionPoints = 0;
-  let totalPoints = parseInt(localStorage.getItem('tt_points_'+userEmail)||'0');
+function todayKey(){return new Date().toISOString().split('T')[0];}
+function getAttemptCount(){return parseInt(localStorage.getItem('tt_atmp_'+userEmail+'_'+todayKey())||'0');}
+function incrementAttemptCount(){
+  const k='tt_atmp_'+userEmail+'_'+todayKey();
+  const n=getAttemptCount()+1;
+  localStorage.setItem(k,n);
+  return n;
+}
+function getMultiplier(n){return(n>=1&&n<=MAX_ATTEMPTS)?MULTIPLIERS[n-1]:0;}
 
-  function awardPoints(type,label){
-    const pts=PTS[type]||0; if(!pts)return;
-    sessionPoints+=pts; totalPoints+=pts;
-    localStorage.setItem('tt_points_'+userEmail,totalPoints);
-    showPointsToast(`+${pts} pts — ${label}`);
-    savePointsToSupabase(pts,type);
-    const el=document.getElementById('statPoints'); if(el)el.textContent=totalPoints;
-  }
-  async function savePointsToSupabase(pts,reason){
-    try{await fetch(`${SUPABASE_URL}/rest/v1/technician_points`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({user_email:userEmail,points:pts,reason,created_at:new Date().toISOString()})});}catch(e){}
-  }
-  function showPointsToast(msg){
-    const t=document.getElementById('pointsToast');
-    t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2500);
-  }
+let sessionPoints=0;
+let totalPoints=parseInt(localStorage.getItem('tt_pts_'+userEmail)||'0');
+let currentAttemptNum=0;
+let multiplier=0;
 
-  let questions=[], current=0, sessionCorrect=0, sessionAnswered=0;
-  let sessionStartTime=Date.now(), questionStartTime=Date.now();
-  let currentFeedbackQId=null, selectedFtype=null, previousBestScore=null;
-  let timerInterval=null;
-  let masteryMap = {}; // questionId -> { correct: N, attempts: N }
+function awardPts(type,label){
+  const base=BASE_PTS[type]||0;
+  const actual=type==='feedback'?base:Math.round(base*multiplier);
+  if(actual<=0)return;
+  sessionPoints+=actual;
+  totalPoints+=actual;
+  localStorage.setItem('tt_pts_'+userEmail,totalPoints);
+  showPtsToast('+'+actual+' pts — '+label);
+  savePtsDB(actual,type);
+  const el=document.getElementById('statPoints');if(el)el.textContent=totalPoints;
+  const sp=document.getElementById('sessionPts');if(sp)sp.textContent='+'+sessionPoints+' this session';
+}
 
-  const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
-  function isRefrigerantQuestion(q){
-    const text=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
-    return REFRIGERANT_KEYWORDS.some(k=>text.includes(k));
-  }
+async function savePtsDB(pts,reason){
+  try{await fetch(SUPABASE_URL+'/rest/v1/technician_points',{method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+    body:JSON.stringify({user_email:userEmail,points:pts,reason:reason,created_at:new Date().toISOString()})});}catch(e){}
+}
 
-  // Load this technician's answer history to build mastery map
-  async function loadMasteryMap(){
-    try{
-      const res=await fetch(`${SUPABASE_URL}/rest/v1/training_logs?select=question_id,is_correct&user_email=eq.${encodeURIComponent(userEmail)}&limit=1000`,
-        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
-      const logs=await res.json();
-      if(Array.isArray(logs)){
-        logs.forEach(l=>{
-          if(!l.question_id)return;
-          if(!masteryMap[l.question_id])masteryMap[l.question_id]={correct:0,attempts:0};
-          masteryMap[l.question_id].attempts++;
-          if(l.is_correct)masteryMap[l.question_id].correct++;
-        });
-      }
-    }catch(e){}
-  }
+function showPtsToast(msg){
+  const t=document.getElementById('ptsToast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
 
-  // Smart question selection logic
-  function selectSessionQuestions(allQuestions){
-    // Filter out refrigerant questions
-    const eligible = allQuestions.filter(q=>!isRefrigerantQuestion(q));
+// ============================================================
+// MASTERY
+// ============================================================
+const SESSION_SIZE=10;
+const MASTERY_THRESHOLD=2;
+let questions=[],current=0,sessionCorrect=0,sessionAnswered=0,currentStreak=0;
+let sessionStart=Date.now(),questionStart=Date.now();
+let currentFbQId=null,selectedFtype=null,previousBest=null;
+let timerInterval=null;
+let masteryMap={};
 
-    // Categorize each question
-    const unseen    = [];  // never attempted
-    const struggling= [];  // attempted but correct < MASTERY_THRESHOLD and wrong answers exist
-    const learning  = [];  // attempted, making progress but not mastered
-    const mastered  = [];  // correct >= MASTERY_THRESHOLD — retired
+const REFRIG_KW=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
+function isRefrig(q){const t=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();return REFRIG_KW.some(k=>t.includes(k));}
 
-    eligible.forEach(q=>{
-      const m = masteryMap[q.id];
-      if(!m || m.attempts===0){
-        unseen.push(q);
-      } else if(m.correct >= MASTERY_THRESHOLD){
-        mastered.push(q);
-      } else if(m.attempts > 0 && m.correct < m.attempts){
-        struggling.push(q); // has wrong answers
-      } else {
-        learning.push(q); // attempted but all correct so far, not yet at threshold
-      }
-    });
+async function loadMasteryMap(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/training_logs?select=question_id,is_correct&user_email=eq.'+encodeURIComponent(userEmail)+'&limit=1000',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const logs=await res.json();
+    if(Array.isArray(logs)){logs.forEach(l=>{
+      if(!l.question_id)return;
+      if(!masteryMap[l.question_id])masteryMap[l.question_id]={correct:0,attempts:0};
+      masteryMap[l.question_id].attempts++;
+      if(l.is_correct)masteryMap[l.question_id].correct++;
+    });}
+  }catch(e){}
+}
 
-    // Shuffle each bucket
-    [unseen,struggling,learning,mastered].forEach(arr=>{
-      for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-    });
-
-    // Build session: prioritize struggling > unseen > learning > mastered (fallback)
-    let session = [];
-    const add = (arr)=>{ for(const q of arr){ if(session.length>=SESSION_SIZE)break; session.push(q); } };
-
-    add(struggling);  // highest priority — questions they've gotten wrong
-    add(unseen);      // second — fresh questions
-    add(learning);    // third — seen but not mastered
-    add(mastered);    // last resort fallback if not enough questions
-
-    return session.slice(0, SESSION_SIZE);
-  }
-
-  function getMasteryStats(allQuestions){
-    const eligible=allQuestions.filter(q=>!isRefrigerantQuestion(q));
-    let masteredCount=0, activeCount=0, unseenCount=0;
-    eligible.forEach(q=>{
-      const m=masteryMap[q.id];
-      if(!m||m.attempts===0) unseenCount++;
-      else if(m.correct>=MASTERY_THRESHOLD) masteredCount++;
-      else activeCount++;
-    });
-    return{total:eligible.length,mastered:masteredCount,active:activeCount,unseen:unseenCount};
-  }
-
-  function getQuestionStatus(q){
+function selectQuestions(all){
+  const eligible=all.filter(q=>!isRefrig(q));
+  const unseen=[],struggling=[],learning=[],mastered=[];
+  eligible.forEach(q=>{
     const m=masteryMap[q.id];
-    if(!m||m.attempts===0)return'new';
-    if(m.correct>=MASTERY_THRESHOLD)return'mastered';
-    if(m.attempts>0&&m.correct<m.attempts)return'struggling';
-    return'learning';
+    if(!m||m.attempts===0)unseen.push(q);
+    else if(m.correct>=MASTERY_THRESHOLD)mastered.push(q);
+    else if(m.correct<m.attempts)struggling.push(q);
+    else learning.push(q);
+  });
+  [unseen,struggling,learning,mastered].forEach(arr=>{
+    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  });
+  const s=[];
+  const add=a=>{for(const q of a){if(s.length>=SESSION_SIZE)break;s.push(q);}};
+  add(struggling);add(unseen);add(learning);add(mastered);
+  return s.slice(0,SESSION_SIZE);
+}
+
+function masteryStats(all){
+  const el=all.filter(q=>!isRefrig(q));
+  let m=0,a=0,u=0;
+  el.forEach(q=>{
+    const mm=masteryMap[q.id];
+    if(!mm||mm.attempts===0)u++;
+    else if(mm.correct>=MASTERY_THRESHOLD)m++;
+    else a++;
+  });
+  return{total:el.length,mastered:m,active:a,unseen:u};
+}
+
+function qStatus(q){
+  const m=masteryMap[q.id];
+  if(!m||m.attempts===0)return'new';
+  if(m.correct>=MASTERY_THRESHOLD)return'mastered';
+  if(m.correct<m.attempts)return'struggling';
+  return'learning';
+}
+
+// ============================================================
+// LOAD
+// ============================================================
+async function loadQuestions(){
+  let all=[];
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=200',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const d=await res.json();
+    all=Array.isArray(d)&&d.length?d:getDemoQ();
+  }catch(e){all=getDemoQ();}
+
+  await loadMasteryMap();
+  await loadPreviousBest();
+  questions=selectQuestions(all);
+  window._allQ=all;
+
+  // Set attempt number for this session (pre-increment)
+  currentAttemptNum=getAttemptCount()+1;
+  multiplier=getMultiplier(currentAttemptNum);
+
+  renderPage();
+}
+
+async function loadPreviousBest(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/training_logs?select=is_correct&user_email=eq.'+encodeURIComponent(userEmail)+'&limit=100',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const logs=await res.json();
+    if(Array.isArray(logs)&&logs.length)
+      previousBest=Math.round(logs.filter(l=>l.is_correct).length/logs.length*100);
+  }catch(e){}
+}
+
+// ============================================================
+// RENDER PAGE
+// ============================================================
+function attemptBannerHTML(){
+  const cls=currentAttemptNum>MAX_ATTEMPTS?'a-done':('a'+currentAttemptNum);
+  if(currentAttemptNum>MAX_ATTEMPTS){
+    return`<div class="attempt-banner a-done">
+      <div><div class="attempt-label">No Points Today</div>
+      <div class="attempt-sub">You've completed all 3 attempts for today. You can still practice — come back tomorrow for full points!</div></div>
+      <div class="mult-badge">Practice Only</div>
+    </div>`;
   }
+  const pct=Math.round(multiplier*100);
+  const labels=['','First Attempt — Full Points','Second Attempt — Half Points','Third Attempt — Final Chance'];
+  const subs=['',
+    'You earn 100% of all points this session.',
+    'Half points today — still worth every question.',
+    'Last shot for points today. Make it count!'
+  ];
+  return`<div class="attempt-banner ${cls}">
+    <div><div class="attempt-label">${labels[currentAttemptNum]}</div>
+    <div class="attempt-sub">${subs[currentAttemptNum]}</div></div>
+    <div class="mult-badge">${pct}% Points</div>
+  </div>`;
+}
 
-  async function loadQuestions(){
-    let allQuestions=[];
-    try{
-      const res=await fetch(`${SUPABASE_URL}/rest/v1/bst_training_results?select=*&status=eq.active&limit=200`,
-        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
-      const data=await res.json();
-      allQuestions=Array.isArray(data)&&data.length>0?data:getDemoQuestions();
-    }catch(e){allQuestions=getDemoQuestions();}
-
-    await loadMasteryMap();
-    await loadPreviousBest();
-
-    questions=selectSessionQuestions(allQuestions);
-    window._allQuestions=allQuestions; // save for results screen
-
-    // Award return session points
-    const sessionCount=parseInt(localStorage.getItem('tt_session_count_'+userEmail)||'0');
-    if(sessionCount>0)setTimeout(()=>awardPoints('return_session','Returning to train'),1000);
-    localStorage.setItem('tt_session_count_'+userEmail,sessionCount+1);
-
-    renderPage();
+function renderPage(){
+  if(!questions.length){
+    document.getElementById('mainContent').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📚</div><h2>No Training Questions Yet</h2><p>Your admin hasn't uploaded any training material yet. Check back soon.</p></div>`;
+    return;
   }
+  const stats=masteryStats(window._allQ||questions);
+  const mastPct=stats.total?Math.round(stats.mastered/stats.total*100):0;
 
-  async function loadPreviousBest(){
-    try{
-      const res=await fetch(`${SUPABASE_URL}/rest/v1/training_logs?select=is_correct&user_email=eq.${encodeURIComponent(userEmail)}&limit=100`,
-        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});
-      const logs=await res.json();
-      if(Array.isArray(logs)&&logs.length>0)
-        previousBestScore=Math.round((logs.filter(l=>l.is_correct).length/logs.length)*100);
-    }catch(e){}
-  }
+  document.getElementById('mainContent').innerHTML=`
+    <div class="page-headline">Training Session</div>
+    <div class="page-sub">Attempt ${Math.min(currentAttemptNum,MAX_ATTEMPTS)} of ${MAX_ATTEMPTS} today · Smart queue prioritizes your weak spots</div>
+    ${attemptBannerHTML()}
+    <div class="points-banner">
+      <div><div class="points-total" id="statPoints">${totalPoints}</div><div class="points-label">Total Points</div></div>
+      <div style="text-align:right"><div class="points-earned" id="sessionPts">+0 this session</div><div class="points-label" style="margin-top:0.2rem">Attempt +${Math.round(BASE_PTS.attempt*multiplier)} · Correct +${Math.round(BASE_PTS.correct*multiplier)} · Feedback +${BASE_PTS.feedback}</div></div>
+    </div>
+    ${stats.mastered>0?`<div class="mastery-banner">🎓 You've mastered ${stats.mastered} of ${stats.total} questions (${mastPct}%). Keep going!</div>`:''}
+    <div class="effort-banner"><span style="font-size:1.2rem">💡</span><div><strong>How Points Work</strong> — Attempt 1: 100% · Attempt 2: 50% · Attempt 3: 25% · Feedback always earns full 10 pts for helping improve the question bank.</div></div>
+    <div class="stats-bar">
+      <div class="stat-pill"><span class="stat-icon">📝</span><div><div class="stat-value" id="statAnswered">0</div><div class="stat-label">Answered</div></div></div>
+      <div class="stat-pill"><span class="stat-icon">✅</span><div><div class="stat-value" id="statCorrect">0</div><div class="stat-label">Correct</div></div></div>
+      <div class="stat-pill"><span class="stat-icon">🔥</span><div><div class="stat-value" id="statStreak">0</div><div class="stat-label">Streak</div></div></div>
+      <div class="stat-pill"><span class="stat-icon">🎓</span><div><div class="stat-value">${stats.mastered}</div><div class="stat-label">Mastered</div></div></div>
+    </div>
+    <div class="session-progress">
+      <div class="prog-header"><span class="prog-label">Session Progress</span><span class="prog-frac" id="progFrac">1 / ${questions.length}</span></div>
+      <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    </div>
+    <div id="questionArea"></div>`;
+  renderQuestion();
+}
 
-  function renderPage(){
-    if(!questions.length){
-      document.getElementById('mainContent').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📚</div><h2>No Training Questions Yet</h2><p>Your admin hasn't uploaded any training material yet. Check back soon.</p></div>`;
-      return;
-    }
-    const stats=getMasteryStats(window._allQuestions||questions);
-    const masteryPct=stats.total?Math.round((stats.mastered/stats.total)*100):0;
-    const elapsed=Math.round((Date.now()-sessionStartTime)/60000);
+// ============================================================
+// QUESTION
+// ============================================================
+function renderQuestion(){
+  if(current>=questions.length){showResults();return;}
+  const q=questions[current];
+  questionStart=Date.now();
+  const opts=Array.isArray(q.options)?q.options:JSON.parse(q.options||'[]');
+  const isLast=current===questions.length-1;
+  const status=qStatus(q);
+  const statusTag=status==='new'?'<span class="q-tag new">New</span>':
+    status==='struggling'?'<span class="q-tag struggling">Needs Work</span>':
+    status==='mastered'?'<span class="q-tag mastered">Mastered</span>':'';
+  const m=masteryMap[q.id];
+  const progressHint=(status!=='new'&&status!=='mastered')
+    ?`<span style="font-size:0.72rem;color:var(--muted)">${m?m.correct:0}/${MASTERY_THRESHOLD} to master</span>`
+    :status==='mastered'?`<span style="font-size:0.72rem;color:var(--correct)">✓ Mastered</span>`:'';
+  const imgHtml=(q.image_url||q.image_path)
+    ?`<img src="${q.image_url||q.image_path}" class="q-image" onclick="openLightbox('${q.image_url||q.image_path}')" alt="Question image">`:'';
+  const fbPts=BASE_PTS.feedback;
 
-    document.getElementById('mainContent').innerHTML=`
-      <div class="page-headline">Training Session</div>
-      <div class="page-sub">10 questions selected based on your progress</div>
-      <div class="points-banner">
-        <div><div class="points-total" id="statPoints">${totalPoints}</div><div class="points-label">Total Points</div></div>
-        <div style="text-align:right"><div class="points-earned">+${sessionPoints} this session</div><div class="points-label">1pt attempt · 2pt correct · 5pt feedback · 3pt return</div></div>
+  document.getElementById('questionArea').innerHTML=`
+    <div class="sec-label">Question ${current+1}</div>
+    <div class="q-card" id="qCard">
+      <div class="q-meta">
+        <div class="q-tags">
+          ${q.topic?`<span class="q-tag topic">${q.topic}</span>`:''}
+          <span class="q-tag difficulty ${q.difficulty||'beginner'}">${q.difficulty||'beginner'}</span>
+          ${statusTag}
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          ${progressHint}
+          <div class="q-timer"><div class="timer-dot"></div><span id="timerDisplay">0s</span></div>
+        </div>
       </div>
-      ${stats.mastered>0?`<div class="mastery-banner">🎓 You've mastered ${stats.mastered} of ${stats.total} questions (${masteryPct}%). Keep going!</div>`:''}
-      <div class="effort-banner"><span style="font-size:1.2rem">💪</span><div><strong>Smart Queue</strong> — Questions you've struggled with appear first. Master a question by getting it right ${MASTERY_THRESHOLD} times.</div></div>
-      <div class="stats-bar">
-        <div class="stat-pill"><span class="stat-icon">📝</span><div><div class="stat-value" id="statAnswered">${sessionAnswered}</div><div class="stat-label">Answered</div></div></div>
-        <div class="stat-pill"><span class="stat-icon">✅</span><div><div class="stat-value" id="statCorrect">${sessionCorrect}</div><div class="stat-label">Correct</div></div></div>
-        <div class="stat-pill"><span class="stat-icon">🎓</span><div><div class="stat-value">${stats.mastered}</div><div class="stat-label">Mastered</div></div></div>
-        <div class="stat-pill"><span class="stat-icon">⏱</span><div><div class="stat-value" id="statTime">${elapsed}m</div><div class="stat-label">Time</div></div></div>
+      <div class="q-num">Question ${current+1} of ${questions.length}</div>
+      ${imgHtml}
+      <div class="q-text">${q.question}</div>
+      <div class="options" id="optionsArea">
+        ${opts.map((opt,i)=>{const l=['A','B','C','D'][i];return`<button class="option-btn" onclick="selectAnswer('${l}',this)" data-letter="${l}"><div class="opt-letter">${l}</div><div class="opt-text">${opt}</div></button>`;}).join('')}
       </div>
-      <div class="session-progress">
-        <div class="prog-header"><span class="prog-label">Session Progress</span><span class="prog-frac" id="progFrac">1 / ${questions.length}</span></div>
-        <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>
+      <div class="bottom-row">
+        <button class="btn-feedback" id="fbBtn" onclick="openFeedback('${q.id}')">⚑ Flag Issue (+${fbPts} pts)</button>
+        <button class="btn-next" id="nextBtn" onclick="nextQuestion()">${isLast?'✓ See Results':'Next Question →'}</button>
       </div>
-      <div id="questionArea"></div>`;
-    renderQuestion();
-  }
+    </div>`;
+  startTimer();
+}
 
-  function renderQuestion(){
-    if(current>=questions.length){showResults();return;}
-    const q=questions[current];
-    questionStartTime=Date.now();
-    const opts=Array.isArray(q.options)?q.options:JSON.parse(q.options||'[]');
-    const isLast=current===questions.length-1;
-    const status=getQuestionStatus(q);
-    const statusTag = status==='new'?`<span class="q-tag new">New</span>`:
-                      status==='struggling'?`<span class="q-tag struggling">Needs Work</span>`:
-                      status==='mastered'?`<span class="q-tag mastered">Mastered</span>`:'';
-    const m=masteryMap[q.id];
-    const correctCount=m?m.correct:0;
-    const progressHint = status!=='new'&&status!=='mastered'
-      ? `<span style="font-size:0.72rem;color:var(--muted)">${correctCount}/${MASTERY_THRESHOLD} correct to master</span>`
-      : status==='mastered'?`<span style="font-size:0.72rem;color:var(--correct)">✓ Mastered</span>`:'';
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{const el=document.getElementById('timerDisplay');if(el)el.textContent=Math.round((Date.now()-questionStart)/1000)+'s';},1000);
+}
 
-    document.getElementById('questionArea').innerHTML=`
-      <div class="sec-label">Question ${current+1}</div>
-      <div class="q-card" id="qCard">
-        <div class="q-meta">
-          <div class="q-tags">
-            ${q.topic?`<span class="q-tag topic">${q.topic}</span>`:''}
-            <span class="q-tag difficulty ${q.difficulty||'beginner'}">${q.difficulty||'beginner'}</span>
-            ${statusTag}
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            ${progressHint}
-            <div class="q-timer"><div class="timer-dot"></div><span id="timerDisplay">0s</span></div>
-          </div>
+function selectAnswer(letter,btn){
+  clearInterval(timerInterval);
+  const q=questions[current];
+  const timeTaken=Math.round((Date.now()-questionStart)/1000);
+  const correct=q.correct_answer===letter;
+  if(correct){sessionCorrect++;currentStreak++;}else{currentStreak=0;}
+  sessionAnswered++;
+
+  if(!masteryMap[q.id])masteryMap[q.id]={correct:0,attempts:0};
+  masteryMap[q.id].attempts++;
+  if(correct)masteryMap[q.id].correct++;
+
+  document.querySelectorAll('.option-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
+    else if(b===btn&&!correct)b.classList.add('wrong');
+  });
+  if(q.explanation){document.getElementById('expText').textContent=q.explanation;document.getElementById('expBox').classList.add('show');}
+  document.getElementById('nextBtn').classList.add('visible');
+
+  const sa=document.getElementById('statAnswered');if(sa)sa.textContent=sessionAnswered;
+  const sc=document.getElementById('statCorrect');if(sc)sc.textContent=sessionCorrect;
+  const ss=document.getElementById('statStreak');if(ss)ss.textContent=currentStreak;
+
+  awardPts('attempt','Question attempted');
+  if(correct)setTimeout(()=>awardPts('correct','Correct answer!'),600);
+  if(correct&&masteryMap[q.id].correct>=MASTERY_THRESHOLD)
+    setTimeout(()=>showPtsToast('🎓 Question Mastered!'),1300);
+
+  logAnswer(q,correct,timeTaken);
+}
+
+async function logAnswer(q,correct,timeTaken){
+  try{await fetch(SUPABASE_URL+'/rest/v1/training_logs',{method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+    body:JSON.stringify({user_email:userEmail,question_id:q.id,is_correct:correct,time_taken_seconds:timeTaken})});}catch(e){}
+}
+
+function nextQuestion(){
+  current++;
+  const pf=document.getElementById('progFill');if(pf)pf.style.width=(current/questions.length*100)+'%';
+  const pfrac=document.getElementById('progFrac');if(pfrac)pfrac.textContent=`${Math.min(current+1,questions.length)} / ${questions.length}`;
+  if(current>=questions.length){showResults();return;}
+  renderQuestion();
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults(){
+  clearInterval(timerInterval);
+  const completedAttempt=incrementAttemptCount();
+  const elapsed=Math.round((Date.now()-sessionStart)/60000);
+  const pct=sessionAnswered>0?Math.round(sessionCorrect/sessionAnswered*100):0;
+  const stats=masteryStats(window._allQ||questions);
+  const newlyMastered=questions.filter(q=>masteryMap[q.id]?.correct>=MASTERY_THRESHOLD).length;
+
+  let msg=previousBest!==null
+    ?(pct>previousBest?`📈 Improved ${pct-previousBest} points since last session!`
+      :pct===previousBest?'💪 Consistent performance — keep at it!'
+      :'🔄 Every session builds retention. The effort today counts.')
+    :'🌱 Great first session! Consistent practice is how knowledge sticks.';
+
+  const nextAttempt=completedAttempt+1;
+  const canRetry=nextAttempt<=MAX_ATTEMPTS;
+  const nextMult=getMultiplier(nextAttempt);
+
+  const stepsHTML=[1,2,3].map(n=>{
+    const cls=n<completedAttempt?'done':n===completedAttempt?'current-done':'future';
+    const lbl=n===1?'1st Try':n===2?'2nd Try':'3rd Try';
+    const ptsLabel=Math.round(MULTIPLIERS[n-1]*100)+'% pts';
+    return`<div class="attempt-step ${cls}">
+      <div class="attempt-step-label">${cls==='done'||cls==='current-done'?'✓ ':''} ${lbl}</div>
+      <div class="attempt-step-pts">${ptsLabel}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('mainContent').innerHTML=`
+    <div class="page-headline">Session Complete</div>
+    <div class="page-sub">Attempt ${completedAttempt} of ${MAX_ATTEMPTS} completed today</div>
+    <div class="results-card">
+      <div class="results-headline">Well Done!</div>
+      <div class="results-sub">You completed ${sessionAnswered} question${sessionAnswered!==1?'s':''} in ${elapsed} minute${elapsed!==1?'s':''}</div>
+      <div class="results-stats">
+        <div class="result-stat"><div class="result-stat-val">${sessionAnswered}</div><div class="result-stat-label">Answered</div></div>
+        <div class="result-stat"><div class="result-stat-val">${sessionCorrect}</div><div class="result-stat-label">Correct</div></div>
+        <div class="result-stat"><div class="result-stat-val">${pct}%</div><div class="result-stat-label">Accuracy</div></div>
+        <div class="result-stat pts-stat"><div class="result-stat-val">+${sessionPoints}</div><div class="result-stat-label">Points Earned</div></div>
+      </div>
+
+      <div class="attempt-tracker">
+        <div class="attempt-tracker-title">Today's Attempt Progress</div>
+        <div class="attempt-steps">${stepsHTML}</div>
+        <div class="attempt-tracker-note">
+          ${canRetry
+            ?`You have <strong style="color:var(--warning)">${MAX_ATTEMPTS-completedAttempt} attempt${MAX_ATTEMPTS-completedAttempt!==1?'s':''}</strong> remaining today at <strong style="color:var(--warning)">${Math.round(nextMult*100)}% points</strong>.`
+            :`You've used all 3 attempts today. Practice mode is still available, but points resume tomorrow at 100%.`}
         </div>
-        <div class="q-num">Question ${current+1} of ${questions.length}</div>
-        <div class="q-text">${q.question}</div>
-        <div class="options" id="optionsArea">
-          ${opts.map((opt,i)=>{const l=['A','B','C','D'][i];return`<button class="option-btn" onclick="selectAnswer('${l}',this)" data-letter="${l}"><div class="opt-letter">${l}</div><div class="opt-text">${opt}</div></button>`;}).join('')}
+      </div>
+
+      <div class="mastery-progress">
+        <div class="mastery-progress-title">Overall Mastery — ${stats.total} Questions</div>
+        <div class="mastery-bar-row">
+          <div class="mastery-bar-label" style="color:var(--correct)">Mastered</div>
+          <div class="mastery-bar-track"><div class="mastery-bar-fill mastered" style="width:${stats.total?stats.mastered/stats.total*100:0}%"></div></div>
+          <div class="mastery-bar-count">${stats.mastered}</div>
         </div>
-        <div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>
-        <div class="bottom-row">
-          <button class="btn-feedback" id="fbBtn" onclick="openFeedback('${q.id}')">⚑ Flag Issue (+5 pts)</button>
-          <button class="btn-next" id="nextBtn" onclick="nextQuestion()">${isLast?'✓ See Results':'Next Question →'}</button>
+        <div class="mastery-bar-row">
+          <div class="mastery-bar-label" style="color:var(--warning)">In Progress</div>
+          <div class="mastery-bar-track"><div class="mastery-bar-fill active" style="width:${stats.total?stats.active/stats.total*100:0}%"></div></div>
+          <div class="mastery-bar-count">${stats.active}</div>
         </div>
-      </div>`;
-    startTimer();
-  }
-
-  function startTimer(){
-    clearInterval(timerInterval);
-    timerInterval=setInterval(()=>{const el=document.getElementById('timerDisplay');if(el)el.textContent=Math.round((Date.now()-questionStartTime)/1000)+'s';},1000);
-  }
-
-  function selectAnswer(letter,btn){
-    clearInterval(timerInterval);
-    const q=questions[current];
-    const timeTaken=Math.round((Date.now()-questionStartTime)/1000);
-    const correct=q.correct_answer===letter;
-    if(correct)sessionCorrect++;
-    sessionAnswered++;
-
-    // Update local mastery map immediately so results screen is accurate
-    if(!masteryMap[q.id])masteryMap[q.id]={correct:0,attempts:0};
-    masteryMap[q.id].attempts++;
-    if(correct)masteryMap[q.id].correct++;
-
-    document.querySelectorAll('.option-btn').forEach(b=>{
-      b.disabled=true;
-      if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
-      else if(b===btn&&!correct)b.classList.add('wrong');
-    });
-    if(q.explanation){document.getElementById('expText').textContent=q.explanation;document.getElementById('expBox').classList.add('show');}
-    document.getElementById('nextBtn').classList.add('visible');
-    const sa=document.getElementById('statAnswered');if(sa)sa.textContent=sessionAnswered;
-    const sc=document.getElementById('statCorrect');if(sc)sc.textContent=sessionCorrect;
-    awardPoints('attempt','Question attempted');
-    if(correct)setTimeout(()=>awardPoints('correct','Correct answer!'),600);
-
-    // Check if just mastered
-    if(correct&&masteryMap[q.id].correct>=MASTERY_THRESHOLD){
-      setTimeout(()=>showPointsToast('🎓 Question Mastered!'),1300);
-    }
-
-    logAnswer(q,correct,timeTaken);
-  }
-
-  async function logAnswer(q,correct,timeTaken){
-    try{await fetch(`${SUPABASE_URL}/rest/v1/training_logs`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({user_email:userEmail,question_id:q.id,is_correct:correct,time_taken_seconds:timeTaken})});}catch(e){}
-  }
-
-  function nextQuestion(){
-    current++;
-    const pf=document.getElementById('progFill');if(pf)pf.style.width=(current/questions.length*100)+'%';
-    const pfrac=document.getElementById('progFrac');if(pfrac)pfrac.textContent=`${Math.min(current+1,questions.length)} / ${questions.length}`;
-    if(current>=questions.length){showResults();return;}
-    renderQuestion();
-  }
-
-  function showResults(){
-    clearInterval(timerInterval);
-    const elapsed=Math.round((Date.now()-sessionStartTime)/60000);
-    const pct=sessionAnswered>0?Math.round((sessionCorrect/sessionAnswered)*100):0;
-    const stats=getMasteryStats(window._allQuestions||questions);
-    const newlyMastered=questions.filter(q=>masteryMap[q.id]?.correct>=MASTERY_THRESHOLD).length;
-
-    let msg=previousBestScore!==null
-      ?(pct>previousBestScore?`📈 Improved ${pct-previousBestScore} points since last session!`
-        :pct===previousBestScore?`💪 Consistent — keep at it!`
-        :`🔄 Every session builds retention. The effort today counts.`)
-      :`🌱 Great first session! Come back regularly — improvement comes from repetition.`;
-
-    document.getElementById('mainContent').innerHTML=`
-      <div class="page-headline">Session Complete</div>
-      <div class="page-sub">Here's how this session went</div>
-      <div class="results-card">
-        <div class="results-headline">Well Done!</div>
-        <div class="results-sub">You completed ${sessionAnswered} question${sessionAnswered!==1?'s':''} in ${elapsed} minute${elapsed!==1?'s':''}</div>
-        <div class="results-stats">
-          <div class="result-stat"><div class="result-stat-val">${sessionAnswered}</div><div class="result-stat-label">Answered</div></div>
-          <div class="result-stat"><div class="result-stat-val">${sessionCorrect}</div><div class="result-stat-label">Correct</div></div>
-          <div class="result-stat"><div class="result-stat-val">${elapsed}m</div><div class="result-stat-label">Time</div></div>
-          <div class="result-stat points-stat"><div class="result-stat-val">+${sessionPoints}</div><div class="result-stat-label">Points Earned</div></div>
+        <div class="mastery-bar-row">
+          <div class="mastery-bar-label" style="color:var(--muted)">Not Seen</div>
+          <div class="mastery-bar-track"><div class="mastery-bar-fill" style="width:${stats.total?stats.unseen/stats.total*100:0}%;background:var(--muted);opacity:0.3"></div></div>
+          <div class="mastery-bar-count">${stats.unseen}</div>
         </div>
-        <div class="mastery-progress">
-          <div class="mastery-progress-title">Overall Mastery — ${stats.total} Questions</div>
-          <div class="mastery-bar-row">
-            <div class="mastery-bar-label" style="color:var(--correct)">Mastered</div>
-            <div class="mastery-bar-track"><div class="mastery-bar-fill mastered" style="width:${stats.total?stats.mastered/stats.total*100:0}%"></div></div>
-            <div class="mastery-bar-count">${stats.mastered}</div>
-          </div>
-          <div class="mastery-bar-row">
-            <div class="mastery-bar-label" style="color:var(--warning)">In Progress</div>
-            <div class="mastery-bar-track"><div class="mastery-bar-fill active" style="width:${stats.total?stats.active/stats.total*100:0}%"></div></div>
-            <div class="mastery-bar-count">${stats.active}</div>
-          </div>
-          <div class="mastery-bar-row">
-            <div class="mastery-bar-label" style="color:var(--muted)">Not Seen</div>
-            <div class="mastery-bar-track"><div class="mastery-bar-fill" style="width:${stats.total?stats.unseen/stats.total*100:0}%;background:var(--muted);opacity:0.3"></div></div>
-            <div class="mastery-bar-count">${stats.unseen}</div>
-          </div>
-        </div>
-        ${newlyMastered>0?`<div style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);border-radius:10px;padding:0.8rem 1.2rem;margin-bottom:1rem;font-size:0.85rem;color:var(--correct);">🎓 You mastered ${newlyMastered} new question${newlyMastered!==1?'s':''} this session!</div>`:''}
-        <div class="improvement-msg">${msg}</div>
-        <div class="results-actions">
-          <button class="btn-restart" onclick="restartSession()">Train Again →</button>
-          <a href="leaderboard.html" class="btn-leaderboard">🏆 Leaderboard</a>
-        </div>
-      </div>`;
-  }
+      </div>
 
-  function restartSession(){
-    current=0;sessionCorrect=0;sessionAnswered=0;sessionPoints=0;sessionStartTime=Date.now();
-    loadQuestions();
-  }
+      ${newlyMastered>0?`<div style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);border-radius:10px;padding:0.8rem 1.2rem;margin-bottom:1rem;font-size:0.85rem;color:var(--correct);">🎓 You mastered ${newlyMastered} new question${newlyMastered!==1?'s':''} this session!</div>`:''}
+      <div class="improvement-msg">${msg}</div>
+      <div class="results-actions">
+        <button class="btn-restart" onclick="restartSession()">
+          ${canRetry?`Train Again (${Math.round(nextMult*100)}% pts) →`:'Practice Mode →'}
+        </button>
+        <a href="leaderboard.html" class="btn-leaderboard">🏆 Leaderboard</a>
+      </div>
+    </div>`;
+}
 
-  function openFeedback(qId){
-    currentFeedbackQId=qId;selectedFtype=null;
-    document.getElementById('fbComment').value='';
-    document.querySelectorAll('.ftype-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('feedbackModal').classList.remove('hidden');
-  }
-  function closeFeedback(){document.getElementById('feedbackModal').classList.add('hidden');}
-  function selectFtype(btn,type){selectedFtype=type;document.querySelectorAll('.ftype-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-  async function submitFeedback(){
-    const q=questions[current];
-    try{await fetch(`${SUPABASE_URL}/rest/v1/question_feedback`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({question_id:currentFeedbackQId,question_text:q?.question||'',feedback_type:selectedFtype||'other',comment:document.getElementById('fbComment').value,author_name:userEmail,status:'pending'})});}catch(e){}
-    closeFeedback();
-    awardPoints('feedback','Feedback submitted');
-    const btn=document.getElementById('fbBtn');
-    if(btn){btn.textContent='✓ Reported (+5 pts)';btn.classList.add('submitted');btn.disabled=true;}
-  }
-
-  function getDemoQuestions(){
-    return[
-      {id:'q1',question:'A unit trips on high pressure after 10 minutes. What is FIRST to check?',topic:'Diagnostics',difficulty:'intermediate',options:['A) Replace pressure switch','B) Check condenser airflow','C) Add charge','D) Reset breaker'],correct_answer:'B',explanation:'Restricted condenser airflow is the most common cause of high pressure trips.',status:'active'},
-      {id:'q2',question:'What does compressor amp draw above nameplate rating typically indicate?',topic:'Electrical',difficulty:'intermediate',options:['A) Normal operation','B) Low voltage','C) Mechanical restriction or winding failure','D) Oversized breaker'],correct_answer:'C',explanation:'High amp draw means the motor is working harder than normal.',status:'active'},
-      {id:'q3',question:'A unit blows warm air but the outdoor unit is running. What do you check first?',topic:'Diagnostics',difficulty:'beginner',options:['A) Indoor coil for freeze-up','B) Replace expansion valve','C) Check disconnect voltage','D) Replace thermostat'],correct_answer:'A',explanation:'A frozen indoor coil blocks airflow and causes warm air even with the system running.',status:'active'},
-      {id:'q4',question:'What is the proper sequence when commissioning a new installation?',topic:'Installation',difficulty:'advanced',options:['A) Power on, check pressures, verify airflow','B) Verify electrical, check airflow, then power on','C) Pressure test, pull vacuum, verify electrical, then start','D) Start unit, then check all systems'],correct_answer:'C',explanation:'Always pressure test and pull vacuum before energizing.',status:'active'},
-      {id:'q5',question:'A contactor shows pitting and burn marks. What should you do?',topic:'Electrical',difficulty:'beginner',options:['A) Clean with sandpaper and reuse','B) Replace the contactor','C) Apply dielectric grease','D) Ignore if it still closes'],correct_answer:'B',explanation:'A pitted or burned contactor must be replaced — it will fail under load.',status:'active'},
-    ];
-  }
-
+function restartSession(){
+  current=0;sessionCorrect=0;sessionAnswered=0;sessionPoints=0;sessionStart=Date.now();currentStreak=0;
+  currentAttemptNum=getAttemptCount()+1;
+  multiplier=getMultiplier(currentAttemptNum);
   loadQuestions();
+}
+
+// ============================================================
+// FEEDBACK
+// ============================================================
+function openFeedback(qId){
+  currentFbQId=qId;selectedFtype=null;
+  document.getElementById('fbComment').value='';
+  document.querySelectorAll('.ftype-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('feedbackModal').classList.remove('hidden');
+}
+function closeFeedback(){document.getElementById('feedbackModal').classList.add('hidden');}
+function selectFtype(btn,type){
+  selectedFtype=type;
+  document.querySelectorAll('.ftype-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+async function submitFeedback(){
+  const q=questions[current];
+  try{await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+    body:JSON.stringify({question_id:currentFbQId,question_text:q?.question||'',feedback_type:selectedFtype||'other',comment:document.getElementById('fbComment').value,author_name:userEmail,status:'pending'})});}catch(e){}
+  closeFeedback();
+  // Feedback always awards FULL 10 pts (not scaled by multiplier)
+  const fbPts=BASE_PTS.feedback;
+  sessionPoints+=fbPts;totalPoints+=fbPts;
+  localStorage.setItem('tt_pts_'+userEmail,totalPoints);
+  showPtsToast('+'+fbPts+' pts — Feedback submitted!');
+  savePtsDB(fbPts,'feedback');
+  const el=document.getElementById('statPoints');if(el)el.textContent=totalPoints;
+  const sp=document.getElementById('sessionPts');if(sp)sp.textContent='+'+sessionPoints+' this session';
+  const btn=document.getElementById('fbBtn');
+  if(btn){btn.textContent='✓ Reported (+10 pts)';btn.classList.add('submitted');btn.disabled=true;}
+}
+
+// ============================================================
+// LIGHTBOX
+// ============================================================
+function openLightbox(url){document.getElementById('lightboxImg').src=url;document.getElementById('lightbox').classList.remove('hidden');}
+function closeLightbox(){document.getElementById('lightbox').classList.add('hidden');}
+
+// ============================================================
+// DEMO
+// ============================================================
+function getDemoQ(){return[
+  {id:'q1',question:'A unit trips on high pressure after 10 minutes. What is FIRST to check?',topic:'Diagnostics',difficulty:'intermediate',options:['A) Replace pressure switch','B) Check condenser airflow','C) Add charge','D) Reset breaker'],correct_answer:'B',explanation:'Restricted condenser airflow is the most common cause of high pressure trips.',status:'active'},
+  {id:'q2',question:'What does compressor amp draw above nameplate rating typically indicate?',topic:'Electrical',difficulty:'intermediate',options:['A) Normal operation','B) Low voltage','C) Mechanical restriction or winding failure','D) Oversized breaker'],correct_answer:'C',explanation:'High amp draw means the motor is working harder than normal — restriction or winding issue.',status:'active'},
+  {id:'q3',question:'A unit blows warm air but the outdoor unit is running. What do you check first?',topic:'Diagnostics',difficulty:'beginner',options:['A) Indoor coil for freeze-up','B) Replace expansion valve','C) Check disconnect voltage','D) Replace thermostat'],correct_answer:'A',explanation:'A frozen indoor coil blocks airflow and causes warm air even with the compressor running.',status:'active'},
+  {id:'q4',question:'What is the proper commissioning sequence for a new installation?',topic:'Installation',difficulty:'advanced',options:['A) Power on, check pressures, verify airflow','B) Verify electrical, check airflow, then power on','C) Pressure test, pull vacuum, verify electrical, then start','D) Start unit, then check all systems'],correct_answer:'C',explanation:'Always pressure test and pull vacuum before energizing to protect the system.',status:'active'},
+  {id:'q5',question:'A contactor shows pitting and burn marks. What should you do?',topic:'Electrical',difficulty:'beginner',options:['A) Clean with sandpaper and reuse','B) Replace the contactor','C) Apply dielectric grease','D) Ignore if it still closes'],correct_answer:'B',explanation:'A pitted or burned contactor must be replaced — it will fail under load.',status:'active'},
+];}
+
+loadQuestions();
 </script>
 </body>
 </html>
