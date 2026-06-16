@@ -34,14 +34,12 @@
   .legend-item{font-size:0.78rem;color:var(--muted);font-weight:normal;}
   .legend-item strong{color:var(--maroon-light);}
 
-  /* My rank card */
   .my-rank-card{background:linear-gradient(135deg,rgba(139,26,26,0.15),rgba(192,57,43,0.08));border:1px solid rgba(139,26,26,0.4);border-radius:16px;padding:1.4rem 1.8rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
   .my-rank-num{font-family:var(--headline-font);font-weight:bold;font-size:2.5rem;color:var(--maroon-light);min-width:60px;}
   .my-rank-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
   .my-pts{font-family:var(--headline-font);font-weight:bold;font-size:1.8rem;color:var(--text);}
   .my-pts-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
 
-  /* Leaderboard rows */
   .lb-list{display:flex;flex-direction:column;gap:0.6rem;}
   .lb-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;transition:border-color 0.2s,transform 0.2s;}
   .lb-row:hover{border-color:rgba(139,26,26,0.3);transform:translateX(3px);}
@@ -80,14 +78,14 @@
 </nav>
 
 <div class="main">
-  <div class="page-headline">🏆 Leaderboard</div>
+  <div class="page-headline">🏆 BST TECH TRAIN CHALLENGE</div>
   <div class="page-sub">Points reset monthly. Top performers earn rewards — keep training!</div>
 
   <div class="points-legend">
-    <div class="legend-item"><strong>+1 pt</strong> per question attempted</div>
-    <div class="legend-item"><strong>+2 pts</strong> correct answer</div>
-    <div class="legend-item"><strong>+5 pts</strong> feedback submitted</div>
-    <div class="legend-item"><strong>+3 pts</strong> returning to train</div>
+    <div class="legend-item"><strong>+2 pts</strong> per question attempted</div>
+    <div class="legend-item"><strong>+5 pts</strong> correct answer</div>
+    <div class="legend-item"><strong>+10 pts</strong> feedback submitted</div>
+    <div class="legend-item"><strong>100% → 50% → 25%</strong> across 3 daily attempts</div>
   </div>
 
   <div class="my-rank-card" id="myRankCard" style="display:none;">
@@ -123,36 +121,22 @@
     } catch(e){}
 
     // Merge localStorage points for current user if not in DB yet
-    const localPts = parseInt(localStorage.getItem('tt_points_'+userEmail)||'0');
+    const localPts = parseInt(localStorage.getItem('tt_pts_'+userEmail)||localStorage.getItem('tt_points_'+userEmail)||'0');
     if(localPts>0){
       const existing=entries.find(e=>e.email===userEmail);
       if(existing){existing.pts=Math.max(existing.pts,localPts);}
       else if(userEmail){entries.push({email:userEmail,pts:localPts});entries.sort((a,b)=>b.pts-a.pts);}
     }
 
-    // Fall back to demo data if empty
-    if(!entries.length){
-      entries=[
-        {email:'j.smith@company.com',pts:142},
-        {email:'a.johnson@company.com',pts:118},
-        {email:'m.williams@company.com',pts:97},
-        {email:'r.brown@company.com',pts:74},
-        {email:'k.davis@company.com',pts:51},
-        {email:'demo@techtrain.app',pts:localPts||12},
-      ].sort((a,b)=>b.pts-a.pts);
-    }
-
     const maxPts = entries[0]?.pts||1;
     const myIdx = entries.findIndex(e=>e.email===userEmail);
 
-    // Show my rank card
     if(myIdx>=0){
       const myEntry=entries[myIdx];
       document.getElementById('myRankCard').style.display='flex';
       document.getElementById('myRankNum').textContent='#'+(myIdx+1);
       document.getElementById('myPtsDisplay').textContent=myEntry.pts;
-      const ahead=entries.length-myIdx-1;
-      document.getElementById('myRankMsg').textContent=myIdx===0?'You\'re in the lead! 🎉':ahead===0?`${entries[myIdx-1].pts-myEntry.pts} pts behind #${myIdx}`:`${entries[myIdx-1].pts-myEntry.pts} pts behind #${myIdx}`;
+      document.getElementById('myRankMsg').textContent=myIdx===0?'You\'re in the lead! 🎉':`${entries[myIdx-1].pts-myEntry.pts} pts behind #${myIdx}`;
     }
 
     const rankIcons=['🥇','🥈','🥉'];
