@@ -91,7 +91,7 @@
 <div class="page">
   <!-- LEFT: LOGIN -->
   <div class="login-side">
-    <div class="site-tagline">BST Technical<span>Training Challenge</span></div>
+    <div class="site-tagline">BST TECH<span>TRAIN CHALLENGE</span></div>
     <div class="site-sub">Build real field knowledge, earn points, and compete with your team. Three attempts per day — consistency wins.</div>
     <div class="login-card">
       <div class="login-title">Sign In to Train</div>
@@ -201,15 +201,6 @@
         entries=Object.entries(map).map(([email,pts])=>({email,pts})).sort((a,b)=>b.pts-a.pts);
       }
     }catch(e){}
-    if(!entries.length){
-      entries=[
-        {email:'j.smith@company.com',pts:142},
-        {email:'a.johnson@company.com',pts:118},
-        {email:'m.williams@company.com',pts:97},
-        {email:'r.brown@company.com',pts:74},
-        {email:'k.davis@company.com',pts:51},
-      ];
-    }
     _leaderboardEntries=entries;
     const lbEl=document.getElementById('lbList');
     if(!entries.length){lbEl.innerHTML='<div class="lb-empty">No points yet — be the first to train!</div>';return;}
@@ -271,7 +262,7 @@
     const subject=`BST Training Challenge — ${monthLabel} Leaderboard`;
     const body=`Hi Dave,
 
-Here's the latest update from the BST Technical Training Challenge.
+Here's the latest update from the BST Tech Train Challenge.
 
 ${lbText}
 HOW POINTS WORK
