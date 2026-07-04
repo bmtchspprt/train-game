@@ -20,45 +20,108 @@
   .logo{font-family:var(--headline-font);font-weight:bold;font-size:1.4rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
   .logo span{color:var(--maroon-light);}
   .theme-toggle{width:34px;height:34px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .main{max-width:700px;margin:0 auto;padding:3rem 1.5rem;}
+
+  /* PAGE LAYOUT */
+  .page-layout{display:flex;gap:2rem;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;align-items:flex-start;}
+  .quiz-col{flex:1;min-width:0;}
+  .lb-col{width:280px;flex-shrink:0;}
+  @media(max-width:900px){.page-layout{flex-direction:column;}.lb-col{width:100%;}}
+
+  /* DISCLAIMER */
+  .disclaimer{background:rgba(56,182,255,0.05);border:1px solid rgba(56,182,255,0.15);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:0.78rem;color:var(--muted);line-height:1.6;font-weight:normal;}
+  .disclaimer strong{color:var(--text);font-weight:600;}
+
+  /* SESSION TABS */
+  .session-tabs{display:flex;gap:0.5rem;margin-bottom:1.2rem;background:var(--surface2);padding:0.3rem;border-radius:10px;}
+  .session-tab{flex:1;padding:0.5rem;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--headline-font);font-size:0.82rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;text-align:center;}
+  .session-tab.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+  .session-tab.done{color:var(--correct);}
+  .session-tab.locked{color:var(--muted);cursor:default;opacity:0.5;}
+
+  /* ATTEMPT BADGES */
+  .attempt-badges{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+  .attempt-badge{padding:0.22rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:600;border:1px solid;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;}
+  .attempt-badge.done{background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);color:var(--correct);}
+  .attempt-badge.current{background:var(--maroon-glow);border-color:rgba(139,26,26,0.4);color:var(--maroon-light);}
+  .attempt-badge.remaining{background:rgba(255,255,255,0.03);border-color:var(--border);color:var(--muted);}
+
+  .day-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:100px;padding:0.3rem 0.9rem;font-size:0.78rem;color:#e88080;margin-bottom:1rem;font-weight:600;}
   .headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.3rem;text-shadow:0 0 30px var(--maroon-glow);}
-  .sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;}
-  .day-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:100px;padding:0.3rem 0.9rem;font-size:0.78rem;color:#e88080;margin-bottom:1.5rem;font-weight:600;}
-  .prog-track{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:2rem;}
+  .sub{font-size:0.88rem;color:var(--muted);margin-bottom:1rem;}
+  .prog-track{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:1.5rem;}
   .prog-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:3px;transition:width 0.4s ease;}
-  .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.2rem;margin-bottom:1.5rem;animation:fadeUp 0.4s ease;}
+
+  .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1rem;animation:fadeUp 0.4s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   .q-num{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
-  .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.2rem;line-height:1.45;margin-bottom:1.6rem;}
-  .options{display:flex;flex-direction:column;gap:0.7rem;}
-  .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.2rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',Arial,sans-serif;font-size:0.92rem;color:var(--text);transition:all 0.2s;width:100%;}
+  .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.15rem;line-height:1.45;margin-bottom:1.4rem;}
+  .options{display:flex;flex-direction:column;gap:0.6rem;}
+  .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:0.9rem 1.1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',Arial,sans-serif;font-size:0.9rem;color:var(--text);transition:all 0.2s;width:100%;}
   .option-btn:hover:not(:disabled){border-color:rgba(139,26,26,0.5);background:var(--maroon-glow);}
   .option-btn.correct{border-color:var(--correct);background:rgba(0,229,160,0.08);}
   .option-btn.wrong{border-color:var(--wrong);background:rgba(255,77,109,0.08);}
-  .opt-letter{width:28px;height:28px;border-radius:7px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-family:var(--headline-font);font-size:0.85rem;font-weight:bold;flex-shrink:0;}
+  .opt-letter{width:26px;height:26px;border-radius:6px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-family:var(--headline-font);font-size:0.82rem;font-weight:bold;flex-shrink:0;}
   .option-btn.correct .opt-letter{background:var(--correct);color:#0a0a0f;}
   .option-btn.wrong .opt-letter{background:var(--wrong);color:white;}
-  .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1.1rem 1.3rem;margin-top:1.4rem;font-size:0.86rem;line-height:1.6;display:none;}
+  .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1rem 1.2rem;margin-top:1.2rem;font-size:0.85rem;line-height:1.6;display:none;}
   .explanation-box.show{display:block;}
-  .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.4rem;}
-  .btn-next{margin-top:1.4rem;padding:0.8rem 2rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;display:none;}
+  .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.35rem;}
+
+  /* FEEDBACK BOX */
+  .feedback-box{margin-top:1rem;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:12px;padding:1rem 1.2rem;}
+  .feedback-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--warning);font-weight:bold;margin-bottom:0.5rem;}
+  .feedback-note{font-size:0.72rem;color:var(--muted);font-weight:normal;margin-bottom:0.6rem;line-height:1.5;}
+  .feedback-type-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem;}
+  .fb-type-btn{padding:0.2rem 0.6rem;border-radius:100px;font-size:0.7rem;border:1px solid rgba(255,179,71,0.3);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+  .fb-type-btn.selected{background:rgba(255,179,71,0.15);border-color:var(--warning);color:var(--warning);}
+  .feedback-textarea{width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.8rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;resize:none;outline:none;min-height:60px;transition:border-color 0.2s;}
+  .feedback-textarea:focus{border-color:var(--warning);}
+  .btn-submit-fb{margin-top:0.5rem;padding:0.45rem 1rem;background:rgba(255,179,71,0.1);border:1px solid rgba(255,179,71,0.3);border-radius:7px;color:var(--warning);font-size:0.78rem;cursor:pointer;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;transition:all 0.2s;}
+  .btn-submit-fb:hover{background:rgba(255,179,71,0.2);}
+  .btn-submit-fb:disabled{opacity:0.4;cursor:not-allowed;}
+  .fb-sent{font-size:0.75rem;margin-top:0.4rem;display:none;}
+  .fb-sent.show{display:block;}
+
+  .btn-next{margin-top:1.2rem;padding:0.8rem 2rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;display:none;}
   .btn-next.visible{display:inline-flex;}
-  .results-card{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2.5rem;text-align:center;}
-  .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:1.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.5rem;}
-  .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;}
-  .results-stat{font-family:var(--headline-font);font-size:2.2rem;font-weight:bold;color:var(--maroon-light);}
-  .streak-box{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);border-radius:12px;padding:1rem 1.3rem;margin:1.2rem 0;font-size:0.85rem;color:var(--warning);}
-  .more-box{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:14px;padding:1.4rem 1.6rem;margin-top:1.5rem;text-align:left;}
-  .more-title{font-family:var(--headline-font);font-weight:bold;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--maroon-light);margin-bottom:0.4rem;}
-  .more-sub{font-size:0.83rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
-  .btn-more{padding:0.75rem 1.6rem;background:none;border:2px solid var(--maroon-light);border-radius:10px;color:var(--maroon-light);font-family:var(--headline-font);font-weight:bold;font-size:0.88rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;}
-  .btn-more:hover{background:var(--maroon-glow);}
-  .btn-leaderboard{margin-top:0.75rem;padding:0.75rem 1.6rem;background:none;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:var(--headline-font);font-weight:bold;font-size:0.88rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;}
-  .already-done{text-align:center;padding:3rem 2rem;}
-  .already-icon{font-size:3rem;margin-bottom:1rem;}
+
+  /* RESULTS */
+  .results-card{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2rem;text-align:center;}
+  .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.4rem;}
+  .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.2rem;}
+  .score-circle{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-family:var(--headline-font);font-size:1.8rem;font-weight:bold;color:white;box-shadow:0 0 40px var(--maroon-glow);}
+  .streak-box{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);border-radius:10px;padding:0.8rem 1.1rem;margin:1rem 0;font-size:0.83rem;color:var(--warning);}
+  .more-box{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:14px;padding:1.2rem 1.4rem;margin-top:1rem;text-align:left;}
+  .more-title{font-family:var(--headline-font);font-weight:bold;font-size:0.92rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--maroon-light);margin-bottom:0.35rem;}
+  .more-sub{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:0.9rem;}
+  .btn-action-row{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;}
+  .btn-primary-action{padding:0.7rem 1.4rem;background:var(--maroon);border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-weight:bold;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .btn-primary-action:hover{background:var(--maroon-light);}
+  .btn-secondary-action{padding:0.7rem 1.4rem;background:none;border:2px solid var(--maroon-light);border-radius:10px;color:var(--maroon-light);font-family:var(--headline-font);font-weight:bold;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .btn-secondary-action:hover{background:var(--maroon-glow);}
+  .btn-ghost-action{padding:0.65rem 1.4rem;background:none;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:var(--headline-font);font-weight:bold;font-size:0.82rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;}
+  .retake-info{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;}
+  .done-note{font-size:0.78rem;color:var(--muted);margin-top:0.75rem;padding:0.6rem 0.9rem;background:var(--surface2);border-radius:8px;display:inline-block;}
+
+  /* LEADERBOARD SIDEBAR */
+  .lb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem;position:sticky;top:5rem;}
+  .lb-title{font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);margin-bottom:0.2rem;}
+  .lb-subtitle{font-size:0.7rem;color:var(--muted);font-weight:normal;margin-bottom:1rem;}
+  .lb-list{display:flex;flex-direction:column;gap:0.4rem;}
+  .lb-row{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.6rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border);}
+  .lb-row.rank-1{border-color:rgba(255,215,0,0.35);background:rgba(255,215,0,0.04);}
+  .lb-row.rank-2{border-color:rgba(192,192,192,0.25);}
+  .lb-row.rank-3{border-color:rgba(205,127,50,0.25);}
+  .lb-rank{font-size:0.82rem;min-width:22px;text-align:center;}
+  .lb-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:bold;color:white;flex-shrink:0;}
+  .lb-name{flex:1;min-width:0;font-size:0.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lb-pts{font-family:var(--headline-font);font-weight:bold;font-size:0.9rem;color:var(--maroon-light);}
+  .lb-bar-track{width:36px;height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;flex-shrink:0;}
+  .lb-bar-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:2px;}
+  .lb-empty{text-align:center;padding:1.5rem;color:var(--muted);font-size:0.78rem;}
+
   .invalid-state{text-align:center;padding:4rem 2rem;color:var(--muted);}
   .loading-state{text-align:center;padding:4rem;color:var(--muted);}
-  .score-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-family:var(--headline-font);font-size:2rem;font-weight:bold;color:white;box-shadow:0 0 40px var(--maroon-glow);}
 </style>
 </head>
 <body>
@@ -68,212 +131,505 @@
   <button class="theme-toggle" onclick="TechTheme&&TechTheme.toggle()">☀️</button>
 </nav>
 
-<div class="main" id="mainContent">
-  <div class="loading-state">Loading your daily quiz...</div>
+<div class="page-layout">
+  <!-- QUIZ COLUMN -->
+  <div class="quiz-col" id="quizCol">
+    <div class="loading-state">Loading your daily quiz...</div>
+  </div>
+
+  <!-- LEADERBOARD SIDEBAR -->
+  <div class="lb-col">
+    <div class="lb-card">
+      <div class="lb-title">🏆 Leaderboard</div>
+      <div class="lb-subtitle">Monthly standings</div>
+      <div class="lb-list" id="lbList">
+        <div class="lb-empty">Loading...</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="config.js"></script>
 <script>
-  const params=new URLSearchParams(window.location.search);
-  const tokenParam=params.get('u');
-  const DAILY_SIZE=3;
-  let dailyUserEmail=null,questions=[],current=0,correctCount=0;
-  const todayKey=new Date().toISOString().split('T')[0];
+// ============================================================
+// CONSTANTS & STATE
+// ============================================================
+const params=new URLSearchParams(window.location.search);
+const tokenParam=params.get('u');
 
-  const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
+// Sessions: Session 1 = quiz A (same 3 Qs, 1 retake allowed)
+//           Session 2 = quiz B (different 3 Qs, no retake)
+// So per day max: Session1 attempt1, Session1 retake, Session2 attempt = 3 total rounds
+const MAX_RETAKES_PER_SESSION=1; // 1 retake per session
+const DAILY_SIZE=3;
+const SESSIONS=2; // 2 separate quiz sessions per day
 
-  function isRefrigerantQuestion(q){
-    const text=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
-    return REFRIGERANT_KEYWORDS.some(function(k){return text.includes(k);});
+let dailyUserEmail=null;
+let allQuestions=[];
+let sessionNum=1;      // which session (1 or 2)
+let attemptInSession=1; // which attempt within current session (1 or 2)
+let questions=[];
+let current=0;
+let correctCount=0;
+const todayKey=new Date().toISOString().split('T')[0];
+
+const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
+
+// ============================================================
+// HELPERS
+// ============================================================
+function isRefrigerantQuestion(q){
+  const text=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
+  return REFRIGERANT_KEYWORDS.some(function(k){return text.includes(k);});
+}
+
+function hashStr(str){
+  let h=0;
+  for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}
+  return Math.abs(h);
+}
+
+function pickQuestionsForSession(session){
+  const eligible=allQuestions.filter(function(q){return !isRefrigerantQuestion(q)&&q.status==='active';});
+  if(!eligible.length)return[];
+  // Use different seeds per session so session 2 gets different questions
+  const seed=hashStr(tokenParam+todayKey+'session'+session);
+  const arr=eligible.slice();
+  let s=seed;
+  for(let i=arr.length-1;i>0;i--){
+    s=(s*9301+49297)%233280;
+    const j=Math.floor((s/233280)*(i+1));
+    const tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
+  }
+  // Session 2 picks from the second set so questions don't repeat
+  if(session===2){return arr.slice(DAILY_SIZE,DAILY_SIZE*2);}
+  return arr.slice(0,DAILY_SIZE);
+}
+
+function getStorageKey(key){return 'tt_'+key+'_'+dailyUserEmail+'_'+todayKey;}
+
+function getSession1Attempts(){return parseInt(localStorage.getItem(getStorageKey('s1attempts'))||'0');}
+function getSession2Done(){return localStorage.getItem(getStorageKey('s2done'))==='1';}
+function recordSession1Attempt(){localStorage.setItem(getStorageKey('s1attempts'),getSession1Attempts()+1);}
+function recordSession2Done(){localStorage.setItem(getStorageKey('s2done'),'1');}
+function isSession1Done(){return getSession1Attempts()>MAX_RETAKES_PER_SESSION;} // done after 2 attempts
+
+// ============================================================
+// INIT
+// ============================================================
+async function init(){
+  if(!tokenParam){showInvalid();return;}
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/daily_tokens?select=user_email&token=eq.'+encodeURIComponent(tokenParam),
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const rows=await res.json();
+    if(!Array.isArray(rows)||!rows.length){showInvalid();return;}
+    dailyUserEmail=rows[0].user_email;
+  }catch(e){showInvalid();return;}
+
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const data=await res.json();
+    allQuestions=Array.isArray(data)?data:[];
+  }catch(e){}
+
+  loadLeaderboard();
+
+  // Determine what to show
+  const s1attempts=getSession1Attempts();
+  const s2done=getSession2Done();
+
+  if(s1attempts===0){
+    // Fresh start — session 1 attempt 1
+    sessionNum=1;attemptInSession=1;
+    startQuiz();
+  } else if(s1attempts===1){
+    // Session 1 done once, offer retake or session 2
+    showBetweenSessions(false);
+  } else if(s1attempts>1&&!s2done){
+    // Session 1 retake done, offer session 2
+    showBetweenSessions(true);
+  } else if(s2done&&s1attempts>1){
+    // Everything done
+    showAllDone();
+  } else {
+    startQuiz();
+  }
+}
+
+function startQuiz(){
+  questions=pickQuestionsForSession(sessionNum);
+  if(!questions.length){
+    document.getElementById('quizCol').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
+    return;
+  }
+  current=0;correctCount=0;
+  renderQuiz();
+}
+
+function showInvalid(){
+  document.getElementById('quizCol').innerHTML=
+    '<div class="invalid-state">'
+    +'<div style="font-size:2rem;margin-bottom:1rem;">🔒</div>'
+    +'<div style="font-family:Arial Narrow,Arial,sans-serif;font-weight:bold;font-size:1.1rem;color:#c0392b;text-transform:uppercase;margin-bottom:0.5rem;">Link Not Recognized</div>'
+    +'This daily quiz link is invalid. Contact your admin for a new one.'
+    +'</div>';
+  loadLeaderboard();
+}
+
+function showAllDone(){
+  document.getElementById('quizCol').innerHTML=
+    '<div class="disclaimer" style="margin-bottom:1.5rem;">'+getDisclaimerHTML()+'</div>'
+    +'<div class="results-card">'
+    +'<div style="font-size:2.5rem;margin-bottom:0.75rem;">🎯</div>'
+    +'<div class="results-headline">All Done Today!</div>'
+    +'<div class="results-sub">You\'ve completed both quiz sessions and your retake. Come back tomorrow for fresh questions.</div>'
+    +'<div class="more-box">'
+    +'<div class="more-title">Keep earning points</div>'
+    +'<div class="more-sub">Take a full practice session — unlimited questions, earns points every attempt.</div>'
+    +'<a href="training.html" class="btn-primary-action">⚡ Start a Full Session →</a>'
+    +'</div>'
+    +'</div>';
+}
+
+// Between sessions — offer retake or session 2
+function showBetweenSessions(retakeDone){
+  const s1attempts=getSession1Attempts();
+  const s2done=getSession2Done();
+  const name=dailyUserEmail.split('@')[0];
+
+  let html='<div class="disclaimer" style="margin-bottom:1.5rem;">'+getDisclaimerHTML()+'</div>';
+  html+='<div class="results-card">';
+  html+='<div style="font-size:2rem;margin-bottom:0.75rem;">✅</div>';
+  html+='<div class="results-headline">Good Work, '+name+'!</div>';
+  html+='<div class="results-sub">What would you like to do next?</div>';
+
+  // Session tracker
+  html+='<div style="display:flex;gap:0.5rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;">';
+  html+='<span class="attempt-badge done">✓ Quiz 1'+(s1attempts>1?' + Retake':'')+'</span>';
+  if(s2done){html+='<span class="attempt-badge done">✓ Quiz 2</span>';}
+  else{html+='<span class="attempt-badge remaining">Quiz 2 Available</span>';}
+  html+='</div>';
+
+  html+='<div class="btn-action-row">';
+
+  if(!retakeDone){
+    html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
   }
 
-  function hashStr(str){
-    let h=0;
-    for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}
-    return Math.abs(h);
+  if(!s2done){
+    html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
   }
 
-  function pickDailyQuestions(allQuestions,seed){
-    const eligible=allQuestions.filter(function(q){return !isRefrigerantQuestion(q)&&q.status==='active';});
-    if(!eligible.length)return[];
-    const arr=eligible.slice();
-    let s=seed;
-    for(let i=arr.length-1;i>0;i--){
-      s=(s*9301+49297)%233280;
-      const j=Math.floor((s/233280)*(i+1));
-      const tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
-    }
-    return arr.slice(0,DAILY_SIZE);
+  html+='<a href="training.html" class="btn-ghost-action">⚡ Full Session</a>';
+  html+='</div>';
+
+  if(retakeDone&&s2done){
+    html+='<div class="done-note">All done for today! Full sessions are always available for extra points.</div>';
   }
 
-  async function init(){
-    if(!tokenParam){showInvalid();return;}
-    try{
-      const res=await fetch(SUPABASE_URL+'/rest/v1/daily_tokens?select=user_email&token=eq.'+encodeURIComponent(tokenParam),
-        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
-      const rows=await res.json();
-      if(!Array.isArray(rows)||!rows.length){showInvalid();return;}
-      dailyUserEmail=rows[0].user_email;
-    }catch(e){showInvalid();return;}
+  html+='</div>';
+  document.getElementById('quizCol').innerHTML=html;
+}
 
-    const doneKey='tt_daily_done_'+dailyUserEmail+'_'+todayKey;
-    if(localStorage.getItem(doneKey)){showAlreadyDone();return;}
+function doRetake(){
+  sessionNum=1;
+  attemptInSession=2;
+  questions=pickQuestionsForSession(1);
+  current=0;correctCount=0;
+  renderQuiz();
+}
 
-    let allQuestions=[];
-    try{
-      const res=await fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
-        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
-      const data=await res.json();
-      allQuestions=Array.isArray(data)?data:[];
-    }catch(e){}
+function doSession2(){
+  sessionNum=2;
+  attemptInSession=1;
+  questions=pickQuestionsForSession(2);
+  current=0;correctCount=0;
+  renderQuiz();
+}
 
-    if(!allQuestions.length){
-      document.getElementById('mainContent').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
-      return;
-    }
+// ============================================================
+// RENDER QUIZ
+// ============================================================
+function getDisclaimerHTML(){
+  return '<strong>About this challenge:</strong> Our goal is to improve together as a team. '
+    +'Points and rules may be adjusted over time — veterans may be rewarded for deep knowledge, '
+    +'while newer techs earn points for effort and improvement. The system evolves to recognize both experience and growth.';
+}
 
-    const seed=hashStr(tokenParam+todayKey);
-    questions=pickDailyQuestions(allQuestions,seed);
+function renderQuiz(){
+  const name=dailyUserEmail.split('@')[0];
+  const s1attempts=getSession1Attempts();
+  const sessionLabel=sessionNum===1?'Quiz 1'+(attemptInSession===2?' — Retake':''):'Quiz 2';
 
-    if(!questions.length){
-      document.getElementById('mainContent').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
-      return;
-    }
-
-    renderQuiz();
+  let attemptBadgesHTML='<div class="attempt-badges">';
+  if(sessionNum===1){
+    if(attemptInSession===1)attemptBadgesHTML+='<span class="attempt-badge current">→ Quiz 1 — Attempt 1</span><span class="attempt-badge remaining">Retake available after</span>';
+    else attemptBadgesHTML+='<span class="attempt-badge done">✓ Quiz 1 — Attempt 1</span><span class="attempt-badge current">→ Retake</span>';
+  } else {
+    attemptBadgesHTML+='<span class="attempt-badge done">✓ Quiz 1 Done</span><span class="attempt-badge current">→ Quiz 2</span>';
   }
+  attemptBadgesHTML+='</div>';
 
-  function showInvalid(){
-    document.getElementById('mainContent').innerHTML=
-      '<div class="invalid-state">'
-      +'<div style="font-size:2rem;margin-bottom:1rem;">🔒</div>'
-      +'<div style="font-family:Arial Narrow,Arial,sans-serif;font-weight:bold;font-size:1.1rem;color:#c0392b;text-transform:uppercase;margin-bottom:0.5rem;">Link Not Recognized</div>'
-      +'This daily quiz link is invalid. Contact your admin for a new one.'
-      +'</div>';
+  document.getElementById('quizCol').innerHTML=
+    '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
+    +'<div class="day-badge">📅 '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div>'
+    +'<div class="headline">Hey '+name+'! 👋</div>'
+    +'<div class="sub">'+sessionLabel+' — 3 questions, about 2 minutes</div>'
+    +attemptBadgesHTML
+    +'<div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>'
+    +'<div id="questionArea"></div>';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  if(current>=questions.length){showResults();return;}
+  const q=questions[current];
+  const opts=Array.isArray(q.options)?q.options:(typeof q.options==='string'?JSON.parse(q.options||'[]'):[]);
+  const isLast=current===questions.length-1;
+  const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
+  const safeQText=q.question.replace(/'/g,"\\'").replace(/"/g,'&quot;').substring(0,100);
+
+  document.getElementById('questionArea').innerHTML=
+    '<div class="q-card">'
+    +'<div class="q-num">Question '+(current+1)+' of '+questions.length+'</div>'
+    +imgHTML
+    +'<div class="q-text">'+q.question+'</div>'
+    +'<div class="options">'
+    +opts.map(function(opt,i){
+      const l=['A','B','C','D'][i];
+      const optText=opt.replace(/^[A-D]\)\s*/,'');
+      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+q.id+'\',\''+safeQText+'\')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+    }).join('')
+    +'</div>'
+    +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
+    +'<div class="feedback-box" id="feedbackBox" style="display:none;">'
+    +'<div class="feedback-label">💬 Improve This Question</div>'
+    +'<div class="feedback-note">Add a comment to earn <strong>+5 points</strong>. A comment is required to submit.</div>'
+    +'<div class="feedback-type-row">'
+    +'<button class="fb-type-btn" onclick="selectFbType(this,\'wrong_answer\')">Wrong answer</button>'
+    +'<button class="fb-type-btn" onclick="selectFbType(this,\'unclear_question\')">Unclear</button>'
+    +'<button class="fb-type-btn" onclick="selectFbType(this,\'outdated\')">Outdated</button>'
+    +'<button class="fb-type-btn" onclick="selectFbType(this,\'other\')">Other</button>'
+    +'</div>'
+    +'<textarea class="feedback-textarea" id="fbComment" placeholder="Write your comment here to earn +5 points..." oninput="checkFbReady()"></textarea>'
+    +'<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">'
+    +'<button class="btn-submit-fb" id="fbSubmitBtn" onclick="submitFeedback(\''+q.id+'\',\''+safeQText+'\')" disabled>Submit Feedback →</button>'
+    +'<span style="font-size:0.72rem;color:var(--muted);">Comment required for +5 pts</span>'
+    +'</div>'
+    +'<div class="fb-sent" id="fbSent"></div>'
+    +'</div>'
+    +'<button class="btn-next" id="nextBtn" onclick="nextQuestion()">'+(isLast?'✓ See Results':'Next →')+'</button>'
+    +'</div>';
+}
+
+let selectedFbType=null;
+
+function selectFbType(btn,type){
+  document.querySelectorAll('.fb-type-btn').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  selectedFbType=type;
+  checkFbReady();
+}
+
+function checkFbReady(){
+  const comment=(document.getElementById('fbComment').value||'').trim();
+  const btn=document.getElementById('fbSubmitBtn');
+  if(btn)btn.disabled=!comment;
+}
+
+function selectAnswer(letter,btn,questionId,questionText){
+  const q=questions[current];
+  const correct=q.correct_answer===letter;
+  if(correct)correctCount++;
+  document.querySelectorAll('.option-btn').forEach(function(b){
+    b.disabled=true;
+    if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
+    else if(b===btn&&!correct)b.classList.add('wrong');
+  });
+  if(q.explanation){
+    document.getElementById('expText').textContent=q.explanation;
+    document.getElementById('expBox').classList.add('show');
   }
+  document.getElementById('feedbackBox').style.display='block';
+  document.getElementById('nextBtn').classList.add('visible');
+  selectedFbType=null;
+  logAnswer(q,correct);
+}
 
-  function showAlreadyDone(){
-    document.getElementById('mainContent').innerHTML=
-      '<div class="results-card already-done">'
-      +'<div class="already-icon">✅</div>'
-      +'<div class="results-headline">Already Done Today!</div>'
-      +'<div class="results-sub">You completed your daily 3 questions. Come back tomorrow for more.</div>'
-      +'<div class="more-box">'
-      +'<div class="more-title">🔥 Want more points?</div>'
-      +'<div class="more-sub">Take a full practice session — every attempt and correct answer earns extra points.</div>'
-      +'<a href="training.html" class="btn-more">⚡ Start a Full Session →</a>'
-      +'</div>'
-      +'<div style="margin-top:1rem;"><a href="index.html" class="btn-leaderboard">🏆 View Leaderboard</a></div>'
-      +'</div>';
+async function submitFeedback(questionId,questionText){
+  const comment=(document.getElementById('fbComment').value||'').trim();
+  if(!comment){
+    const fbSent=document.getElementById('fbSent');
+    fbSent.textContent='Please write a comment to earn points.';
+    fbSent.style.color='var(--wrong)';
+    fbSent.classList.add('show');
+    return;
   }
-
-  function renderQuiz(){
-    const name=dailyUserEmail.split('@')[0];
-    document.getElementById('mainContent').innerHTML=
-      '<div class="day-badge">📅 '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div>'
-      +'<div class="headline">Hey '+name+'! 👋</div>'
-      +'<div class="sub">Your 3-question daily quiz — takes about 2 minutes</div>'
-      +'<div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>'
-      +'<div id="questionArea"></div>';
-    renderQuestion();
-  }
-
-  function renderQuestion(){
-    if(current>=questions.length){showResults();return;}
-    const q=questions[current];
-    const opts=Array.isArray(q.options)?q.options:(typeof q.options==='string'?JSON.parse(q.options||'[]'):[]);
-    const isLast=current===questions.length-1;
-    const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
-    document.getElementById('questionArea').innerHTML=
-      '<div class="q-card">'
-      +'<div class="q-num">Question '+(current+1)+' of '+questions.length+'</div>'
-      +imgHTML
-      +'<div class="q-text">'+q.question+'</div>'
-      +'<div class="options">'
-      +opts.map(function(opt,i){
-        const l=['A','B','C','D'][i];
-        const optText=opt.replace(/^[A-D]\)\s*/,'');
-        return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this)" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
-      }).join('')
-      +'</div>'
-      +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
-      +'<button class="btn-next" id="nextBtn" onclick="nextQuestion()">'+(isLast?'✓ See Results':'Next →')+'</button>'
-      +'</div>';
-  }
-
-  function selectAnswer(letter,btn){
-    const q=questions[current];
-    const correct=q.correct_answer===letter;
-    if(correct)correctCount++;
-    document.querySelectorAll('.option-btn').forEach(function(b){
-      b.disabled=true;
-      if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
-      else if(b===btn&&!correct)b.classList.add('wrong');
+  const fbType=selectedFbType||'general';
+  const fbSubmitBtn=document.getElementById('fbSubmitBtn');
+  fbSubmitBtn.disabled=true;fbSubmitBtn.textContent='Sending...';
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({
+        question_id:questionId,
+        question_text:questionText,
+        feedback_type:fbType,
+        comment:comment,
+        author_name:dailyUserEmail,
+        user_email:dailyUserEmail,
+        status:'pending',
+        created_at:new Date().toISOString()
+      })
     });
-    if(q.explanation){
-      document.getElementById('expText').textContent=q.explanation;
-      document.getElementById('expBox').classList.add('show');
-    }
-    document.getElementById('nextBtn').classList.add('visible');
-    logAnswer(q,correct);
+    await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({user_email:dailyUserEmail,points:5,reason:'Quiz feedback comment',created_at:new Date().toISOString()})
+    });
+    const fbSent=document.getElementById('fbSent');
+    fbSent.textContent='✓ Feedback sent! +5 points earned.';
+    fbSent.style.color='var(--correct)';
+    fbSent.classList.add('show');
+    fbSubmitBtn.textContent='✓ Sent';
+    document.querySelectorAll('.fb-type-btn').forEach(function(b){b.disabled=true;});
+    document.getElementById('fbComment').disabled=true;
+    loadLeaderboard();
+  }catch(e){
+    const fbSent=document.getElementById('fbSent');
+    fbSent.textContent='Could not send. Try again.';
+    fbSent.style.color='var(--wrong)';
+    fbSent.classList.add('show');
+    fbSubmitBtn.disabled=false;fbSubmitBtn.textContent='Submit Feedback →';
+  }
+}
+
+async function logAnswer(q,correct){
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/training_logs',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({user_email:dailyUserEmail,question_id:q.id,is_correct:correct,time_taken_seconds:0})
+    });
+    await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({user_email:dailyUserEmail,points:correct?3:1,reason:correct?'Daily quiz correct':'Daily quiz attempt',created_at:new Date().toISOString()})
+    });
+  }catch(e){}
+}
+
+function nextQuestion(){
+  current++;
+  const pf=document.getElementById('progFill');
+  if(pf)pf.style.width=(current/questions.length*100)+'%';
+  renderQuestion();
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults(){
+  // Record the attempt
+  if(sessionNum===1){
+    recordSession1Attempt();
+  } else {
+    recordSession2Done();
   }
 
-  async function logAnswer(q,correct){
-    try{
-      await fetch(SUPABASE_URL+'/rest/v1/training_logs',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-        body:JSON.stringify({user_email:dailyUserEmail,question_id:q.id,is_correct:correct,time_taken_seconds:0})
-      });
-      await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-        body:JSON.stringify({user_email:dailyUserEmail,points:correct?3:1,reason:correct?'Daily quiz correct':'Daily quiz attempt',created_at:new Date().toISOString()})
-      });
-    }catch(e){}
+  // Streak tracking
+  const streakKey='tt_daily_streak_'+dailyUserEmail;
+  const lastDoneKey='tt_daily_last_'+dailyUserEmail;
+  const lastDone=localStorage.getItem(lastDoneKey);
+  let streak=parseInt(localStorage.getItem(streakKey)||'0');
+  const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+  const yKey=yesterday.toISOString().split('T')[0];
+  if(lastDone===yKey)streak+=1;
+  else if(lastDone!==todayKey)streak=1;
+  localStorage.setItem(streakKey,streak);
+  localStorage.setItem(lastDoneKey,todayKey);
+
+  const pct=Math.round((correctCount/questions.length)*100);
+  const emoji=pct===100?'🎯':pct>=66?'💪':pct>=33?'📈':'🌱';
+  const s1attempts=getSession1Attempts();
+  const s2done=getSession2Done();
+  const retakeAvailable=sessionNum===1&&s1attempts<=MAX_RETAKES_PER_SESSION;
+  const session2Available=!s2done&&(sessionNum===1&&s1attempts>0||sessionNum===2);
+  const sessionLabel=sessionNum===1?(attemptInSession===1?'Quiz 1':'Quiz 1 Retake'):'Quiz 2';
+
+  let html=
+    '<div class="results-card">'
+    +'<div class="score-circle">'+correctCount+'/'+questions.length+'</div>'
+    +'<div class="results-headline">'+emoji+' '+sessionLabel+' Done!</div>'
+    +'<div class="results-sub">You got <strong>'+correctCount+' out of '+questions.length+'</strong> correct</div>'
+    +(streak>1?'<div class="streak-box">🔥 '+streak+'-day streak! Keep it going.</div>':'');
+
+  html+='<div class="btn-action-row">';
+  if(retakeAvailable){
+    html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
+  }
+  if(session2Available&&sessionNum===1&&s1attempts>0){
+    html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
+  }
+  if(s2done&&!retakeAvailable){
+    html+='<span class="done-note">All quiz sessions complete for today!</span>';
+  }
+  html+='</div>';
+
+  if(retakeAvailable){
+    html+='<div class="retake-info">1 retake available — same 3 questions</div>';
   }
 
-  function nextQuestion(){
-    current++;
-    const pf=document.getElementById('progFill');
-    if(pf)pf.style.width=(current/questions.length*100)+'%';
-    renderQuestion();
-  }
+  html+=
+    '<div class="more-box" style="margin-top:1rem;">'
+    +'<div class="more-title">Want more practice points?</div>'
+    +'<div class="more-sub">Full sessions have unlimited questions and earn points every attempt — great for building deeper knowledge.</div>'
+    +'<a href="training.html" class="btn-primary-action" style="margin-right:0.5rem;">⚡ Full Session →</a>'
+    +'</div>'
+    +'<div style="margin-top:1rem;"><a href="index.html" class="btn-ghost-action">🏆 Full Leaderboard</a></div>'
+    +'</div>';
 
-  function showResults(){
-    const doneKey='tt_daily_done_'+dailyUserEmail+'_'+todayKey;
-    localStorage.setItem(doneKey,'1');
+  document.getElementById('quizCol').innerHTML=html;
+  loadLeaderboard();
+}
 
-    const streakKey='tt_daily_streak_'+dailyUserEmail;
-    const lastDoneKey='tt_daily_last_'+dailyUserEmail;
-    const lastDone=localStorage.getItem(lastDoneKey);
-    let streak=parseInt(localStorage.getItem(streakKey)||'0');
-    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
-    const yKey=yesterday.toISOString().split('T')[0];
-    if(lastDone===yKey)streak+=1;
-    else streak=1;
-    localStorage.setItem(streakKey,streak);
-    localStorage.setItem(lastDoneKey,todayKey);
+// ============================================================
+// LEADERBOARD SIDEBAR
+// ============================================================
+async function loadLeaderboard(){
+  const lbEl=document.getElementById('lbList');
+  if(!lbEl)return;
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/technician_points?select=user_email,points&limit=500',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const rows=await res.json();
+    if(!Array.isArray(rows)||!rows.length){lbEl.innerHTML='<div class="lb-empty">No points yet!</div>';return;}
+    const map={};
+    rows.forEach(function(r){if(!map[r.user_email])map[r.user_email]=0;map[r.user_email]+=(r.points||0);});
+    const entries=Object.entries(map).map(function(e){return{email:e[0],pts:e[1]};}).sort(function(a,b){return b.pts-a.pts;});
+    const maxPts=entries[0].pts||1;
+    const medals=['🥇','🥈','🥉'];
+    lbEl.innerHTML=entries.slice(0,10).map(function(e,i){
+      const rankClass=i<3?'rank-'+(i+1):'';
+      const medal=i<3?medals[i]:'<span style="font-size:0.75rem;color:var(--muted);font-weight:bold;">'+(i+1)+'</span>';
+      const barW=Math.round((e.pts/maxPts)*100);
+      const name=e.email.split('@')[0];
+      const isMe=dailyUserEmail&&e.email===dailyUserEmail;
+      return '<div class="lb-row '+rankClass+'" style="'+(isMe?'border-color:rgba(139,26,26,0.5);':'')+'">'
+        +'<div class="lb-rank">'+medal+'</div>'
+        +'<div class="lb-avatar">'+name[0].toUpperCase()+'</div>'
+        +'<div class="lb-name" style="'+(isMe?'color:var(--maroon-light);font-weight:700;':'')+'">'+name+(isMe?' ◀':''+'')+'</div>'
+        +'<div class="lb-bar-track"><div class="lb-bar-fill" style="width:'+barW+'%"></div></div>'
+        +'<div class="lb-pts">'+e.pts+'</div>'
+        +'</div>';
+    }).join('');
+  }catch(e){lbEl.innerHTML='<div class="lb-empty">Could not load.</div>';}
+}
 
-    const pct=Math.round((correctCount/questions.length)*100);
-    const emoji=pct===100?'🎯':pct>=66?'💪':pct>=33?'📈':'🌱';
-
-    document.getElementById('mainContent').innerHTML=
-      '<div class="results-card">'
-      +'<div class="score-circle">'+correctCount+'/'+questions.length+'</div>'
-      +'<div class="results-headline">'+emoji+' Nice Work!</div>'
-      +'<div class="results-sub">You got <strong>'+correctCount+' out of '+questions.length+'</strong> correct today</div>'
-      +(streak>1?'<div class="streak-box">🔥 '+streak+'-day streak! Keep it going.</div>':'')
-      +'<div class="more-box">'
-      +'<div class="more-title">Want more practice points?</div>'
-      +'<div class="more-sub">Take a full session for extra questions — every attempt and correct answer earns bonus points on top of today\'s daily quiz.</div>'
-      +'<a href="training.html" class="btn-more">⚡ Start a Full Session →</a>'
-      +'</div>'
-      +'<div style="margin-top:1rem;"><a href="index.html" class="btn-leaderboard">🏆 View Leaderboard</a></div>'
-      +'</div>';
-  }
-
-  init();
+init();
 </script>
 </body>
 </html>
