@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Quiz — BSTTRAINGAME</title>
+<style>
+  :root {
+    --bg:#080810;--surface:#0f0f1a;--surface2:#161625;--surface3:#1e1e30;
+    --accent:#00e5a0;--maroon:#8B1A1A;--maroon-light:#c0392b;--maroon-glow:rgba(139,26,26,0.18);
+    --text:#eeeef8;--muted:#606080;--border:rgba(255,255,255,0.07);
+    --correct:#00e5a0;--wrong:#ff4d6d;--warning:#ffb347;
+    --headline-font:'Arial Narrow',Arial,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s;}
+  body.theme-light{--bg:#f4f2ef;--surface:#fff;--surface2:#f0ede8;--surface3:#e8e4de;--text:#1a1410;--muted:#8a7a6a;--border:rgba(0,0,0,0.1);}
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,8,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+  body.theme-light nav{background:rgba(244,242,239,0.95);}
+  .logo{font-family:var(--headline-font);font-weight:bold;font-size:1.4rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
+  .logo span{color:var(--maroon-light);}
+  .theme-toggle{width:34px;height:34px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .main{max-width:700px;margin:0 auto;padding:3rem 1.5rem;}
+  .headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.3rem;text-shadow:0 0 30px var(--maroon-glow);}
+  .sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;}
+  .day-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:100px;padding:0.3rem 0.9rem;font-size:0.78rem;color:#e88080;margin-bottom:1.5rem;font-weight:600;}
+  .prog-track{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:2rem;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:3px;transition:width 0.4s ease;}
+  .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.2rem;margin-bottom:1.5rem;animation:fadeUp 0.4s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .q-num{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.2rem;line-height:1.45;margin-bottom:1.6rem;}
+  .options{display:flex;flex-direction:column;gap:0.7rem;}
+  .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.2rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',Arial,sans-serif;font-size:0.92rem;color:var(--text);transition:all 0.2s;width:100%;}
+  .option-btn:hover:not(:disabled){border-color:rgba(139,26,26,0.5);background:var(--maroon-glow);}
+  .option-btn.correct{border-color:var(--correct);background:rgba(0,229,160,0.08);}
+  .option-btn.wrong{border-color:var(--wrong);background:rgba(255,77,109,0.08);}
+  .opt-letter{width:28px;height:28px;border-radius:7px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-family:var(--headline-font);font-size:0.85rem;font-weight:bold;flex-shrink:0;}
+  .option-btn.correct .opt-letter{background:var(--correct);color:#0a0a0f;}
+  .option-btn.wrong .opt-letter{background:var(--wrong);color:white;}
+  .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1.1rem 1.3rem;margin-top:1.4rem;font-size:0.86rem;line-height:1.6;display:none;}
+  .explanation-box.show{display:block;}
+  .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.4rem;}
+  .btn-next{margin-top:1.4rem;padding:0.8rem 2rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;display:none;}
+  .btn-next.visible{display:inline-flex;}
+  .results-card{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2.5rem;text-align:center;}
+  .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:1.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.5rem;}
+  .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem;}
+  .results-stat{font-family:var(--headline-font);font-size:2.2rem;font-weight:bold;color:var(--maroon-light);}
+  .streak-box{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);border-radius:12px;padding:1rem 1.3rem;margin:1.2rem 0;font-size:0.85rem;color:var(--warning);}
+  .more-box{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:14px;padding:1.4rem 1.6rem;margin-top:1.5rem;text-align:left;}
+  .more-title{font-family:var(--headline-font);font-weight:bold;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--maroon-light);margin-bottom:0.4rem;}
+  .more-sub{font-size:0.83rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+  .btn-more{padding:0.75rem 1.6rem;background:none;border:2px solid var(--maroon-light);border-radius:10px;color:var(--maroon-light);font-family:var(--headline-font);font-weight:bold;font-size:0.88rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;}
+  .btn-more:hover{background:var(--maroon-glow);}
+  .btn-leaderboard{margin-top:0.75rem;padding:0.75rem 1.6rem;background:none;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:var(--headline-font);font-weight:bold;font-size:0.88rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;}
+  .already-done{text-align:center;padding:3rem 2rem;}
+  .already-icon{font-size:3rem;margin-bottom:1rem;}
+  .invalid-state{text-align:center;padding:4rem 2rem;color:var(--muted);}
+  .loading-state{text-align:center;padding:4rem;color:var(--muted);}
+  .score-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-family:var(--headline-font);font-size:2rem;font-weight:bold;color:white;box-shadow:0 0 40px var(--maroon-glow);}
+</style>
+</head>
+<body>
+<script src="theme.js"></script>
+<nav>
+  <a href="index.html" class="logo">BST<span>TRAINGAME</span></a>
+  <button class="theme-toggle" onclick="TechTheme&&TechTheme.toggle()">☀️</button>
+</nav>
+
+<div class="main" id="mainContent">
+  <div class="loading-state">Loading your daily quiz...</div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  const params=new URLSearchParams(window.location.search);
+  const tokenParam=params.get('u');
+  const DAILY_SIZE=3;
+  let dailyUserEmail=null,questions=[],current=0,correctCount=0;
+  const todayKey=new Date().toISOString().split('T')[0];
+
+  const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
+
+  function isRefrigerantQuestion(q){
+    const text=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
+    return REFRIGERANT_KEYWORDS.some(function(k){return text.includes(k);});
+  }
+
+  function hashStr(str){
+    let h=0;
+    for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}
+    return Math.abs(h);
+  }
+
+  function pickDailyQuestions(allQuestions,seed){
+    const eligible=allQuestions.filter(function(q){return !isRefrigerantQuestion(q)&&q.status==='active';});
+    if(!eligible.length)return[];
+    const arr=eligible.slice();
+    let s=seed;
+    for(let i=arr.length-1;i>0;i--){
+      s=(s*9301+49297)%233280;
+      const j=Math.floor((s/233280)*(i+1));
+      const tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
+    }
+    return arr.slice(0,DAILY_SIZE);
+  }
+
+  async function init(){
+    if(!tokenParam){showInvalid();return;}
+    try{
+      const res=await fetch(SUPABASE_URL+'/rest/v1/daily_tokens?select=user_email&token=eq.'+encodeURIComponent(tokenParam),
+        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+      const rows=await res.json();
+      if(!Array.isArray(rows)||!rows.length){showInvalid();return;}
+      dailyUserEmail=rows[0].user_email;
+    }catch(e){showInvalid();return;}
+
+    const doneKey='tt_daily_done_'+dailyUserEmail+'_'+todayKey;
+    if(localStorage.getItem(doneKey)){showAlreadyDone();return;}
+
+    let allQuestions=[];
+    try{
+      const res=await fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
+        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+      const data=await res.json();
+      allQuestions=Array.isArray(data)?data:[];
+    }catch(e){}
+
+    if(!allQuestions.length){
+      document.getElementById('mainContent').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
+      return;
+    }
+
+    const seed=hashStr(tokenParam+todayKey);
+    questions=pickDailyQuestions(allQuestions,seed);
+
+    if(!questions.length){
+      document.getElementById('mainContent').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
+      return;
+    }
+
+    renderQuiz();
+  }
+
+  function showInvalid(){
+    document.getElementById('mainContent').innerHTML=
+      '<div class="invalid-state">'
+      +'<div style="font-size:2rem;margin-bottom:1rem;">🔒</div>'
+      +'<div style="font-family:Arial Narrow,Arial,sans-serif;font-weight:bold;font-size:1.1rem;color:#c0392b;text-transform:uppercase;margin-bottom:0.5rem;">Link Not Recognized</div>'
+      +'This daily quiz link is invalid. Contact your admin for a new one.'
+      +'</div>';
+  }
+
+  function showAlreadyDone(){
+    document.getElementById('mainContent').innerHTML=
+      '<div class="results-card already-done">'
+      +'<div class="already-icon">✅</div>'
+      +'<div class="results-headline">Already Done Today!</div>'
+      +'<div class="results-sub">You completed your daily 3 questions. Come back tomorrow for more.</div>'
+      +'<div class="more-box">'
+      +'<div class="more-title">🔥 Want more points?</div>'
+      +'<div class="more-sub">Take a full practice session — every attempt and correct answer earns extra points.</div>'
+      +'<a href="training.html" class="btn-more">⚡ Start a Full Session →</a>'
+      +'</div>'
+      +'<div style="margin-top:1rem;"><a href="index.html" class="btn-leaderboard">🏆 View Leaderboard</a></div>'
+      +'</div>';
+  }
+
+  function renderQuiz(){
+    const name=dailyUserEmail.split('@')[0];
+    document.getElementById('mainContent').innerHTML=
+      '<div class="day-badge">📅 '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div>'
+      +'<div class="headline">Hey '+name+'! 👋</div>'
+      +'<div class="sub">Your 3-question daily quiz — takes about 2 minutes</div>'
+      +'<div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>'
+      +'<div id="questionArea"></div>';
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    if(current>=questions.length){showResults();return;}
+    const q=questions[current];
+    const opts=Array.isArray(q.options)?q.options:(typeof q.options==='string'?JSON.parse(q.options||'[]'):[]);
+    const isLast=current===questions.length-1;
+    const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
+    document.getElementById('questionArea').innerHTML=
+      '<div class="q-card">'
+      +'<div class="q-num">Question '+(current+1)+' of '+questions.length+'</div>'
+      +imgHTML
+      +'<div class="q-text">'+q.question+'</div>'
+      +'<div class="options">'
+      +opts.map(function(opt,i){
+        const l=['A','B','C','D'][i];
+        const optText=opt.replace(/^[A-D]\)\s*/,'');
+        return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this)" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+      }).join('')
+      +'</div>'
+      +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
+      +'<button class="btn-next" id="nextBtn" onclick="nextQuestion()">'+(isLast?'✓ See Results':'Next →')+'</button>'
+      +'</div>';
+  }
+
+  function selectAnswer(letter,btn){
+    const q=questions[current];
+    const correct=q.correct_answer===letter;
+    if(correct)correctCount++;
+    document.querySelectorAll('.option-btn').forEach(function(b){
+      b.disabled=true;
+      if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
+      else if(b===btn&&!correct)b.classList.add('wrong');
+    });
+    if(q.explanation){
+      document.getElementById('expText').textContent=q.explanation;
+      document.getElementById('expBox').classList.add('show');
+    }
+    document.getElementById('nextBtn').classList.add('visible');
+    logAnswer(q,correct);
+  }
+
+  async function logAnswer(q,correct){
+    try{
+      await fetch(SUPABASE_URL+'/rest/v1/training_logs',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+        body:JSON.stringify({user_email:dailyUserEmail,question_id:q.id,is_correct:correct,time_taken_seconds:0})
+      });
+      await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+        body:JSON.stringify({user_email:dailyUserEmail,points:correct?3:1,reason:correct?'Daily quiz correct':'Daily quiz attempt',created_at:new Date().toISOString()})
+      });
+    }catch(e){}
+  }
+
+  function nextQuestion(){
+    current++;
+    const pf=document.getElementById('progFill');
+    if(pf)pf.style.width=(current/questions.length*100)+'%';
+    renderQuestion();
+  }
+
+  function showResults(){
+    const doneKey='tt_daily_done_'+dailyUserEmail+'_'+todayKey;
+    localStorage.setItem(doneKey,'1');
+
+    const streakKey='tt_daily_streak_'+dailyUserEmail;
+    const lastDoneKey='tt_daily_last_'+dailyUserEmail;
+    const lastDone=localStorage.getItem(lastDoneKey);
+    let streak=parseInt(localStorage.getItem(streakKey)||'0');
+    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+    const yKey=yesterday.toISOString().split('T')[0];
+    if(lastDone===yKey)streak+=1;
+    else streak=1;
+    localStorage.setItem(streakKey,streak);
+    localStorage.setItem(lastDoneKey,todayKey);
+
+    const pct=Math.round((correctCount/questions.length)*100);
+    const emoji=pct===100?'🎯':pct>=66?'💪':pct>=33?'📈':'🌱';
+
+    document.getElementById('mainContent').innerHTML=
+      '<div class="results-card">'
+      +'<div class="score-circle">'+correctCount+'/'+questions.length+'</div>'
+      +'<div class="results-headline">'+emoji+' Nice Work!</div>'
+      +'<div class="results-sub">You got <strong>'+correctCount+' out of '+questions.length+'</strong> correct today</div>'
+      +(streak>1?'<div class="streak-box">🔥 '+streak+'-day streak! Keep it going.</div>':'')
+      +'<div class="more-box">'
+      +'<div class="more-title">Want more practice points?</div>'
+      +'<div class="more-sub">Take a full session for extra questions — every attempt and correct answer earns bonus points on top of today\'s daily quiz.</div>'
+      +'<a href="training.html" class="btn-more">⚡ Start a Full Session →</a>'
+      +'</div>'
+      +'<div style="margin-top:1rem;"><a href="index.html" class="btn-leaderboard">🏆 View Leaderboard</a></div>'
+      +'</div>';
+  }
+
+  init();
+</script>
+</body>
+</html>
