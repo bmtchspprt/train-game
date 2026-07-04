@@ -28,15 +28,8 @@
   @media(max-width:900px){.page-layout{flex-direction:column;}.lb-col{width:100%;}}
 
   /* DISCLAIMER */
-  .disclaimer{background:rgba(56,182,255,0.05);border:1px solid rgba(56,182,255,0.15);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:0.78rem;color:var(--muted);line-height:1.6;font-weight:normal;}
+  .disclaimer{background:rgba(56,182,255,0.05);border:1px solid rgba(56,182,255,0.15);border-radius:12px;padding:0.9rem 1.1rem;margin-bottom:1.5rem;font-size:0.76rem;color:var(--muted);line-height:1.6;font-weight:normal;}
   .disclaimer strong{color:var(--text);font-weight:600;}
-
-  /* SESSION TABS */
-  .session-tabs{display:flex;gap:0.5rem;margin-bottom:1.2rem;background:var(--surface2);padding:0.3rem;border-radius:10px;}
-  .session-tab{flex:1;padding:0.5rem;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--headline-font);font-size:0.82rem;font-weight:bold;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.04em;text-align:center;}
-  .session-tab.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
-  .session-tab.done{color:var(--correct);}
-  .session-tab.locked{color:var(--muted);cursor:default;opacity:0.5;}
 
   /* ATTEMPT BADGES */
   .attempt-badges{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;}
@@ -67,20 +60,26 @@
   .explanation-box.show{display:block;}
   .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.35rem;}
 
-  /* FEEDBACK BOX */
-  .feedback-box{margin-top:1rem;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:12px;padding:1rem 1.2rem;}
-  .feedback-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--warning);font-weight:bold;margin-bottom:0.5rem;}
-  .feedback-note{font-size:0.72rem;color:var(--muted);font-weight:normal;margin-bottom:0.6rem;line-height:1.5;}
-  .feedback-type-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem;}
+  /* REPORT LINK */
+  .report-link-row{margin-top:0.9rem;display:none;}
+  .report-link-row.show{display:block;}
+  .report-toggle{background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;padding:0;}
+  .report-toggle:hover{color:var(--warning);}
+
+  /* REPORT PANEL */
+  .report-panel{margin-top:0.6rem;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:10px;padding:0.9rem 1.1rem;display:none;}
+  .report-panel.open{display:block;}
+  .report-panel-label{font-family:var(--headline-font);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--warning);font-weight:bold;margin-bottom:0.5rem;}
+  .report-type-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem;}
   .fb-type-btn{padding:0.2rem 0.6rem;border-radius:100px;font-size:0.7rem;border:1px solid rgba(255,179,71,0.3);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
   .fb-type-btn.selected{background:rgba(255,179,71,0.15);border-color:var(--warning);color:var(--warning);}
-  .feedback-textarea{width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.8rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;resize:none;outline:none;min-height:60px;transition:border-color 0.2s;}
-  .feedback-textarea:focus{border-color:var(--warning);}
-  .btn-submit-fb{margin-top:0.5rem;padding:0.45rem 1rem;background:rgba(255,179,71,0.1);border:1px solid rgba(255,179,71,0.3);border-radius:7px;color:var(--warning);font-size:0.78rem;cursor:pointer;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;transition:all 0.2s;}
-  .btn-submit-fb:hover{background:rgba(255,179,71,0.2);}
-  .btn-submit-fb:disabled{opacity:0.4;cursor:not-allowed;}
-  .fb-sent{font-size:0.75rem;margin-top:0.4rem;display:none;}
-  .fb-sent.show{display:block;}
+  .report-textarea{width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.8rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;resize:none;outline:none;min-height:60px;transition:border-color 0.2s;}
+  .report-textarea:focus{border-color:var(--warning);}
+  .btn-submit-report{margin-top:0.5rem;padding:0.42rem 0.9rem;background:rgba(255,179,71,0.1);border:1px solid rgba(255,179,71,0.3);border-radius:7px;color:var(--warning);font-size:0.76rem;cursor:pointer;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;transition:all 0.2s;}
+  .btn-submit-report:hover{background:rgba(255,179,71,0.2);}
+  .btn-submit-report:disabled{opacity:0.4;cursor:not-allowed;}
+  .report-sent{font-size:0.74rem;margin-top:0.4rem;display:none;}
+  .report-sent.show{display:block;}
 
   .btn-next{margin-top:1.2rem;padding:0.8rem 2rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;display:none;}
   .btn-next.visible{display:inline-flex;}
@@ -91,15 +90,11 @@
   .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.2rem;}
   .score-circle{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-family:var(--headline-font);font-size:1.8rem;font-weight:bold;color:white;box-shadow:0 0 40px var(--maroon-glow);}
   .streak-box{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);border-radius:10px;padding:0.8rem 1.1rem;margin:1rem 0;font-size:0.83rem;color:var(--warning);}
-  .more-box{background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:14px;padding:1.2rem 1.4rem;margin-top:1rem;text-align:left;}
-  .more-title{font-family:var(--headline-font);font-weight:bold;font-size:0.92rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--maroon-light);margin-bottom:0.35rem;}
-  .more-sub{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:0.9rem;}
   .btn-action-row{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;}
   .btn-primary-action{padding:0.7rem 1.4rem;background:var(--maroon);border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-weight:bold;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s;text-decoration:none;display:inline-block;}
   .btn-primary-action:hover{background:var(--maroon-light);}
   .btn-secondary-action{padding:0.7rem 1.4rem;background:none;border:2px solid var(--maroon-light);border-radius:10px;color:var(--maroon-light);font-family:var(--headline-font);font-weight:bold;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-secondary-action:hover{background:var(--maroon-glow);}
-  .btn-ghost-action{padding:0.65rem 1.4rem;background:none;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:var(--headline-font);font-weight:bold;font-size:0.82rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;display:inline-block;}
   .retake-info{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;}
   .done-note{font-size:0.78rem;color:var(--muted);margin-top:0.75rem;padding:0.6rem 0.9rem;background:var(--surface2);border-radius:8px;display:inline-block;}
 
@@ -132,12 +127,9 @@
 </nav>
 
 <div class="page-layout">
-  <!-- QUIZ COLUMN -->
   <div class="quiz-col" id="quizCol">
     <div class="loading-state">Loading your daily quiz...</div>
   </div>
-
-  <!-- LEADERBOARD SIDEBAR -->
   <div class="lb-col">
     <div class="lb-card">
       <div class="lb-title">🏆 Leaderboard</div>
@@ -152,22 +144,17 @@
 <script src="config.js"></script>
 <script>
 // ============================================================
-// CONSTANTS & STATE
+// STATE
 // ============================================================
 const params=new URLSearchParams(window.location.search);
 const tokenParam=params.get('u');
-
-// Sessions: Session 1 = quiz A (same 3 Qs, 1 retake allowed)
-//           Session 2 = quiz B (different 3 Qs, no retake)
-// So per day max: Session1 attempt1, Session1 retake, Session2 attempt = 3 total rounds
-const MAX_RETAKES_PER_SESSION=1; // 1 retake per session
+const MAX_RETAKES_PER_SESSION=1;
 const DAILY_SIZE=3;
-const SESSIONS=2; // 2 separate quiz sessions per day
 
 let dailyUserEmail=null;
 let allQuestions=[];
-let sessionNum=1;      // which session (1 or 2)
-let attemptInSession=1; // which attempt within current session (1 or 2)
+let sessionNum=1;
+let attemptInSession=1;
 let questions=[];
 let current=0;
 let correctCount=0;
@@ -190,10 +177,11 @@ function hashStr(str){
 }
 
 function pickQuestionsForSession(session){
-  const eligible=allQuestions.filter(function(q){return !isRefrigerantQuestion(q)&&q.status==='active';});
+  const eligible=allQuestions.filter(function(q){
+    return !isRefrigerantQuestion(q)&&q.status==='active';
+  });
   if(!eligible.length)return[];
-  // Use different seeds per session so session 2 gets different questions
-  const seed=hashStr(tokenParam+todayKey+'session'+session);
+  const seed=hashStr(tokenParam+todayKey+'s'+session);
   const arr=eligible.slice();
   let s=seed;
   for(let i=arr.length-1;i>0;i--){
@@ -201,24 +189,28 @@ function pickQuestionsForSession(session){
     const j=Math.floor((s/233280)*(i+1));
     const tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
   }
-  // Session 2 picks from the second set so questions don't repeat
-  if(session===2){return arr.slice(DAILY_SIZE,DAILY_SIZE*2);}
+  if(session===2)return arr.slice(DAILY_SIZE,DAILY_SIZE*2);
   return arr.slice(0,DAILY_SIZE);
 }
 
-function getStorageKey(key){return 'tt_'+key+'_'+dailyUserEmail+'_'+todayKey;}
+function sk(key){return 'tt_'+key+'_'+dailyUserEmail+'_'+todayKey;}
+function getS1Attempts(){return parseInt(localStorage.getItem(sk('s1attempts'))||'0');}
+function getS2Done(){return localStorage.getItem(sk('s2done'))==='1';}
+function recordS1Attempt(){localStorage.setItem(sk('s1attempts'),getS1Attempts()+1);}
+function recordS2Done(){localStorage.setItem(sk('s2done'),'1');}
 
-function getSession1Attempts(){return parseInt(localStorage.getItem(getStorageKey('s1attempts'))||'0');}
-function getSession2Done(){return localStorage.getItem(getStorageKey('s2done'))==='1';}
-function recordSession1Attempt(){localStorage.setItem(getStorageKey('s1attempts'),getSession1Attempts()+1);}
-function recordSession2Done(){localStorage.setItem(getStorageKey('s2done'),'1');}
-function isSession1Done(){return getSession1Attempts()>MAX_RETAKES_PER_SESSION;} // done after 2 attempts
+function getDisclaimerHTML(){
+  return '<strong>About this challenge:</strong> Our goal is to improve together as a team. '
+    +'Points and rules may be adjusted over time — veterans may be rewarded for deep knowledge, '
+    +'while newer techs earn points for effort and improvement. The system evolves to recognize both experience and growth.';
+}
 
 // ============================================================
 // INIT
 // ============================================================
 async function init(){
   if(!tokenParam){showInvalid();return;}
+
   try{
     const res=await fetch(SUPABASE_URL+'/rest/v1/daily_tokens?select=user_email&token=eq.'+encodeURIComponent(tokenParam),
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
@@ -227,6 +219,9 @@ async function init(){
     dailyUserEmail=rows[0].user_email;
   }catch(e){showInvalid();return;}
 
+  // Load leaderboard immediately
+  loadLeaderboard();
+
   try{
     const res=await fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
@@ -234,27 +229,17 @@ async function init(){
     allQuestions=Array.isArray(data)?data:[];
   }catch(e){}
 
-  loadLeaderboard();
+  const s1=getS1Attempts();
+  const s2=getS2Done();
 
-  // Determine what to show
-  const s1attempts=getSession1Attempts();
-  const s2done=getSession2Done();
-
-  if(s1attempts===0){
-    // Fresh start — session 1 attempt 1
-    sessionNum=1;attemptInSession=1;
-    startQuiz();
-  } else if(s1attempts===1){
-    // Session 1 done once, offer retake or session 2
+  if(s1===0){
+    sessionNum=1;attemptInSession=1;startQuiz();
+  } else if(s1===1&&!s2){
     showBetweenSessions(false);
-  } else if(s1attempts>1&&!s2done){
-    // Session 1 retake done, offer session 2
+  } else if(s1>1&&!s2){
     showBetweenSessions(true);
-  } else if(s2done&&s1attempts>1){
-    // Everything done
-    showAllDone();
   } else {
-    startQuiz();
+    showAllDone();
   }
 }
 
@@ -280,70 +265,48 @@ function showInvalid(){
 
 function showAllDone(){
   document.getElementById('quizCol').innerHTML=
-    '<div class="disclaimer" style="margin-bottom:1.5rem;">'+getDisclaimerHTML()+'</div>'
+    '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
     +'<div class="results-card">'
     +'<div style="font-size:2.5rem;margin-bottom:0.75rem;">🎯</div>'
     +'<div class="results-headline">All Done Today!</div>'
-    +'<div class="results-sub">You\'ve completed both quiz sessions and your retake. Come back tomorrow for fresh questions.</div>'
-    +'<div class="more-box">'
-    +'<div class="more-title">Keep earning points</div>'
-    +'<div class="more-sub">Take a full practice session — unlimited questions, earns points every attempt.</div>'
-    +'<a href="training.html" class="btn-primary-action">⚡ Start a Full Session →</a>'
-    +'</div>'
+    +'<div class="results-sub">You\'ve completed both quiz sessions for today. Come back tomorrow for fresh questions.</div>'
     +'</div>';
 }
 
-// Between sessions — offer retake or session 2
 function showBetweenSessions(retakeDone){
-  const s1attempts=getSession1Attempts();
-  const s2done=getSession2Done();
+  const s2done=getS2Done();
   const name=dailyUserEmail.split('@')[0];
-
-  let html='<div class="disclaimer" style="margin-bottom:1.5rem;">'+getDisclaimerHTML()+'</div>';
+  let html='<div class="disclaimer">'+getDisclaimerHTML()+'</div>';
   html+='<div class="results-card">';
   html+='<div style="font-size:2rem;margin-bottom:0.75rem;">✅</div>';
   html+='<div class="results-headline">Good Work, '+name+'!</div>';
-  html+='<div class="results-sub">What would you like to do next?</div>';
-
-  // Session tracker
+  html+='<div class="results-sub">Choose what to do next.</div>';
   html+='<div style="display:flex;gap:0.5rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;">';
-  html+='<span class="attempt-badge done">✓ Quiz 1'+(s1attempts>1?' + Retake':'')+'</span>';
+  html+='<span class="attempt-badge done">✓ Quiz 1'+(retakeDone?' + Retake':'')+'</span>';
   if(s2done){html+='<span class="attempt-badge done">✓ Quiz 2</span>';}
   else{html+='<span class="attempt-badge remaining">Quiz 2 Available</span>';}
   html+='</div>';
-
   html+='<div class="btn-action-row">';
-
   if(!retakeDone){
     html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
   }
-
   if(!s2done){
     html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
   }
-
-  html+='<a href="training.html" class="btn-ghost-action">⚡ Full Session</a>';
   html+='</div>';
-
-  if(retakeDone&&s2done){
-    html+='<div class="done-note">All done for today! Full sessions are always available for extra points.</div>';
-  }
-
   html+='</div>';
   document.getElementById('quizCol').innerHTML=html;
 }
 
 function doRetake(){
-  sessionNum=1;
-  attemptInSession=2;
+  sessionNum=1;attemptInSession=2;
   questions=pickQuestionsForSession(1);
   current=0;correctCount=0;
   renderQuiz();
 }
 
 function doSession2(){
-  sessionNum=2;
-  attemptInSession=1;
+  sessionNum=2;attemptInSession=1;
   questions=pickQuestionsForSession(2);
   current=0;correctCount=0;
   renderQuiz();
@@ -352,44 +315,50 @@ function doSession2(){
 // ============================================================
 // RENDER QUIZ
 // ============================================================
-function getDisclaimerHTML(){
-  return '<strong>About this challenge:</strong> Our goal is to improve together as a team. '
-    +'Points and rules may be adjusted over time — veterans may be rewarded for deep knowledge, '
-    +'while newer techs earn points for effort and improvement. The system evolves to recognize both experience and growth.';
-}
-
 function renderQuiz(){
   const name=dailyUserEmail.split('@')[0];
-  const s1attempts=getSession1Attempts();
-  const sessionLabel=sessionNum===1?'Quiz 1'+(attemptInSession===2?' — Retake':''):'Quiz 2';
+  const sessionLabel=sessionNum===1
+    ?(attemptInSession===1?'Quiz 1':'Quiz 1 — Retake')
+    :'Quiz 2';
 
-  let attemptBadgesHTML='<div class="attempt-badges">';
+  let badgesHTML='<div class="attempt-badges">';
   if(sessionNum===1){
-    if(attemptInSession===1)attemptBadgesHTML+='<span class="attempt-badge current">→ Quiz 1 — Attempt 1</span><span class="attempt-badge remaining">Retake available after</span>';
-    else attemptBadgesHTML+='<span class="attempt-badge done">✓ Quiz 1 — Attempt 1</span><span class="attempt-badge current">→ Retake</span>';
+    if(attemptInSession===1){
+      badgesHTML+='<span class="attempt-badge current">→ Quiz 1</span>';
+      badgesHTML+='<span class="attempt-badge remaining">Retake available after</span>';
+    } else {
+      badgesHTML+='<span class="attempt-badge done">✓ Quiz 1</span>';
+      badgesHTML+='<span class="attempt-badge current">→ Retake</span>';
+    }
   } else {
-    attemptBadgesHTML+='<span class="attempt-badge done">✓ Quiz 1 Done</span><span class="attempt-badge current">→ Quiz 2</span>';
+    badgesHTML+='<span class="attempt-badge done">✓ Quiz 1 Done</span>';
+    badgesHTML+='<span class="attempt-badge current">→ Quiz 2</span>';
   }
-  attemptBadgesHTML+='</div>';
+  badgesHTML+='</div>';
 
   document.getElementById('quizCol').innerHTML=
     '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
     +'<div class="day-badge">📅 '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div>'
     +'<div class="headline">Hey '+name+'! 👋</div>'
     +'<div class="sub">'+sessionLabel+' — 3 questions, about 2 minutes</div>'
-    +attemptBadgesHTML
+    +badgesHTML
     +'<div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>'
     +'<div id="questionArea"></div>';
+
   renderQuestion();
 }
 
+// ============================================================
+// RENDER QUESTION
+// ============================================================
 function renderQuestion(){
   if(current>=questions.length){showResults();return;}
   const q=questions[current];
   const opts=Array.isArray(q.options)?q.options:(typeof q.options==='string'?JSON.parse(q.options||'[]'):[]);
   const isLast=current===questions.length-1;
   const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
-  const safeQText=q.question.replace(/'/g,"\\'").replace(/"/g,'&quot;').substring(0,100);
+  const safeId=q.id;
+  const safeText=encodeURIComponent(q.question.substring(0,120));
 
   document.getElementById('questionArea').innerHTML=
     '<div class="q-card">'
@@ -400,31 +369,48 @@ function renderQuestion(){
     +opts.map(function(opt,i){
       const l=['A','B','C','D'][i];
       const optText=opt.replace(/^[A-D]\)\s*/,'');
-      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+q.id+'\',\''+safeQText+'\')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+safeId+'\',\''+safeText+'\')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
     }).join('')
     +'</div>'
+
+    // Explanation
     +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
-    +'<div class="feedback-box" id="feedbackBox" style="display:none;">'
-    +'<div class="feedback-label">💬 Improve This Question</div>'
-    +'<div class="feedback-note">Add a comment to earn <strong>+5 points</strong>. A comment is required to submit.</div>'
-    +'<div class="feedback-type-row">'
+
+    // Report link — appears after answering
+    +'<div class="report-link-row" id="reportLinkRow">'
+    +'<button class="report-toggle" onclick="toggleReportPanel()">⚑ Report a problem with this question</button>'
+    +'<div class="report-panel" id="reportPanel">'
+    +'<div class="report-panel-label">What\'s wrong with this question?</div>'
+    +'<div class="report-type-row">'
     +'<button class="fb-type-btn" onclick="selectFbType(this,\'wrong_answer\')">Wrong answer</button>'
-    +'<button class="fb-type-btn" onclick="selectFbType(this,\'unclear_question\')">Unclear</button>'
-    +'<button class="fb-type-btn" onclick="selectFbType(this,\'outdated\')">Outdated</button>'
+    +'<button class="fb-type-btn" onclick="selectFbType(this,\'unclear_question\')">Unclear wording</button>'
+    +'<button class="fb-type-btn" onclick="selectFbType(this,\'outdated\')">Outdated info</button>'
     +'<button class="fb-type-btn" onclick="selectFbType(this,\'other\')">Other</button>'
     +'</div>'
-    +'<textarea class="feedback-textarea" id="fbComment" placeholder="Write your comment here to earn +5 points..." oninput="checkFbReady()"></textarea>'
-    +'<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">'
-    +'<button class="btn-submit-fb" id="fbSubmitBtn" onclick="submitFeedback(\''+q.id+'\',\''+safeQText+'\')" disabled>Submit Feedback →</button>'
-    +'<span style="font-size:0.72rem;color:var(--muted);">Comment required for +5 pts</span>'
+    +'<textarea class="report-textarea" id="fbComment" placeholder="Describe the issue... (required for +5 pts)" oninput="checkFbReady()"></textarea>'
+    +'<div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem;flex-wrap:wrap;">'
+    +'<button class="btn-submit-report" id="fbSubmitBtn" onclick="submitReport(\''+safeId+'\',\''+safeText+'\')" disabled>Submit Report →</button>'
+    +'<span style="font-size:0.7rem;color:var(--muted);">+5 pts for a written report</span>'
     +'</div>'
-    +'<div class="fb-sent" id="fbSent"></div>'
+    +'<div class="report-sent" id="fbSent"></div>'
     +'</div>'
+    +'</div>'
+
     +'<button class="btn-next" id="nextBtn" onclick="nextQuestion()">'+(isLast?'✓ See Results':'Next →')+'</button>'
     +'</div>';
 }
 
 let selectedFbType=null;
+let reportPanelOpen=false;
+
+function toggleReportPanel(){
+  reportPanelOpen=!reportPanelOpen;
+  const panel=document.getElementById('reportPanel');
+  if(panel){
+    if(reportPanelOpen)panel.classList.add('open');
+    else panel.classList.remove('open');
+  }
+}
 
 function selectFbType(btn,type){
   document.querySelectorAll('.fb-type-btn').forEach(function(b){b.classList.remove('selected');});
@@ -439,7 +425,7 @@ function checkFbReady(){
   if(btn)btn.disabled=!comment;
 }
 
-function selectAnswer(letter,btn,questionId,questionText){
+function selectAnswer(letter,btn,questionId,questionTextEncoded){
   const q=questions[current];
   const correct=q.correct_answer===letter;
   if(correct)correctCount++;
@@ -452,24 +438,28 @@ function selectAnswer(letter,btn,questionId,questionText){
     document.getElementById('expText').textContent=q.explanation;
     document.getElementById('expBox').classList.add('show');
   }
-  document.getElementById('feedbackBox').style.display='block';
-  document.getElementById('nextBtn').classList.add('visible');
+  // Show the report link
+  const rl=document.getElementById('reportLinkRow');
+  if(rl)rl.classList.add('show');
+  reportPanelOpen=false;
   selectedFbType=null;
+  document.getElementById('nextBtn').classList.add('visible');
   logAnswer(q,correct);
 }
 
-async function submitFeedback(questionId,questionText){
+async function submitReport(questionId,questionTextEncoded){
   const comment=(document.getElementById('fbComment').value||'').trim();
   if(!comment){
-    const fbSent=document.getElementById('fbSent');
-    fbSent.textContent='Please write a comment to earn points.';
-    fbSent.style.color='var(--wrong)';
-    fbSent.classList.add('show');
+    const el=document.getElementById('fbSent');
+    el.textContent='Please describe the issue to submit.';
+    el.style.color='var(--wrong)';
+    el.classList.add('show');
     return;
   }
   const fbType=selectedFbType||'general';
-  const fbSubmitBtn=document.getElementById('fbSubmitBtn');
-  fbSubmitBtn.disabled=true;fbSubmitBtn.textContent='Sending...';
+  const questionText=decodeURIComponent(questionTextEncoded);
+  const btn=document.getElementById('fbSubmitBtn');
+  btn.disabled=true;btn.textContent='Sending...';
   try{
     await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{
       method:'POST',
@@ -488,22 +478,28 @@ async function submitFeedback(questionId,questionText){
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_email:dailyUserEmail,points:5,reason:'Quiz feedback comment',created_at:new Date().toISOString()})
+      body:JSON.stringify({
+        user_email:dailyUserEmail,
+        points:5,
+        reason:'Question report submitted',
+        created_at:new Date().toISOString()
+      })
     });
-    const fbSent=document.getElementById('fbSent');
-    fbSent.textContent='✓ Feedback sent! +5 points earned.';
-    fbSent.style.color='var(--correct)';
-    fbSent.classList.add('show');
-    fbSubmitBtn.textContent='✓ Sent';
+    const el=document.getElementById('fbSent');
+    el.textContent='✓ Report sent — +5 points earned. Thank you!';
+    el.style.color='var(--correct)';
+    el.classList.add('show');
+    btn.textContent='✓ Sent';
     document.querySelectorAll('.fb-type-btn').forEach(function(b){b.disabled=true;});
     document.getElementById('fbComment').disabled=true;
-    loadLeaderboard();
+    // Refresh leaderboard so points show immediately
+    setTimeout(loadLeaderboard,1000);
   }catch(e){
-    const fbSent=document.getElementById('fbSent');
-    fbSent.textContent='Could not send. Try again.';
-    fbSent.style.color='var(--wrong)';
-    fbSent.classList.add('show');
-    fbSubmitBtn.disabled=false;fbSubmitBtn.textContent='Submit Feedback →';
+    const el=document.getElementById('fbSent');
+    el.textContent='Could not send. Please try again.';
+    el.style.color='var(--wrong)';
+    el.classList.add('show');
+    btn.disabled=false;btn.textContent='Submit Report →';
   }
 }
 
@@ -517,8 +513,15 @@ async function logAnswer(q,correct){
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_email:dailyUserEmail,points:correct?3:1,reason:correct?'Daily quiz correct':'Daily quiz attempt',created_at:new Date().toISOString()})
+      body:JSON.stringify({
+        user_email:dailyUserEmail,
+        points:correct?3:1,
+        reason:correct?'Daily quiz correct':'Daily quiz attempt',
+        created_at:new Date().toISOString()
+      })
     });
+    // Refresh leaderboard after each answer so points appear immediately
+    setTimeout(loadLeaderboard,800);
   }catch(e){}
 }
 
@@ -533,14 +536,9 @@ function nextQuestion(){
 // RESULTS
 // ============================================================
 function showResults(){
-  // Record the attempt
-  if(sessionNum===1){
-    recordSession1Attempt();
-  } else {
-    recordSession2Done();
-  }
+  if(sessionNum===1)recordS1Attempt();
+  else recordS2Done();
 
-  // Streak tracking
   const streakKey='tt_daily_streak_'+dailyUserEmail;
   const lastDoneKey='tt_daily_last_'+dailyUserEmail;
   const lastDone=localStorage.getItem(lastDoneKey);
@@ -554,14 +552,15 @@ function showResults(){
 
   const pct=Math.round((correctCount/questions.length)*100);
   const emoji=pct===100?'🎯':pct>=66?'💪':pct>=33?'📈':'🌱';
-  const s1attempts=getSession1Attempts();
-  const s2done=getSession2Done();
-  const retakeAvailable=sessionNum===1&&s1attempts<=MAX_RETAKES_PER_SESSION;
-  const session2Available=!s2done&&(sessionNum===1&&s1attempts>0||sessionNum===2);
+  const s1=getS1Attempts();
+  const s2=getS2Done();
+  const retakeAvailable=sessionNum===1&&s1<=MAX_RETAKES_PER_SESSION;
+  const session2Available=!s2&&s1>0;
   const sessionLabel=sessionNum===1?(attemptInSession===1?'Quiz 1':'Quiz 1 Retake'):'Quiz 2';
 
   let html=
-    '<div class="results-card">'
+    '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
+    +'<div class="results-card">'
     +'<div class="score-circle">'+correctCount+'/'+questions.length+'</div>'
     +'<div class="results-headline">'+emoji+' '+sessionLabel+' Done!</div>'
     +'<div class="results-sub">You got <strong>'+correctCount+' out of '+questions.length+'</strong> correct</div>'
@@ -571,33 +570,25 @@ function showResults(){
   if(retakeAvailable){
     html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
   }
-  if(session2Available&&sessionNum===1&&s1attempts>0){
+  if(session2Available){
     html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
-  }
-  if(s2done&&!retakeAvailable){
-    html+='<span class="done-note">All quiz sessions complete for today!</span>';
   }
   html+='</div>';
 
   if(retakeAvailable){
-    html+='<div class="retake-info">1 retake available — same 3 questions</div>';
+    html+='<div class="retake-info">Same 3 questions — try to improve your score</div>';
   }
-
-  html+=
-    '<div class="more-box" style="margin-top:1rem;">'
-    +'<div class="more-title">Want more practice points?</div>'
-    +'<div class="more-sub">Full sessions have unlimited questions and earn points every attempt — great for building deeper knowledge.</div>'
-    +'<a href="training.html" class="btn-primary-action" style="margin-right:0.5rem;">⚡ Full Session →</a>'
-    +'</div>'
-    +'<div style="margin-top:1rem;"><a href="index.html" class="btn-ghost-action">🏆 Full Leaderboard</a></div>'
-    +'</div>';
+  if(!retakeAvailable&&!session2Available){
+    html+='<div class="done-note">All quiz sessions complete for today — come back tomorrow!</div>';
+  }
+  html+='</div>';
 
   document.getElementById('quizCol').innerHTML=html;
   loadLeaderboard();
 }
 
 // ============================================================
-// LEADERBOARD SIDEBAR
+// LEADERBOARD — refreshes after every answer
 // ============================================================
 async function loadLeaderboard(){
   const lbEl=document.getElementById('lbList');
@@ -606,10 +597,18 @@ async function loadLeaderboard(){
     const res=await fetch(SUPABASE_URL+'/rest/v1/technician_points?select=user_email,points&limit=500',
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
     const rows=await res.json();
-    if(!Array.isArray(rows)||!rows.length){lbEl.innerHTML='<div class="lb-empty">No points yet!</div>';return;}
+    if(!Array.isArray(rows)||!rows.length){
+      lbEl.innerHTML='<div class="lb-empty">No points yet — be first!</div>';
+      return;
+    }
     const map={};
-    rows.forEach(function(r){if(!map[r.user_email])map[r.user_email]=0;map[r.user_email]+=(r.points||0);});
-    const entries=Object.entries(map).map(function(e){return{email:e[0],pts:e[1]};}).sort(function(a,b){return b.pts-a.pts;});
+    rows.forEach(function(r){
+      if(!map[r.user_email])map[r.user_email]=0;
+      map[r.user_email]+=(r.points||0);
+    });
+    const entries=Object.entries(map)
+      .map(function(e){return{email:e[0],pts:e[1]};})
+      .sort(function(a,b){return b.pts-a.pts;});
     const maxPts=entries[0].pts||1;
     const medals=['🥇','🥈','🥉'];
     lbEl.innerHTML=entries.slice(0,10).map(function(e,i){
@@ -618,15 +617,17 @@ async function loadLeaderboard(){
       const barW=Math.round((e.pts/maxPts)*100);
       const name=e.email.split('@')[0];
       const isMe=dailyUserEmail&&e.email===dailyUserEmail;
-      return '<div class="lb-row '+rankClass+'" style="'+(isMe?'border-color:rgba(139,26,26,0.5);':'')+'">'
+      return '<div class="lb-row '+rankClass+'" style="'+(isMe?'border-color:rgba(139,26,26,0.6);background:rgba(139,26,26,0.06);':'')+'">'
         +'<div class="lb-rank">'+medal+'</div>'
         +'<div class="lb-avatar">'+name[0].toUpperCase()+'</div>'
-        +'<div class="lb-name" style="'+(isMe?'color:var(--maroon-light);font-weight:700;':'')+'">'+name+(isMe?' ◀':''+'')+'</div>'
+        +'<div class="lb-name" style="'+(isMe?'color:var(--maroon-light);font-weight:700;':'')+'">'+name+(isMe?' ◀':'')+'</div>'
         +'<div class="lb-bar-track"><div class="lb-bar-fill" style="width:'+barW+'%"></div></div>'
         +'<div class="lb-pts">'+e.pts+'</div>'
         +'</div>';
     }).join('');
-  }catch(e){lbEl.innerHTML='<div class="lb-empty">Could not load.</div>';}
+  }catch(e){
+    lbEl.innerHTML='<div class="lb-empty">Could not load.</div>';
+  }
 }
 
 init();
