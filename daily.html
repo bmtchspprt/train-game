@@ -15,32 +15,32 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'DM Sans',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s;}
   body.theme-light{--bg:#f4f2ef;--surface:#fff;--surface2:#f0ede8;--surface3:#e8e4de;--text:#1a1410;--muted:#8a7a6a;--border:rgba(0,0,0,0.1);}
-  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,8,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0.6rem 1.2rem;background:rgba(8,8,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
   body.theme-light nav{background:rgba(244,242,239,0.95);}
-  .logo{font-family:var(--headline-font);font-weight:bold;font-size:1.4rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
+  .logo{font-family:var(--headline-font);font-weight:bold;font-size:1.3rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
   .logo span{color:var(--maroon-light);}
-  .theme-toggle{width:34px;height:34px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .page-layout{display:flex;gap:2rem;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;align-items:flex-start;}
+  .theme-toggle{width:32px;height:32px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .page-layout{display:flex;gap:2rem;max-width:1200px;margin:0 auto;padding:1.2rem 1.2rem;align-items:flex-start;}
   .quiz-col{flex:1;min-width:0;}
   .lb-col{width:280px;flex-shrink:0;}
   @media(max-width:900px){.page-layout{flex-direction:column;}.lb-col{width:100%;}}
-  .attempt-badges{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;}
-  .attempt-badge{padding:0.22rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:600;border:1px solid;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;}
+  .attempt-badges{display:flex;gap:0.4rem;margin-bottom:0.6rem;flex-wrap:wrap;}
+  .attempt-badge{padding:0.18rem 0.6rem;border-radius:100px;font-size:0.68rem;font-weight:600;border:1px solid;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;}
   .attempt-badge.done{background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);color:var(--correct);}
   .attempt-badge.current{background:var(--maroon-glow);border-color:rgba(139,26,26,0.4);color:var(--maroon-light);}
   .attempt-badge.remaining{background:rgba(255,255,255,0.03);border-color:var(--border);color:var(--muted);}
-  .quiz-header{display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.3rem;}
-  .headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);text-shadow:0 0 30px var(--maroon-glow);}
-  .header-date{font-size:0.85rem;color:var(--muted);font-weight:normal;}
-  .sub{font-size:0.88rem;color:var(--muted);margin-bottom:1rem;}
-  .prog-track{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:1.5rem;}
+  .quiz-header{display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.1rem;}
+  .headline{font-family:var(--headline-font);font-weight:bold;font-size:1.5rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);text-shadow:0 0 30px var(--maroon-glow);}
+  .header-date{font-size:0.82rem;color:var(--muted);font-weight:normal;}
+  .sub{font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem;}
+  .prog-track{height:4px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:1rem;}
   .prog-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:3px;transition:width 0.4s ease;}
-  .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1rem;animation:fadeUp 0.4s ease;}
+  .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.5rem;margin-bottom:1rem;animation:fadeUp 0.4s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   .q-num{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
-  .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.15rem;line-height:1.45;margin-bottom:1.4rem;}
+  .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.1rem;line-height:1.45;margin-bottom:1.2rem;}
   .options{display:flex;flex-direction:column;gap:0.6rem;}
-  .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:0.9rem 1.1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',Arial,sans-serif;font-size:0.9rem;color:var(--text);transition:all 0.2s;width:100%;}
+  .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:0.85rem 1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',Arial,sans-serif;font-size:0.9rem;color:var(--text);transition:all 0.2s;width:100%;}
   .option-btn:hover:not(:disabled){border-color:rgba(139,26,26,0.5);background:var(--maroon-glow);}
   .option-btn.correct{border-color:var(--correct);background:rgba(0,229,160,0.08);}
   .option-btn.wrong{border-color:var(--wrong);background:rgba(255,77,109,0.08);}
@@ -81,7 +81,7 @@
   .btn-secondary-action:hover{background:var(--maroon-glow);}
   .retake-info{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;}
   .done-note{font-size:0.78rem;color:var(--muted);margin-top:0.75rem;padding:0.6rem 0.9rem;background:var(--surface2);border-radius:8px;display:inline-block;}
-  .lb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem;position:sticky;top:5rem;}
+  .lb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem;position:sticky;top:4rem;}
   .lb-title{font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);margin-bottom:0.2rem;}
   .lb-subtitle{font-size:0.7rem;color:var(--muted);font-weight:normal;margin-bottom:1rem;}
   .lb-list{display:flex;flex-direction:column;gap:0.4rem;}
@@ -139,6 +139,7 @@ let attemptInSession=1;
 let questions=[];
 let current=0;
 let correctCount=0;
+let answeredQuestions={};
 const todayKey=new Date().toISOString().split('T')[0];
 
 const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
@@ -205,15 +206,10 @@ async function init(){
   const s1=getS1Attempts();
   const s2=getS2Done();
 
-  if(s1===0){
-    sessionNum=1;attemptInSession=1;startQuiz();
-  } else if(s1===1&&!s2){
-    showBetweenSessions(false);
-  } else if(s1>1&&!s2){
-    showBetweenSessions(true);
-  } else {
-    showAllDone();
-  }
+  if(s1===0){sessionNum=1;attemptInSession=1;startQuiz();}
+  else if(s1===1&&!s2){showBetweenSessions(false);}
+  else if(s1>1&&!s2){showBetweenSessions(true);}
+  else{showAllDone();}
 }
 
 function startQuiz(){
@@ -222,7 +218,7 @@ function startQuiz(){
     document.getElementById('quizCol').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
     return;
   }
-  current=0;correctCount=0;
+  current=0;correctCount=0;answeredQuestions={};
   renderQuiz();
 }
 
@@ -267,13 +263,15 @@ function showBetweenSessions(retakeDone){
 function doRetake(){
   sessionNum=1;attemptInSession=2;
   questions=pickQuestionsForSession(1);
-  current=0;correctCount=0;renderQuiz();
+  current=0;correctCount=0;answeredQuestions={};
+  renderQuiz();
 }
 
 function doSession2(){
   sessionNum=2;attemptInSession=1;
   questions=pickQuestionsForSession(2);
-  current=0;correctCount=0;renderQuiz();
+  current=0;correctCount=0;answeredQuestions={};
+  renderQuiz();
 }
 
 // ============================================================
@@ -326,17 +324,18 @@ function renderQuestion(){
   const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
   const safeId=q.id;
   const safeText=encodeURIComponent(q.question.substring(0,120));
+  const qIndex=current;
 
   document.getElementById('questionArea').innerHTML=
-    '<div class="q-card" id="qCard_'+current+'">'
-    +'<div class="q-num">Question '+(current+1)+' of '+questions.length+'</div>'
+    '<div class="q-card" id="qCard_'+qIndex+'">'
+    +'<div class="q-num">Question '+(qIndex+1)+' of '+questions.length+'</div>'
     +imgHTML
     +'<div class="q-text">'+q.question+'</div>'
-    +'<div class="options" id="opts_'+current+'">'
+    +'<div class="options" id="opts_'+qIndex+'">'
     +opts.map(function(opt,i){
       const l=['A','B','C','D'][i];
       const optText=opt.replace(/^[A-D]\)\s*/,'');
-      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+safeId+'\',\''+safeText+'\','+current+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+safeId+'\',\''+safeText+'\','+qIndex+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
     }).join('')
     +'</div>'
     +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
@@ -364,7 +363,6 @@ function renderQuestion(){
 
 let selectedFbType=null;
 let reportPanelOpen=false;
-let answeredQuestions={};
 
 function toggleReportPanel(){
   reportPanelOpen=!reportPanelOpen;
@@ -389,7 +387,6 @@ function checkFbReady(){
 }
 
 function selectAnswer(letter,btn,questionId,questionTextEncoded,qIndex){
-  // Prevent answering same question twice
   if(answeredQuestions[qIndex])return;
   answeredQuestions[qIndex]=true;
 
@@ -519,11 +516,10 @@ function showResults(){
   if(retakeAvailable)html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
   if(session2Available&&sessionNum===1&&s1>0)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
   html+='</div>';
-
   if(retakeAvailable)html+='<div class="retake-info">Same 3 questions — try to improve your score</div>';
   if(!retakeAvailable&&!session2Available)html+='<div class="done-note">All quiz sessions complete for today — come back tomorrow!</div>';
-
   html+='</div>';
+
   document.getElementById('quizCol').innerHTML=html;
   loadLeaderboard();
 }
