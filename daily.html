@@ -20,30 +20,21 @@
   .logo{font-family:var(--headline-font);font-weight:bold;font-size:1.4rem;color:var(--text);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;}
   .logo span{color:var(--maroon-light);}
   .theme-toggle{width:34px;height:34px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-
-  /* PAGE LAYOUT */
   .page-layout{display:flex;gap:2rem;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;align-items:flex-start;}
   .quiz-col{flex:1;min-width:0;}
   .lb-col{width:280px;flex-shrink:0;}
   @media(max-width:900px){.page-layout{flex-direction:column;}.lb-col{width:100%;}}
-
-  /* DISCLAIMER */
-  .disclaimer{background:rgba(56,182,255,0.05);border:1px solid rgba(56,182,255,0.15);border-radius:12px;padding:0.9rem 1.1rem;margin-bottom:1.5rem;font-size:0.76rem;color:var(--muted);line-height:1.6;font-weight:normal;}
-  .disclaimer strong{color:var(--text);font-weight:600;}
-
-  /* ATTEMPT BADGES */
   .attempt-badges{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;}
   .attempt-badge{padding:0.22rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:600;border:1px solid;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;}
   .attempt-badge.done{background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.3);color:var(--correct);}
   .attempt-badge.current{background:var(--maroon-glow);border-color:rgba(139,26,26,0.4);color:var(--maroon-light);}
   .attempt-badge.remaining{background:rgba(255,255,255,0.03);border-color:var(--border);color:var(--muted);}
-
-  .day-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--maroon-glow);border:1px solid rgba(139,26,26,0.3);border-radius:100px;padding:0.3rem 0.9rem;font-size:0.78rem;color:#e88080;margin-bottom:1rem;font-weight:600;}
-  .headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.3rem;text-shadow:0 0 30px var(--maroon-glow);}
+  .quiz-header{display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.3rem;}
+  .headline{font-family:var(--headline-font);font-weight:bold;font-size:2rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);text-shadow:0 0 30px var(--maroon-glow);}
+  .header-date{font-size:0.85rem;color:var(--muted);font-weight:normal;}
   .sub{font-size:0.88rem;color:var(--muted);margin-bottom:1rem;}
   .prog-track{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:1.5rem;}
   .prog-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:3px;transition:width 0.4s ease;}
-
   .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1rem;animation:fadeUp 0.4s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   .q-num{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
@@ -59,14 +50,10 @@
   .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1rem 1.2rem;margin-top:1.2rem;font-size:0.85rem;line-height:1.6;display:none;}
   .explanation-box.show{display:block;}
   .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.35rem;}
-
-  /* REPORT LINK */
   .report-link-row{margin-top:0.9rem;display:none;}
   .report-link-row.show{display:block;}
   .report-toggle{background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;padding:0;}
   .report-toggle:hover{color:var(--warning);}
-
-  /* REPORT PANEL */
   .report-panel{margin-top:0.6rem;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.2);border-radius:10px;padding:0.9rem 1.1rem;display:none;}
   .report-panel.open{display:block;}
   .report-panel-label{font-family:var(--headline-font);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--warning);font-weight:bold;margin-bottom:0.5rem;}
@@ -80,11 +67,8 @@
   .btn-submit-report:disabled{opacity:0.4;cursor:not-allowed;}
   .report-sent{font-size:0.74rem;margin-top:0.4rem;display:none;}
   .report-sent.show{display:block;}
-
   .btn-next{margin-top:1.2rem;padding:0.8rem 2rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;display:none;}
   .btn-next.visible{display:inline-flex;}
-
-  /* RESULTS */
   .results-card{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2rem;text-align:center;}
   .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.4rem;}
   .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.2rem;}
@@ -97,8 +81,6 @@
   .btn-secondary-action:hover{background:var(--maroon-glow);}
   .retake-info{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;}
   .done-note{font-size:0.78rem;color:var(--muted);margin-top:0.75rem;padding:0.6rem 0.9rem;background:var(--surface2);border-radius:8px;display:inline-block;}
-
-  /* LEADERBOARD SIDEBAR */
   .lb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem;position:sticky;top:5rem;}
   .lb-title{font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);margin-bottom:0.2rem;}
   .lb-subtitle{font-size:0.7rem;color:var(--muted);font-weight:normal;margin-bottom:1rem;}
@@ -114,7 +96,6 @@
   .lb-bar-track{width:36px;height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;flex-shrink:0;}
   .lb-bar-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:2px;}
   .lb-empty{text-align:center;padding:1.5rem;color:var(--muted);font-size:0.78rem;}
-
   .invalid-state{text-align:center;padding:4rem 2rem;color:var(--muted);}
   .loading-state{text-align:center;padding:4rem;color:var(--muted);}
 </style>
@@ -199,18 +180,11 @@ function getS2Done(){return localStorage.getItem(sk('s2done'))==='1';}
 function recordS1Attempt(){localStorage.setItem(sk('s1attempts'),getS1Attempts()+1);}
 function recordS2Done(){localStorage.setItem(sk('s2done'),'1');}
 
-function getDisclaimerHTML(){
-  return '<strong>About this challenge:</strong> Our goal is to improve together as a team. '
-    +'Points and rules may be adjusted over time — veterans may be rewarded for deep knowledge, '
-    +'while newer techs earn points for effort and improvement. The system evolves to recognize both experience and growth.';
-}
-
 // ============================================================
 // INIT
 // ============================================================
 async function init(){
   if(!tokenParam){showInvalid();return;}
-
   try{
     const res=await fetch(SUPABASE_URL+'/rest/v1/daily_tokens?select=user_email&token=eq.'+encodeURIComponent(tokenParam),
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
@@ -219,7 +193,6 @@ async function init(){
     dailyUserEmail=rows[0].user_email;
   }catch(e){showInvalid();return;}
 
-  // Load leaderboard immediately
   loadLeaderboard();
 
   try{
@@ -265,19 +238,17 @@ function showInvalid(){
 
 function showAllDone(){
   document.getElementById('quizCol').innerHTML=
-    '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
-    +'<div class="results-card">'
+    '<div class="results-card">'
     +'<div style="font-size:2.5rem;margin-bottom:0.75rem;">🎯</div>'
     +'<div class="results-headline">All Done Today!</div>'
-    +'<div class="results-sub">You\'ve completed both quiz sessions for today. Come back tomorrow for fresh questions.</div>'
+    +'<div class="results-sub">You\'ve completed both quiz sessions. Come back tomorrow for fresh questions.</div>'
     +'</div>';
 }
 
 function showBetweenSessions(retakeDone){
   const s2done=getS2Done();
   const name=dailyUserEmail.split('@')[0];
-  let html='<div class="disclaimer">'+getDisclaimerHTML()+'</div>';
-  html+='<div class="results-card">';
+  let html='<div class="results-card">';
   html+='<div style="font-size:2rem;margin-bottom:0.75rem;">✅</div>';
   html+='<div class="results-headline">Good Work, '+name+'!</div>';
   html+='<div class="results-sub">Choose what to do next.</div>';
@@ -287,29 +258,22 @@ function showBetweenSessions(retakeDone){
   else{html+='<span class="attempt-badge remaining">Quiz 2 Available</span>';}
   html+='</div>';
   html+='<div class="btn-action-row">';
-  if(!retakeDone){
-    html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
-  }
-  if(!s2done){
-    html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
-  }
-  html+='</div>';
-  html+='</div>';
+  if(!retakeDone)html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
+  if(!s2done)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
+  html+='</div></div>';
   document.getElementById('quizCol').innerHTML=html;
 }
 
 function doRetake(){
   sessionNum=1;attemptInSession=2;
   questions=pickQuestionsForSession(1);
-  current=0;correctCount=0;
-  renderQuiz();
+  current=0;correctCount=0;renderQuiz();
 }
 
 function doSession2(){
   sessionNum=2;attemptInSession=1;
   questions=pickQuestionsForSession(2);
-  current=0;correctCount=0;
-  renderQuiz();
+  current=0;correctCount=0;renderQuiz();
 }
 
 // ============================================================
@@ -336,10 +300,13 @@ function renderQuiz(){
   }
   badgesHTML+='</div>';
 
+  const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
   document.getElementById('quizCol').innerHTML=
-    '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
-    +'<div class="day-badge">📅 '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div>'
-    +'<div class="headline">Hey '+name+'! 👋</div>'
+    '<div class="quiz-header">'
+    +'<div class="headline">Hey '+name+'!</div>'
+    +'<div class="header-date">'+dateStr+'</div>'
+    +'</div>'
     +'<div class="sub">'+sessionLabel+' — 3 questions, about 2 minutes</div>'
     +badgesHTML
     +'<div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>'
@@ -361,22 +328,18 @@ function renderQuestion(){
   const safeText=encodeURIComponent(q.question.substring(0,120));
 
   document.getElementById('questionArea').innerHTML=
-    '<div class="q-card">'
+    '<div class="q-card" id="qCard_'+current+'">'
     +'<div class="q-num">Question '+(current+1)+' of '+questions.length+'</div>'
     +imgHTML
     +'<div class="q-text">'+q.question+'</div>'
-    +'<div class="options">'
+    +'<div class="options" id="opts_'+current+'">'
     +opts.map(function(opt,i){
       const l=['A','B','C','D'][i];
       const optText=opt.replace(/^[A-D]\)\s*/,'');
-      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+safeId+'\',\''+safeText+'\')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+safeId+'\',\''+safeText+'\','+current+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
     }).join('')
     +'</div>'
-
-    // Explanation
     +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
-
-    // Report link — appears after answering
     +'<div class="report-link-row" id="reportLinkRow">'
     +'<button class="report-toggle" onclick="toggleReportPanel()">⚑ Report a problem with this question</button>'
     +'<div class="report-panel" id="reportPanel">'
@@ -395,13 +358,13 @@ function renderQuestion(){
     +'<div class="report-sent" id="fbSent"></div>'
     +'</div>'
     +'</div>'
-
     +'<button class="btn-next" id="nextBtn" onclick="nextQuestion()">'+(isLast?'✓ See Results':'Next →')+'</button>'
     +'</div>';
 }
 
 let selectedFbType=null;
 let reportPanelOpen=false;
+let answeredQuestions={};
 
 function toggleReportPanel(){
   reportPanelOpen=!reportPanelOpen;
@@ -425,20 +388,28 @@ function checkFbReady(){
   if(btn)btn.disabled=!comment;
 }
 
-function selectAnswer(letter,btn,questionId,questionTextEncoded){
+function selectAnswer(letter,btn,questionId,questionTextEncoded,qIndex){
+  // Prevent answering same question twice
+  if(answeredQuestions[qIndex])return;
+  answeredQuestions[qIndex]=true;
+
   const q=questions[current];
   const correct=q.correct_answer===letter;
   if(correct)correctCount++;
-  document.querySelectorAll('.option-btn').forEach(function(b){
-    b.disabled=true;
-    if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
-    else if(b===btn&&!correct)b.classList.add('wrong');
-  });
+
+  const optContainer=document.getElementById('opts_'+qIndex);
+  if(optContainer){
+    optContainer.querySelectorAll('.option-btn').forEach(function(b){
+      b.disabled=true;
+      if(b.dataset.letter===q.correct_answer)b.classList.add('correct');
+      else if(b===btn&&!correct)b.classList.add('wrong');
+    });
+  }
+
   if(q.explanation){
     document.getElementById('expText').textContent=q.explanation;
     document.getElementById('expBox').classList.add('show');
   }
-  // Show the report link
   const rl=document.getElementById('reportLinkRow');
   if(rl)rl.classList.add('show');
   reportPanelOpen=false;
@@ -464,26 +435,12 @@ async function submitReport(questionId,questionTextEncoded){
     await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        question_id:questionId,
-        question_text:questionText,
-        feedback_type:fbType,
-        comment:comment,
-        author_name:dailyUserEmail,
-        user_email:dailyUserEmail,
-        status:'pending',
-        created_at:new Date().toISOString()
-      })
+      body:JSON.stringify({question_id:questionId,question_text:questionText,feedback_type:fbType,comment:comment,author_name:dailyUserEmail,user_email:dailyUserEmail,status:'pending',created_at:new Date().toISOString()})
     });
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        user_email:dailyUserEmail,
-        points:5,
-        reason:'Question report submitted',
-        created_at:new Date().toISOString()
-      })
+      body:JSON.stringify({user_email:dailyUserEmail,points:5,reason:'Question report submitted',created_at:new Date().toISOString()})
     });
     const el=document.getElementById('fbSent');
     el.textContent='✓ Report sent — +5 points earned. Thank you!';
@@ -492,7 +449,6 @@ async function submitReport(questionId,questionTextEncoded){
     btn.textContent='✓ Sent';
     document.querySelectorAll('.fb-type-btn').forEach(function(b){b.disabled=true;});
     document.getElementById('fbComment').disabled=true;
-    // Refresh leaderboard so points show immediately
     setTimeout(loadLeaderboard,1000);
   }catch(e){
     const el=document.getElementById('fbSent');
@@ -513,14 +469,8 @@ async function logAnswer(q,correct){
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        user_email:dailyUserEmail,
-        points:correct?3:1,
-        reason:correct?'Daily quiz correct':'Daily quiz attempt',
-        created_at:new Date().toISOString()
-      })
+      body:JSON.stringify({user_email:dailyUserEmail,points:correct?3:1,reason:correct?'Daily quiz correct':'Daily quiz attempt',created_at:new Date().toISOString()})
     });
-    // Refresh leaderboard after each answer so points appear immediately
     setTimeout(loadLeaderboard,800);
   }catch(e){}
 }
@@ -559,36 +509,27 @@ function showResults(){
   const sessionLabel=sessionNum===1?(attemptInSession===1?'Quiz 1':'Quiz 1 Retake'):'Quiz 2';
 
   let html=
-    '<div class="disclaimer">'+getDisclaimerHTML()+'</div>'
-    +'<div class="results-card">'
+    '<div class="results-card">'
     +'<div class="score-circle">'+correctCount+'/'+questions.length+'</div>'
     +'<div class="results-headline">'+emoji+' '+sessionLabel+' Done!</div>'
     +'<div class="results-sub">You got <strong>'+correctCount+' out of '+questions.length+'</strong> correct</div>'
     +(streak>1?'<div class="streak-box">🔥 '+streak+'-day streak! Keep it going.</div>':'');
 
   html+='<div class="btn-action-row">';
-  if(retakeAvailable){
-    html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
-  }
-  if(session2Available){
-    html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
-  }
+  if(retakeAvailable)html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
+  if(session2Available&&sessionNum===1&&s1>0)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
   html+='</div>';
 
-  if(retakeAvailable){
-    html+='<div class="retake-info">Same 3 questions — try to improve your score</div>';
-  }
-  if(!retakeAvailable&&!session2Available){
-    html+='<div class="done-note">All quiz sessions complete for today — come back tomorrow!</div>';
-  }
-  html+='</div>';
+  if(retakeAvailable)html+='<div class="retake-info">Same 3 questions — try to improve your score</div>';
+  if(!retakeAvailable&&!session2Available)html+='<div class="done-note">All quiz sessions complete for today — come back tomorrow!</div>';
 
+  html+='</div>';
   document.getElementById('quizCol').innerHTML=html;
   loadLeaderboard();
 }
 
 // ============================================================
-// LEADERBOARD — refreshes after every answer
+// LEADERBOARD
 // ============================================================
 async function loadLeaderboard(){
   const lbEl=document.getElementById('lbList');
@@ -597,18 +538,10 @@ async function loadLeaderboard(){
     const res=await fetch(SUPABASE_URL+'/rest/v1/technician_points?select=user_email,points&limit=500',
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
     const rows=await res.json();
-    if(!Array.isArray(rows)||!rows.length){
-      lbEl.innerHTML='<div class="lb-empty">No points yet — be first!</div>';
-      return;
-    }
+    if(!Array.isArray(rows)||!rows.length){lbEl.innerHTML='<div class="lb-empty">No points yet!</div>';return;}
     const map={};
-    rows.forEach(function(r){
-      if(!map[r.user_email])map[r.user_email]=0;
-      map[r.user_email]+=(r.points||0);
-    });
-    const entries=Object.entries(map)
-      .map(function(e){return{email:e[0],pts:e[1]};})
-      .sort(function(a,b){return b.pts-a.pts;});
+    rows.forEach(function(r){if(!map[r.user_email])map[r.user_email]=0;map[r.user_email]+=(r.points||0);});
+    const entries=Object.entries(map).map(function(e){return{email:e[0],pts:e[1]};}).sort(function(a,b){return b.pts-a.pts;});
     const maxPts=entries[0].pts||1;
     const medals=['🥇','🥈','🥉'];
     lbEl.innerHTML=entries.slice(0,10).map(function(e,i){
@@ -625,9 +558,7 @@ async function loadLeaderboard(){
         +'<div class="lb-pts">'+e.pts+'</div>'
         +'</div>';
     }).join('');
-  }catch(e){
-    lbEl.innerHTML='<div class="lb-empty">Could not load.</div>';
-  }
+  }catch(e){lbEl.innerHTML='<div class="lb-empty">Could not load.</div>';}
 }
 
 init();
