@@ -139,7 +139,6 @@ let attemptInSession=1;
 let questions=[];
 let current=0;
 let correctCount=0;
-let answeredQuestions={};
 const todayKey=new Date().toISOString().split('T')[0];
 
 const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
@@ -218,7 +217,7 @@ function startQuiz(){
     document.getElementById('quizCol').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
     return;
   }
-  current=0;correctCount=0;answeredQuestions={};
+  current=0;correctCount=0;
   renderQuiz();
 }
 
@@ -263,14 +262,14 @@ function showBetweenSessions(retakeDone){
 function doRetake(){
   sessionNum=1;attemptInSession=2;
   questions=pickQuestionsForSession(1);
-  current=0;correctCount=0;answeredQuestions={};
+  current=0;correctCount=0;
   renderQuiz();
 }
 
 function doSession2(){
   sessionNum=2;attemptInSession=1;
   questions=pickQuestionsForSession(2);
-  current=0;correctCount=0;answeredQuestions={};
+  current=0;correctCount=0;
   renderQuiz();
 }
 
@@ -386,9 +385,13 @@ function checkFbReady(){
   if(btn)btn.disabled=!comment;
 }
 
+// ============================================================
+// SELECT ANSWER — uses data attribute on card to prevent double-fire
+// ============================================================
 function selectAnswer(letter,btn,questionId,questionTextEncoded,qIndex){
-  if(answeredQuestions[qIndex])return;
-  answeredQuestions[qIndex]=true;
+  const card=document.getElementById('qCard_'+qIndex);
+  if(!card||card.dataset.answered==='1')return;
+  card.dataset.answered='1';
 
   const q=questions[current];
   const correct=q.correct_answer===letter;
