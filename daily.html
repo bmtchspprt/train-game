@@ -314,6 +314,8 @@ function renderQuiz(){
 
 // ============================================================
 // RENDER QUESTION
+// — question text is never passed through onclick strings
+// — all data accessed via questions[current] to avoid apostrophe crashes
 // ============================================================
 function renderQuestion(){
   if(current>=questions.length){showResults();return;}
@@ -321,8 +323,6 @@ function renderQuestion(){
   const opts=Array.isArray(q.options)?q.options:(typeof q.options==='string'?JSON.parse(q.options||'[]'):[]);
   const isLast=current===questions.length-1;
   const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
-  const safeId=q.id;
-  const safeText=encodeURIComponent(q.question.substring(0,120));
   const qIndex=current;
 
   document.getElementById('questionArea').innerHTML=
@@ -334,7 +334,7 @@ function renderQuestion(){
     +opts.map(function(opt,i){
       const l=['A','B','C','D'][i];
       const optText=opt.replace(/^[A-D]\)\s*/,'');
-      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,\''+safeId+'\',\''+safeText+'\','+qIndex+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,'+qIndex+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
     }).join('')
     +'</div>'
     +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
@@ -350,7 +350,7 @@ function renderQuestion(){
     +'</div>'
     +'<textarea class="report-textarea" id="fbComment" placeholder="Describe the issue... (required for +5 pts)" oninput="checkFbReady()"></textarea>'
     +'<div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem;flex-wrap:wrap;">'
-    +'<button class="btn-submit-report" id="fbSubmitBtn" onclick="submitReport(\''+safeId+'\',\''+safeText+'\')" disabled>Submit Report →</button>'
+    +'<button class="btn-submit-report" id="fbSubmitBtn" onclick="submitReport()" disabled>Submit Report →</button>'
     +'<span style="font-size:0.7rem;color:var(--muted);">+5 pts for a written report</span>'
     +'</div>'
     +'<div class="report-sent" id="fbSent"></div>'
@@ -386,9 +386,10 @@ function checkFbReady(){
 }
 
 // ============================================================
-// SELECT ANSWER — uses data attribute on card to prevent double-fire
+// SELECT ANSWER
+// — no question text in onclick, uses card data attribute to prevent double-fire
 // ============================================================
-function selectAnswer(letter,btn,questionId,questionTextEncoded,qIndex){
+function selectAnswer(letter,btn,qIndex){
   const card=document.getElementById('qCard_'+qIndex);
   if(!card||card.dataset.answered==='1')return;
   card.dataset.answered='1';
@@ -418,7 +419,11 @@ function selectAnswer(letter,btn,questionId,questionTextEncoded,qIndex){
   logAnswer(q,correct);
 }
 
-async function submitReport(questionId,questionTextEncoded){
+// ============================================================
+// SUBMIT REPORT
+// — reads question directly from questions[current], no inline string passing
+// ============================================================
+async function submitReport(){
   const comment=(document.getElementById('fbComment').value||'').trim();
   if(!comment){
     const el=document.getElementById('fbSent');
@@ -427,20 +432,34 @@ async function submitReport(questionId,questionTextEncoded){
     el.classList.add('show');
     return;
   }
+  const q=questions[current];
   const fbType=selectedFbType||'general';
-  const questionText=decodeURIComponent(questionTextEncoded);
   const btn=document.getElementById('fbSubmitBtn');
   btn.disabled=true;btn.textContent='Sending...';
   try{
     await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({question_id:questionId,question_text:questionText,feedback_type:fbType,comment:comment,author_name:dailyUserEmail,user_email:dailyUserEmail,status:'pending',created_at:new Date().toISOString()})
+      body:JSON.stringify({
+        question_id:q.id,
+        question_text:q.question.substring(0,120),
+        feedback_type:fbType,
+        comment:comment,
+        author_name:dailyUserEmail,
+        user_email:dailyUserEmail,
+        status:'pending',
+        created_at:new Date().toISOString()
+      })
     });
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_email:dailyUserEmail,points:5,reason:'Question report submitted',created_at:new Date().toISOString()})
+      body:JSON.stringify({
+        user_email:dailyUserEmail,
+        points:5,
+        reason:'Question report submitted',
+        created_at:new Date().toISOString()
+      })
     });
     const el=document.getElementById('fbSent');
     el.textContent='✓ Report sent — +5 points earned. Thank you!';
@@ -469,7 +488,12 @@ async function logAnswer(q,correct){
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_email:dailyUserEmail,points:correct?3:1,reason:correct?'Daily quiz correct':'Daily quiz attempt',created_at:new Date().toISOString()})
+      body:JSON.stringify({
+        user_email:dailyUserEmail,
+        points:correct?3:1,
+        reason:correct?'Daily quiz correct':'Daily quiz attempt',
+        created_at:new Date().toISOString()
+      })
     });
     setTimeout(loadLeaderboard,800);
   }catch(e){}
