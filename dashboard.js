@@ -2,6 +2,11 @@
 // INIT
 // ============================================================
 const user=JSON.parse(localStorage.getItem('tt_user')||'{}');
+const role=localStorage.getItem('tt_role');
+
+// Guard — non-admins and unauthenticated users get redirected
+if(!role||role!=='admin'){window.location.href='index.html';}
+
 document.getElementById('adminName').textContent=(user.email||'Admin').split('@')[0];
 document.getElementById('adminAvatar').textContent=(user.email||'A')[0].toUpperCase();
 
