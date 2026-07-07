@@ -501,7 +501,11 @@ const DAILY_BASE_URL='https://bmtchspprt.github.io/train-game/daily.html';
 // NAVIGATION & UTILITIES
 // ============================================================
 function logout(){localStorage.clear();window.location.href='index.html';}
-function goHome(){localStorage.clear();}
+function goHome(){
+  const role=localStorage.getItem('tt_role');
+  localStorage.clear();
+  if(role==='admin')localStorage.setItem('tt_role','admin');
+}
 
 function toggleInputPw(inputId,btn){
   const input=document.getElementById(inputId);
