@@ -61,7 +61,6 @@
   .lb-bar-fill{height:100%;background:linear-gradient(90deg,var(--maroon),var(--maroon-light));border-radius:2px;transition:width 0.8s ease;}
   .lb-empty{text-align:center;padding:2rem;color:var(--muted);font-size:0.85rem;font-weight:normal;background:var(--surface);border:1px solid var(--border);border-radius:10px;}
   .lb-reset-note{font-size:0.72rem;color:var(--muted);font-weight:normal;margin-top:0.75rem;text-align:center;}
-  .signing-in{text-align:center;padding:1rem;color:var(--muted);font-size:0.85rem;font-weight:normal;}
 </style>
 </head>
 <body>
@@ -116,7 +115,6 @@
     const btn=document.getElementById('signinBtn');
     btn.disabled=true;btn.textContent='Signing In...';
     try{
-      // Step 1: authenticate with Supabase
       const res=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=password',{
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY},
@@ -131,7 +129,6 @@
       localStorage.setItem('tt_token',data.access_token);
       localStorage.setItem('tt_user',JSON.stringify(data.user));
 
-      // Step 2: look up role in technician_notes
       const roleRes=await fetch(SUPABASE_URL+'/rest/v1/technician_notes?select=role&user_email=eq.'+encodeURIComponent(email),{
         headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}
       });
@@ -142,7 +139,6 @@
       if(role==='admin'){
         window.location.href='dashboard.html';
       } else {
-        // For regular users, look up their daily token and redirect
         const tokenRes=await fetch(SUPABASE_URL+'/rest/v1/daily_tokens?select=token&user_email=eq.'+encodeURIComponent(email),{
           headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}
         });
@@ -165,11 +161,13 @@
     const role=localStorage.getItem('tt_role');
     if(token&&token!=='undefined'&&token!=='null'){
       if(role==='admin')window.location.href='dashboard.html';
-      else if(role==='user')window.location.href='index.html';
+      else if(role==='user'){
+        // Don't auto-redirect users — let them sign in fresh to get their token
+        localStorage.clear();
+      }
     }
   }catch(e){localStorage.clear();}
 
-  // Load leaderboard
   async function loadLeaderboard(){
     let entries=[];
     try{
