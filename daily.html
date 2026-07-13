@@ -456,7 +456,7 @@ async function submitReport(){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
       body:JSON.stringify({
         user_email:dailyUserEmail,
-        points:5,
+        points:1,
         reason:'Question report submitted',
         created_at:new Date().toISOString()
       })
@@ -490,7 +490,7 @@ async function logAnswer(q,correct){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
       body:JSON.stringify({
         user_email:dailyUserEmail,
-        points:correct?3:1,
+points:1,
         reason:correct?'Daily quiz correct':'Daily quiz attempt',
         created_at:new Date().toISOString()
       })
