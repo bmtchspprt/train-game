@@ -222,7 +222,7 @@
     <a href="index.html" class="sidebar-logo" onclick="goHome()">BST<span>TRAINGAME</span></a>
     <div class="sidebar-section">Overview</div>
     <ul class="sidebar-nav">
-      <li><button id="nav-overview" class="active" onclick="navTo('overview')">📊 Overview</button></li>
+      <li><button id="nav-overview" onclick="navTo('overview')">📊 Overview</button></li>
       <li><button id="nav-technicians" onclick="navTo('technicians')">👥 Technicians</button></li>
       <li><button id="nav-points" onclick="navTo('points')">🏆 Points Manager</button></li>
     </ul>
@@ -250,7 +250,7 @@
   </aside>
   <div class="main-content">
     <div class="topbar">
-      <div><div class="topbar-title" id="sectionTitle">Overview</div><div class="topbar-sub" id="sectionSub">Platform activity at a glance</div></div>
+      <div><div class="topbar-title" id="sectionTitle">Settings</div><div class="topbar-sub" id="sectionSub">Manage technicians and platform configuration</div></div>
       <div class="topbar-right">
         <button class="theme-toggle" id="themeToggle" onclick="TechTheme.toggle()">☀️</button>
         <a href="upload.html" class="btn-topbar ghost">+ Upload Docs</a>
@@ -260,7 +260,7 @@
     </div>
 
     <!-- OVERVIEW -->
-    <section class="section active" id="section-overview">
+    <section class="section" id="section-overview">
       <div class="metrics-grid">
         <div class="metric-card"><div class="metric-icon">👥</div><div class="metric-val" id="m-techs">—</div><div class="metric-label">Active Technicians</div></div>
         <div class="metric-card"><div class="metric-icon">✅</div><div class="metric-val" id="m-answered">—</div><div class="metric-label">Questions Attempted</div></div>
@@ -319,8 +319,8 @@
           </div>
         </div>
         <table id="questionTable">
-          <thead><tr><th>Question</th><th>Type</th><th>Image</th><th>Real Difficulty</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="questionTableBody"><tr class="empty-row"><td colspan="6">Loading...</td></tr></tbody>
+          <thead><tr><th>Q#</th><th>Question</th><th>Type</th><th>Image</th><th>Difficulty</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="questionTableBody"><tr class="empty-row"><td colspan="7">Loading...</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -348,8 +348,28 @@
     </section>
 
     <!-- SETTINGS -->
-    <section class="section" id="section-settings">
+    <section class="section active" id="section-settings">
       <div class="settings-grid">
+
+        <!-- ADMIN MESSAGE -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div><div class="settings-card-title">Admin Message</div><div class="settings-card-sub">Appears on the sign-in page — leave blank to hide</div></div>
+          </div>
+          <div class="settings-card-body">
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="adminMessageText" rows="3" placeholder="e.g. New questions added this week! Check your scores."></textarea>
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+              <button class="btn-add" onclick="saveAdminMessage()">Save Message</button>
+              <button class="btn-add" style="background:none;border:1px solid var(--border);color:var(--muted);" onclick="clearAdminMessage()">Clear Message</button>
+            </div>
+            <div class="result-msg" id="adminMsgResult"></div>
+          </div>
+        </div>
+
+        <!-- ADD TECHNICIAN -->
         <div class="settings-card">
           <div class="settings-card-header">
             <div><div class="settings-card-title">Add Technician</div><div class="settings-card-sub">Create account first, then send login details</div></div>
@@ -379,6 +399,8 @@
             </div>
           </div>
         </div>
+
+        <!-- MANAGE TECHNICIANS -->
         <div class="settings-card">
           <div class="settings-card-header">
             <div><div class="settings-card-title">Manage Technicians</div><div class="settings-card-sub">View accounts, roles, passwords, daily quiz links</div></div>
@@ -389,6 +411,8 @@
             <tbody id="settingsTechBody"><tr class="empty-row"><td colspan="7">Loading...</td></tr></tbody></table>
           </div>
         </div>
+
+        <!-- DANGER ZONE -->
         <div class="settings-card" style="border-color:rgba(255,77,109,0.2);">
           <div class="settings-card-header" style="background:rgba(255,77,109,0.04);">
             <div><div class="settings-card-title" style="color:var(--danger);">Danger Zone</div><div class="settings-card-sub">Irreversible actions</div></div>
@@ -487,7 +511,7 @@
 <script src="config.js"></script>
 <script>
 // ============================================================
-// INIT — admin guard runs immediately
+// INIT — admin guard
 // ============================================================
 const user=JSON.parse(localStorage.getItem('tt_user')||'{}');
 const _role=localStorage.getItem('tt_role');
@@ -593,6 +617,44 @@ async function sfAdmin(path,opts){
 }
 
 // ============================================================
+// ADMIN MESSAGE
+// ============================================================
+async function saveAdminMessage(){
+  const val=document.getElementById('adminMessageText').value.trim();
+  const res=await sf('/rest/v1/app_settings?key=eq.admin_message',{
+    method:'PATCH',
+    body:JSON.stringify({value:val,updated_at:new Date().toISOString()})
+  });
+  const el=document.getElementById('adminMsgResult');
+  if(res!==null){
+    el.textContent='✓ Message saved.';el.className='result-msg success';
+    showToast('Admin message saved!');
+  } else {
+    el.textContent='Could not save. Try again.';el.className='result-msg error';
+  }
+}
+
+async function clearAdminMessage(){
+  await sf('/rest/v1/app_settings?key=eq.admin_message',{
+    method:'PATCH',
+    body:JSON.stringify({value:'',updated_at:new Date().toISOString()})
+  });
+  document.getElementById('adminMessageText').value='';
+  const el=document.getElementById('adminMsgResult');
+  el.textContent='✓ Message cleared.';el.className='result-msg success';
+  showToast('Admin message cleared.');
+}
+
+async function loadAdminMessageSetting(){
+  try{
+    const res=await sf('/rest/v1/app_settings?key=eq.admin_message&select=value');
+    if(Array.isArray(res)&&res.length&&res[0].value){
+      document.getElementById('adminMessageText').value=res[0].value;
+    }
+  }catch(e){}
+}
+
+// ============================================================
 // DIFFICULTY
 // ============================================================
 function computedDiffLabel(metrics){
@@ -621,7 +683,7 @@ async function runDifficultyUpdate(){
   for(let i=0;i<questions.length;i++){
     const q=questions[i];const m=metricsMap[q.id];const newDiff=computedDiffLabel(m);
     if(newDiff&&newDiff!==q.difficulty){
-      await sf('/rest/v1/bst_training_results?id=eq.'+q.id,{method:'PATCH',body:JSON.stringify({difficulty:newDiff,computed_difficulty:newDiff,first_attempt_pct:m?Math.round((m.first.correct/m.first.total)*100):null,total_attempts:m?m.all.total:0})});
+      await sf('/rest/v1/bst_training_results?id=eq.'+q.id,{method:'PATCH',body:JSON.stringify({difficulty:newDiff,computed_difficulty:newDiff})});
       updated++;
     }
   }
@@ -633,7 +695,7 @@ async function runDifficultyUpdate(){
 // QUESTIONS
 // ============================================================
 async function loadQuestions(){
-  const qRes=await sf('/rest/v1/bst_training_results?select=*&order=created_at.desc&limit=500');
+  const qRes=await sf('/rest/v1/bst_training_results?select=*&order=question_number.asc.nullslast&limit=500');
   const logRes=await sf('/rest/v1/training_logs?select=question_id,is_correct,user_email&limit=5000');
   const qArr=Array.isArray(qRes)?qRes:getDemoQuestions();
   const userQSeen={};const metricsMap={};
@@ -659,10 +721,10 @@ async function loadQuestions(){
         +'<div class="diff-meter">'
         +'<div class="diff-meter-row"><div class="diff-meter-label">1st try</div><div class="diff-meter-track"><div class="diff-meter-fill try1" style="width:'+firstPct+'%"></div></div><div class="diff-meter-pct">'+firstPct+'%</div></div>'
         +'<div class="diff-meter-row"><div class="diff-meter-label">Overall</div><div class="diff-meter-track"><div class="diff-meter-fill try2" style="width:'+(allPct||0)+'%"></div></div><div class="diff-meter-pct">'+(allPct!==null?allPct+'%':'—')+'</div></div>'
-        +'</div><div class="diff-attempts">'+totalAttempts+' total attempt'+(totalAttempts!==1?'s':'')+'</div>';
+        +'</div><div class="diff-attempts">'+totalAttempts+' attempts</div>';
     } else {
       meterHTML='<div class="diff-badge '+diffClass+'">'+diffLabel+'</div>'
-        +'<div class="diff-attempts" style="color:var(--muted);font-size:0.7rem">'+(totalAttempts>0?totalAttempts+' attempts — need 5 to compute':'No attempts yet')+'</div>';
+        +'<div class="diff-attempts" style="color:var(--muted);font-size:0.7rem">'+(totalAttempts>0?totalAttempts+' attempts':'No attempts yet')+'</div>';
     }
     const imgUrl=q.image_url||q.image_path;
     const safeQ=JSON.stringify(q).replace(/'/g,'&#39;');
@@ -671,7 +733,9 @@ async function loadQuestions(){
       :'<div class="q-thumb-placeholder" onclick=\'openEditModal('+safeQ+')\' title="Add image">+🖼</div>';
     const typeLabel=q.question_type==='simulator'?'sim':'mc';
     const typeBadge='<span class="q-type-badge '+typeLabel+'">'+(typeLabel==='sim'?'🖥 Sim':'MC')+'</span>';
+    const qNum=q.question_number?'<span style="font-family:var(--headline-font);font-weight:bold;color:var(--maroon-light);font-size:0.85rem;">Q-'+q.question_number+'</span>':'<span style="color:var(--muted);font-size:0.75rem;">—</span>';
     return '<tr>'
+      +'<td>'+qNum+'</td>'
       +'<td style="max-width:260px;white-space:normal;font-size:0.82rem">'+(q.question||'').substring(0,90)+((q.question||'').length>90?'…':'')+'<div style="font-size:0.7rem;color:var(--muted);margin-top:2px">'+(q.topic||'')+'</div></td>'
       +'<td>'+typeBadge+'</td><td>'+thumbHTML+'</td><td>'+meterHTML+'</td>'
       +'<td><span class="status-chip '+(q.status==='active'?'active':'dismissed')+'">'+(q.status||'active')+'</span></td>'
@@ -681,7 +745,7 @@ async function loadQuestions(){
       +'<button class="btn-action delete" onclick="deleteQuestion(\''+q.id+'\')">Delete</button>'
       +'</div></td></tr>';
   });
-  document.getElementById('questionTableBody').innerHTML=rows.join('')||'<tr class="empty-row"><td colspan="6">No questions yet.</td></tr>';
+  document.getElementById('questionTableBody').innerHTML=rows.join('')||'<tr class="empty-row"><td colspan="7">No questions yet.</td></tr>';
 }
 
 // ============================================================
@@ -1009,7 +1073,10 @@ async function loadReports(){
 // ============================================================
 // SETTINGS
 // ============================================================
-function loadSettings(){loadSettingsTechs();}
+function loadSettings(){
+  loadSettingsTechs();
+  loadAdminMessageSetting();
+}
 function syncInvitePassword(){document.getElementById('invitePassword').value=document.getElementById('createPassword').value;}
 function generateToken(){
   const chars='abcdefghijklmnopqrstuvwxyz0123456789';
@@ -1064,9 +1131,6 @@ function sendInvite(){
   },3000);
 }
 
-// ============================================================
-// MANAGE TECHNICIANS WITH ROLE DROPDOWN
-// ============================================================
 async function loadSettingsTechs(){
   const tbody=document.getElementById('settingsTechBody');
   tbody.innerHTML='<tr class="empty-row"><td colspan="7">Loading...</td></tr>';
@@ -1118,6 +1182,7 @@ async function loadSettingsTechs(){
       +'</div></td></tr>';
   }).join('');
 }
+
 async function saveRole(email,role){
   const res=await sfAdmin('/rest/v1/technician_notes?user_email=eq.'+encodeURIComponent(email),{method:'PATCH',body:JSON.stringify({role:role})});
   if(res.ok){showToast(email.split('@')[0]+' is now '+role);}
@@ -1275,10 +1340,8 @@ function getDemoDocs(){
 }
 
 // ============================================================
-// START
+// START — open settings by default
 // ============================================================
-loadOverview();
-// Auto-navigate to settings on load
 navTo('settings');
 </script>
 </body>
