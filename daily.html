@@ -241,7 +241,9 @@ async function createTodaySchedule(allQs){
 }
 
 function getQuestionsFromIds(ids){
-  return ids.map(function(id){return allQuestions.find(function(q){return q.id===id;});}).filter(Boolean);
+  return ids.map(function(id){
+    return allQuestions.find(function(q){return String(q.id)===String(id);});
+  }).filter(Boolean);
 }
 
 // ============================================================
