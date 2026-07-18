@@ -148,8 +148,8 @@ let attemptInSession=1;
 let questions=[];
 let current=0;
 
-// Track which questions user has already earned a point for today
-// Format: {questionId: true}
+// In-memory state (synced to Supabase)
+let dbRecord=null; // the daily_completions row
 let quiz1EarnedPoints={};
 let quiz2EarnedPoints={};
 let feedbackCount=0;
@@ -158,37 +158,88 @@ let pointsBreakdown=[];
 const todayKey=new Date().toISOString().split('T')[0];
 
 // ============================================================
-// HELPERS
+// SUPABASE DAILY COMPLETION — cross-device session tracking
 // ============================================================
-function sk(key){return 'tt_'+key+'_'+dailyUserEmail+'_'+todayKey;}
-function getS1Attempts(){return parseInt(localStorage.getItem(sk('s1attempts'))||'0');}
-function getS2Done(){return localStorage.getItem(sk('s2done'))==='1';}
-function recordS1Attempt(){localStorage.setItem(sk('s1attempts'),getS1Attempts()+1);}
-function recordS2Done(){localStorage.setItem(sk('s2done'),'1');}
-function getQuiz1Earned(){try{return JSON.parse(localStorage.getItem(sk('q1earned'))||'{}');}catch(e){return {};}}
-function saveQuiz1Earned(obj){localStorage.setItem(sk('q1earned'),JSON.stringify(obj));}
-function getQuiz2Earned(){try{return JSON.parse(localStorage.getItem(sk('q2earned'))||'{}');}catch(e){return {};}}
-function saveQuiz2Earned(obj){localStorage.setItem(sk('q2earned'),JSON.stringify(obj));}
-function getFeedbackCount(){return parseInt(localStorage.getItem(sk('fbcount'))||'0');}
-function saveFeedbackCount(n){localStorage.setItem(sk('fbcount'),n);}
-function getPointsBreakdown(){try{return JSON.parse(localStorage.getItem(sk('breakdown'))||'[]');}catch(e){return[];}}
-function savePointsBreakdown(arr){localStorage.setItem(sk('breakdown'),JSON.stringify(arr));}
+async function loadDbRecord(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/daily_completions?user_email=eq.'+encodeURIComponent(dailyUserEmail)+'&completion_date=eq.'+todayKey+'&select=*',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const data=await res.json();
+    if(Array.isArray(data)&&data.length){
+      dbRecord=data[0];
+      // Restore state from DB
+      quiz1EarnedPoints=arrayToObj(dbRecord.quiz1_earned||[]);
+      quiz2EarnedPoints=arrayToObj(dbRecord.quiz2_earned||[]);
+      feedbackCount=dbRecord.feedback_count||0;
+      pointsBreakdown=dbRecord.points_breakdown||[];
+      return dbRecord;
+    }
+  }catch(e){}
+  return null;
+}
+
+async function saveDbRecord(updates){
+  try{
+    if(dbRecord){
+      // Update existing
+      const merged=Object.assign({},updates,{updated_at:new Date().toISOString()});
+      await fetch(SUPABASE_URL+'/rest/v1/daily_completions?user_email=eq.'+encodeURIComponent(dailyUserEmail)+'&completion_date=eq.'+todayKey,{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+        body:JSON.stringify(merged)
+      });
+      dbRecord=Object.assign({},dbRecord,merged);
+    } else {
+      // Insert new
+      const newRecord=Object.assign({
+        user_email:dailyUserEmail,
+        completion_date:todayKey,
+        s1_attempts:0,
+        s2_done:false,
+        quiz1_earned:[],
+        quiz2_earned:[],
+        feedback_count:0,
+        points_breakdown:[]
+      },updates);
+      const res=await fetch(SUPABASE_URL+'/rest/v1/daily_completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=representation'},
+        body:JSON.stringify(newRecord)
+      });
+      const data=await res.json();
+      if(Array.isArray(data)&&data.length)dbRecord=data[0];
+      else dbRecord=newRecord;
+    }
+  }catch(e){}
+}
+
+function arrayToObj(arr){
+  const obj={};
+  if(Array.isArray(arr))arr.forEach(function(id){obj[id]=true;});
+  return obj;
+}
+
+function objToArray(obj){
+  return Object.keys(obj);
+}
+
+function getS1Attempts(){return dbRecord?dbRecord.s1_attempts:0;}
+function getS2Done(){return dbRecord?dbRecord.s2_done:false;}
 
 // ============================================================
-// DAILY SCHEDULE — same questions for all users each day
+// DAILY SCHEDULE
 // ============================================================
 async function getTodaySchedule(){
   try{
     const res=await fetch(SUPABASE_URL+'/rest/v1/daily_schedule?scheduled_date=eq.'+todayKey+'&select=*',
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
     const data=await res.json();
-    if(Array.isArray(data)&&data.length){return data[0];}
+    if(Array.isArray(data)&&data.length)return data[0];
   }catch(e){}
   return null;
 }
 
 async function createTodaySchedule(allQs){
-  // Get questions used in last 14 days
   try{
     const twoWeeksAgo=new Date();
     twoWeeksAgo.setDate(twoWeeksAgo.getDate()-14);
@@ -198,18 +249,12 @@ async function createTodaySchedule(allQs){
     const usedIds=new Set();
     if(Array.isArray(pastData)){
       pastData.forEach(function(d){
-        if(Array.isArray(d.quiz1_questions))d.quiz1_questions.forEach(function(id){usedIds.add(id);});
-        if(Array.isArray(d.quiz2_questions))d.quiz2_questions.forEach(function(id){usedIds.add(id);});
+        if(Array.isArray(d.quiz1_questions))d.quiz1_questions.forEach(function(id){usedIds.add(String(id));});
+        if(Array.isArray(d.quiz2_questions))d.quiz2_questions.forEach(function(id){usedIds.add(String(id));});
       });
     }
-
-    // Filter out recently used questions
-    const eligible=allQs.filter(function(q){return !usedIds.has(q.id)&&q.status==='active';});
-
-    // If not enough eligible questions fall back to all active
+    const eligible=allQs.filter(function(q){return !usedIds.has(String(q.id))&&q.status==='active';});
     const pool=eligible.length>=6?eligible:allQs.filter(function(q){return q.status==='active';});
-
-    // Shuffle deterministically using today's date as seed
     const seed=parseInt(todayKey.replace(/-/g,''));
     const shuffled=pool.slice();
     let s=seed;
@@ -218,21 +263,16 @@ async function createTodaySchedule(allQs){
       const j=Math.floor((s/233280)*(i+1));
       const tmp=shuffled[i];shuffled[i]=shuffled[j];shuffled[j]=tmp;
     }
-
     const quiz1Ids=shuffled.slice(0,DAILY_SIZE).map(function(q){return q.id;});
     const quiz2Ids=shuffled.slice(DAILY_SIZE,DAILY_SIZE*2).map(function(q){return q.id;});
-
-    // Save to daily_schedule
     await fetch(SUPABASE_URL+'/rest/v1/daily_schedule',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
       body:JSON.stringify({scheduled_date:todayKey,quiz1_questions:quiz1Ids,quiz2_questions:quiz2Ids})
     });
-
     return{quiz1_questions:quiz1Ids,quiz2_questions:quiz2Ids};
   }catch(e){
-    // Fallback
-    const active=allQs.filter(function(q){return q.status==='active';});
+    const active=allQuestions.filter(function(q){return q.status==='active';});
     return{
       quiz1_questions:active.slice(0,DAILY_SIZE).map(function(q){return q.id;}),
       quiz2_questions:active.slice(DAILY_SIZE,DAILY_SIZE*2).map(function(q){return q.id;})
@@ -261,18 +301,14 @@ async function init(){
 
   loadLeaderboard();
 
-  try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
-      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
-    const data=await res.json();
-    allQuestions=Array.isArray(data)?data:[];
-  }catch(e){}
-
-  // Load persisted state
-  quiz1EarnedPoints=getQuiz1Earned();
-  quiz2EarnedPoints=getQuiz2Earned();
-  feedbackCount=getFeedbackCount();
-  pointsBreakdown=getPointsBreakdown();
+  // Load questions and DB record in parallel
+  const [,record]=await Promise.all([
+    fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}})
+      .then(r=>r.json())
+      .then(data=>{allQuestions=Array.isArray(data)?data:[];}),
+    loadDbRecord()
+  ]);
 
   const s1=getS1Attempts();
   const s2=getS2Done();
@@ -287,18 +323,9 @@ async function init(){
 }
 
 async function startQuiz(){
-  // Get or create today's schedule
   let schedule=await getTodaySchedule();
-  if(!schedule){
-    schedule=await createTodaySchedule(allQuestions);
-  }
-
-  if(sessionNum===1){
-    questions=getQuestionsFromIds(schedule.quiz1_questions);
-  } else {
-    questions=getQuestionsFromIds(schedule.quiz2_questions);
-  }
-
+  if(!schedule)schedule=await createTodaySchedule(allQuestions);
+  questions=getQuestionsFromIds(sessionNum===1?schedule.quiz1_questions:schedule.quiz2_questions);
   if(!questions.length){
     document.getElementById('quizCol').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
     return;
@@ -319,12 +346,11 @@ function showInvalid(){
 
 function showAllDone(){
   const totalPts=Object.keys(quiz1EarnedPoints).length+Object.keys(quiz2EarnedPoints).length+feedbackCount;
-  const breakdown=getPointsBreakdown();
   let breakdownHTML='';
-  if(breakdown.length){
+  if(pointsBreakdown.length){
     breakdownHTML='<div class="points-breakdown">'
-      +'<div class="points-breakdown-title">Points breakdown</div>'
-      +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+      +'<div class="points-breakdown-title">Today\'s points breakdown</div>'
+      +pointsBreakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
       +'<div class="points-total">Total today <span>'+totalPts+' pts</span></div>'
       +'</div>';
   }
@@ -338,35 +364,28 @@ function showAllDone(){
 }
 
 function showBetweenSessions(){
-  const s1=getS1Attempts();
-  const s2=getS2Done();
+  const s2done=getS2Done();
   const name=dailyUserEmail.split('@')[0];
   const q1pts=Object.keys(quiz1EarnedPoints).length;
-  const q2pts=Object.keys(quiz2EarnedPoints).length;
-  const fbpts=feedbackCount;
-  const totalPts=q1pts+q2pts+fbpts;
-
+  const totalSoFar=q1pts+feedbackCount;
   let html='<div class="results-card">';
   html+='<div style="font-size:2rem;margin-bottom:0.75rem;">✅</div>';
   html+='<div class="results-headline">Good Work, '+name+'!</div>';
   html+='<div class="results-sub">Choose what to do next.</div>';
   html+='<div style="display:flex;gap:0.5rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;">';
   html+='<span class="attempt-badge done">✓ Quiz 1 Done</span>';
-  if(s2){html+='<span class="attempt-badge done">✓ Quiz 2 Done</span>';}
+  if(s2done){html+='<span class="attempt-badge done">✓ Quiz 2 Done</span>';}
   else{html+='<span class="attempt-badge remaining">Quiz 2 Available</span>';}
   html+='</div>';
-
-  if(totalPts>0){
-    const breakdown=getPointsBreakdown();
+  if(totalSoFar>0&&pointsBreakdown.length){
     html+='<div class="points-breakdown">'
-      +'<div class="points-breakdown-title">Points so far today</div>'
-      +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
-      +'<div class="points-total">Total so far <span>'+totalPts+' pts</span></div>'
+      +'<div class="points-breakdown-title">Points so far</div>'
+      +pointsBreakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+      +'<div class="points-total">Total so far <span>'+totalSoFar+' pts</span></div>'
       +'</div>';
   }
-
   html+='<div class="btn-action-row">';
-  if(!s2)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
+  if(!s2done)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
   html+='</div></div>';
   document.getElementById('quizCol').innerHTML=html;
 }
@@ -382,14 +401,9 @@ async function doSession2(){
 function renderQuiz(){
   const name=dailyUserEmail.split('@')[0];
   const s1=getS1Attempts();
-  const isRetake=sessionNum===1&&attemptInSession>1;
-  let sessionLabel='';
-  if(sessionNum===1){
-    if(attemptInSession===1)sessionLabel='Quiz 1';
-    else sessionLabel='Quiz 1 — Retake '+(attemptInSession-1);
-  } else {
-    sessionLabel='Quiz 2';
-  }
+  const sessionLabel=sessionNum===1
+    ?(attemptInSession===1?'Quiz 1':'Quiz 1 — Retake '+(attemptInSession-1))
+    :'Quiz 2';
 
   let badgesHTML='<div class="attempt-badges">';
   if(sessionNum===1){
@@ -429,9 +443,7 @@ function renderQuestion(){
   const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
   const qIndex=current;
   const qNum=q.question_number?'Q-'+q.question_number:'';
-
-  // Check if already earned point for this question
-  const earned=sessionNum===1?quiz1EarnedPoints[q.id]:quiz2EarnedPoints[q.id];
+  const earned=sessionNum===1?quiz1EarnedPoints[String(q.id)]:quiz2EarnedPoints[String(q.id)];
 
   document.getElementById('questionArea').innerHTML=
     '<div class="q-card" id="qCard_'+qIndex+'">'
@@ -504,28 +516,28 @@ function selectAnswer(letter,btn,qIndex){
 
   const q=questions[current];
   const correct=q.correct_answer===letter;
+  const qIdStr=String(q.id);
+  const earned=sessionNum===1?quiz1EarnedPoints[qIdStr]:quiz2EarnedPoints[qIdStr];
 
-  // Award point only if correct AND haven't earned it yet for this question today
-  const earned=sessionNum===1?quiz1EarnedPoints[q.id]:quiz2EarnedPoints[q.id];
   if(correct&&!earned){
     if(sessionNum===1){
-      quiz1EarnedPoints[q.id]=true;
-      saveQuiz1Earned(quiz1EarnedPoints);
+      quiz1EarnedPoints[qIdStr]=true;
     } else {
-      quiz2EarnedPoints[q.id]=true;
-      saveQuiz2Earned(quiz2EarnedPoints);
+      quiz2EarnedPoints[qIdStr]=true;
     }
     const qNum=q.question_number?'Q-'+q.question_number:'Question '+(current+1);
     const label=sessionNum===1
       ?(attemptInSession===1?qNum+' correct on Quiz 1':qNum+' correct on Retake '+(attemptInSession-1))
       :qNum+' correct on Quiz 2';
-    const breakdown=getPointsBreakdown();
-    breakdown.push({label:label,pts:1});
-    savePointsBreakdown(breakdown);
-    pointsBreakdown=breakdown;
+    pointsBreakdown.push({label:label,pts:1});
+    // Save to Supabase
+    saveDbRecord({
+      quiz1_earned:objToArray(quiz1EarnedPoints),
+      quiz2_earned:objToArray(quiz2EarnedPoints),
+      points_breakdown:pointsBreakdown
+    });
+    awardPoint('correct');
     setTimeout(loadLeaderboard,800);
-    // Award point in Supabase
-    awardPoint(q,'correct');
   }
 
   const optContainer=document.getElementById('opts_'+qIndex);
@@ -549,17 +561,12 @@ function selectAnswer(letter,btn,qIndex){
   logAnswer(q,correct);
 }
 
-async function awardPoint(q,reason){
+async function awardPoint(reason){
   try{
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        user_email:dailyUserEmail,
-        points:1,
-        reason:reason==='correct'?'Daily quiz correct':'Daily quiz feedback',
-        created_at:new Date().toISOString()
-      })
+      body:JSON.stringify({user_email:dailyUserEmail,points:1,reason:reason==='correct'?'Daily quiz correct':'Daily quiz feedback',created_at:new Date().toISOString()})
     });
   }catch(e){}
 }
@@ -590,13 +597,10 @@ async function submitReport(){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
       body:JSON.stringify({question_id:q.id,question_text:q.question.substring(0,120),feedback_type:fbType,comment:comment,author_name:dailyUserEmail,user_email:dailyUserEmail,status:'pending',created_at:new Date().toISOString()})
     });
-    await awardPoint(q,'feedback');
+    await awardPoint('feedback');
     feedbackCount++;
-    saveFeedbackCount(feedbackCount);
-    const breakdown=getPointsBreakdown();
-    breakdown.push({label:'Feedback report on '+(q.question_number?'Q-'+q.question_number:'question '+(current+1)),pts:1});
-    savePointsBreakdown(breakdown);
-    pointsBreakdown=breakdown;
+    pointsBreakdown.push({label:'Feedback report on '+(q.question_number?'Q-'+q.question_number:'question '+(current+1)),pts:1});
+    saveDbRecord({feedback_count:feedbackCount,points_breakdown:pointsBreakdown});
     const el=document.getElementById('fbSent');
     el.textContent='✓ Report sent — +1 point earned. Thank you!';
     el.style.color='var(--correct)';
@@ -634,25 +638,16 @@ function nextQuestion(){
 // ============================================================
 // RESULTS
 // ============================================================
-function showResults(){
-  const s1=getS1Attempts();
-
+async function showResults(){
   if(sessionNum===1){
-    // Check how many questions were missed this attempt
-    const missedCount=questions.filter(function(q){return !quiz1EarnedPoints[q.id];}).length;
-    recordS1Attempt();
-    const newS1=getS1Attempts();
+    const missedCount=questions.filter(function(q){return !quiz1EarnedPoints[String(q.id)];}).length;
+    const newS1=(getS1Attempts()||0)+1;
+    await saveDbRecord({s1_attempts:newS1});
 
     const q1pts=Object.keys(quiz1EarnedPoints).length;
-    const fbpts=getFeedbackCount();
-    const totalSoFar=q1pts+fbpts;
-    const breakdown=getPointsBreakdown();
-
-    // Determine what's available next
+    const totalSoFar=q1pts+feedbackCount;
     const retakeAvailable=missedCount>0&&newS1<=MAX_RETAKES;
     const sessionLabel=attemptInSession===1?'Quiz 1':'Retake '+(attemptInSession-1);
-
-    // Streak tracking
     updateStreak();
 
     const pct=Math.round((q1pts/questions.length)*100);
@@ -664,11 +659,10 @@ function showResults(){
       +'<div class="results-headline">'+emoji+' '+sessionLabel+' Done!</div>'
       +'<div class="results-sub">You got <strong>'+q1pts+' out of '+questions.length+'</strong> correct</div>';
 
-    // Points breakdown
-    if(breakdown.length){
+    if(pointsBreakdown.length){
       html+='<div class="points-breakdown">'
         +'<div class="points-breakdown-title">Points earned</div>'
-        +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+        +pointsBreakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
         +'<div class="points-total">Total today <span>'+totalSoFar+' pts</span></div>'
         +'</div>';
     }
@@ -677,26 +671,19 @@ function showResults(){
     if(retakeAvailable){
       html+='<button class="btn-primary-action" onclick="doRetake()">↻ '+(attemptInSession===1?'Retake Quiz 1':'Retake Again')+'</button>';
     }
-    if(!retakeAvailable||newS1>MAX_RETAKES){
-      html+='<button class="btn-secondary-action" onclick="doSession2Prompt()">▶ Start Quiz 2</button>';
-    }
+    html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
     html+='</div>';
-
     if(retakeAvailable){
-      html+='<div class="retake-info">'+missedCount+' question'+(missedCount!==1?'s':'')+' missed — retake available to earn those points</div>';
+      html+='<div class="retake-info">'+missedCount+' question'+(missedCount!==1?'s':'')+' missed — retake to earn those points</div>';
     }
     html+='</div>';
     document.getElementById('quizCol').innerHTML=html;
 
   } else {
-    // Quiz 2 done
-    recordS2Done();
+    await saveDbRecord({s2_done:true,quiz2_earned:objToArray(quiz2EarnedPoints),points_breakdown:pointsBreakdown});
     const q1pts=Object.keys(quiz1EarnedPoints).length;
     const q2pts=Object.keys(quiz2EarnedPoints).length;
-    const fbpts=getFeedbackCount();
-    const totalPts=q1pts+q2pts+fbpts;
-    const breakdown=getPointsBreakdown();
-
+    const totalPts=q1pts+q2pts+feedbackCount;
     updateStreak();
 
     let html=
@@ -705,14 +692,13 @@ function showResults(){
       +'<div class="results-headline">🎯 All Done!</div>'
       +'<div class="results-sub">Quiz 2 complete — great work today!</div>';
 
-    if(breakdown.length){
+    if(pointsBreakdown.length){
       html+='<div class="points-breakdown">'
         +'<div class="points-breakdown-title">Today\'s points breakdown</div>'
-        +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+        +pointsBreakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
         +'<div class="points-total">Total today <span>'+totalPts+' pts</span></div>'
         +'</div>';
     }
-
     html+='<div class="done-note">Come back tomorrow for new questions!</div>';
     html+='</div>';
     document.getElementById('quizCol').innerHTML=html;
@@ -724,12 +710,6 @@ function doRetake(){
   attemptInSession++;
   current=0;
   renderQuiz();
-}
-
-function doSession2Prompt(){
-  sessionNum=2;
-  attemptInSession=1;
-  startQuiz();
 }
 
 function updateStreak(){
