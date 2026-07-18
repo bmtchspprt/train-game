@@ -38,15 +38,18 @@
   .q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.5rem;margin-bottom:1rem;animation:fadeUp 0.4s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   .q-num{font-family:var(--headline-font);font-weight:bold;font-size:0.72rem;color:var(--maroon-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .q-ref{font-size:0.68rem;color:var(--muted);font-weight:normal;margin-left:0.5rem;}
   .q-text{font-family:var(--headline-font);font-weight:bold;font-size:1.1rem;line-height:1.45;margin-bottom:1.2rem;}
   .options{display:flex;flex-direction:column;gap:0.6rem;}
   .option-btn{display:flex;align-items:flex-start;gap:1rem;padding:0.85rem 1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;font-family:'DM Sans',Arial,sans-serif;font-size:0.9rem;color:var(--text);transition:all 0.2s;width:100%;}
   .option-btn:hover:not(:disabled){border-color:rgba(139,26,26,0.5);background:var(--maroon-glow);}
   .option-btn.correct{border-color:var(--correct);background:rgba(0,229,160,0.08);}
   .option-btn.wrong{border-color:var(--wrong);background:rgba(255,77,109,0.08);}
+  .option-btn.already-correct{border-color:rgba(0,229,160,0.3);background:rgba(0,229,160,0.04);opacity:0.7;}
   .opt-letter{width:26px;height:26px;border-radius:6px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-family:var(--headline-font);font-size:0.82rem;font-weight:bold;flex-shrink:0;}
   .option-btn.correct .opt-letter{background:var(--correct);color:#0a0a0f;}
   .option-btn.wrong .opt-letter{background:var(--wrong);color:white;}
+  .option-btn.already-correct .opt-letter{background:rgba(0,229,160,0.3);color:var(--correct);}
   .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1rem 1.2rem;margin-top:1.2rem;font-size:0.85rem;line-height:1.6;display:none;}
   .explanation-box.show{display:block;}
   .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.35rem;}
@@ -74,6 +77,12 @@
   .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.2rem;}
   .score-circle{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-family:var(--headline-font);font-size:1.8rem;font-weight:bold;color:white;box-shadow:0 0 40px var(--maroon-glow);}
   .streak-box{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);border-radius:10px;padding:0.8rem 1.1rem;margin:1rem 0;font-size:0.83rem;color:var(--warning);}
+  .points-breakdown{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin:1rem 0;text-align:left;}
+  .points-breakdown-title{font-family:var(--headline-font);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.6rem;}
+  .points-breakdown-row{font-size:0.82rem;color:var(--muted);padding:0.2rem 0;display:flex;justify-content:space-between;}
+  .points-breakdown-row span{color:var(--correct);font-weight:600;}
+  .points-total{font-family:var(--headline-font);font-size:1.1rem;font-weight:bold;color:var(--text);margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;}
+  .points-total span{color:#ffd700;}
   .btn-action-row{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;}
   .btn-primary-action{padding:0.7rem 1.4rem;background:var(--maroon);border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-weight:bold;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s;text-decoration:none;display:inline-block;}
   .btn-primary-action:hover{background:var(--maroon-light);}
@@ -129,8 +138,8 @@
 // ============================================================
 const params=new URLSearchParams(window.location.search);
 const tokenParam=params.get('u');
-const MAX_RETAKES_PER_SESSION=1;
 const DAILY_SIZE=3;
+const MAX_RETAKES=3;
 
 let dailyUserEmail=null;
 let allQuestions=[];
@@ -138,47 +147,102 @@ let sessionNum=1;
 let attemptInSession=1;
 let questions=[];
 let current=0;
-let correctCount=0;
-const todayKey=new Date().toISOString().split('T')[0];
 
-const REFRIGERANT_KEYWORDS=['refrigerant','epa 608','freon','vacuum level','micron','subcooling','superheat','charging','recovery machine','cfcs','hcfcs','410a','r-22','r22','r410'];
+// Track which questions user has already earned a point for today
+// Format: {questionId: true}
+let quiz1EarnedPoints={};
+let quiz2EarnedPoints={};
+let feedbackCount=0;
+let pointsBreakdown=[];
+
+const todayKey=new Date().toISOString().split('T')[0];
 
 // ============================================================
 // HELPERS
 // ============================================================
-function isRefrigerantQuestion(q){
-  const text=((q.question||'')+(q.topic||'')+(q.explanation||'')).toLowerCase();
-  return REFRIGERANT_KEYWORDS.some(function(k){return text.includes(k);});
-}
-
-function hashStr(str){
-  let h=0;
-  for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}
-  return Math.abs(h);
-}
-
-function pickQuestionsForSession(session){
-  const eligible=allQuestions.filter(function(q){
-    return !isRefrigerantQuestion(q)&&q.status==='active';
-  });
-  if(!eligible.length)return[];
-  const seed=hashStr(tokenParam+todayKey+'s'+session);
-  const arr=eligible.slice();
-  let s=seed;
-  for(let i=arr.length-1;i>0;i--){
-    s=(s*9301+49297)%233280;
-    const j=Math.floor((s/233280)*(i+1));
-    const tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
-  }
-  if(session===2)return arr.slice(DAILY_SIZE,DAILY_SIZE*2);
-  return arr.slice(0,DAILY_SIZE);
-}
-
 function sk(key){return 'tt_'+key+'_'+dailyUserEmail+'_'+todayKey;}
 function getS1Attempts(){return parseInt(localStorage.getItem(sk('s1attempts'))||'0');}
 function getS2Done(){return localStorage.getItem(sk('s2done'))==='1';}
 function recordS1Attempt(){localStorage.setItem(sk('s1attempts'),getS1Attempts()+1);}
 function recordS2Done(){localStorage.setItem(sk('s2done'),'1');}
+function getQuiz1Earned(){try{return JSON.parse(localStorage.getItem(sk('q1earned'))||'{}');}catch(e){return {};}}
+function saveQuiz1Earned(obj){localStorage.setItem(sk('q1earned'),JSON.stringify(obj));}
+function getQuiz2Earned(){try{return JSON.parse(localStorage.getItem(sk('q2earned'))||'{}');}catch(e){return {};}}
+function saveQuiz2Earned(obj){localStorage.setItem(sk('q2earned'),JSON.stringify(obj));}
+function getFeedbackCount(){return parseInt(localStorage.getItem(sk('fbcount'))||'0');}
+function saveFeedbackCount(n){localStorage.setItem(sk('fbcount'),n);}
+function getPointsBreakdown(){try{return JSON.parse(localStorage.getItem(sk('breakdown'))||'[]');}catch(e){return[];}}
+function savePointsBreakdown(arr){localStorage.setItem(sk('breakdown'),JSON.stringify(arr));}
+
+// ============================================================
+// DAILY SCHEDULE — same questions for all users each day
+// ============================================================
+async function getTodaySchedule(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/daily_schedule?scheduled_date=eq.'+todayKey+'&select=*',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const data=await res.json();
+    if(Array.isArray(data)&&data.length){return data[0];}
+  }catch(e){}
+  return null;
+}
+
+async function createTodaySchedule(allQs){
+  // Get questions used in last 14 days
+  try{
+    const twoWeeksAgo=new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate()-14);
+    const pastRes=await fetch(SUPABASE_URL+'/rest/v1/daily_schedule?scheduled_date=gt.'+twoWeeksAgo.toISOString().split('T')[0]+'&select=quiz1_questions,quiz2_questions',
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}});
+    const pastData=await pastRes.json();
+    const usedIds=new Set();
+    if(Array.isArray(pastData)){
+      pastData.forEach(function(d){
+        if(Array.isArray(d.quiz1_questions))d.quiz1_questions.forEach(function(id){usedIds.add(id);});
+        if(Array.isArray(d.quiz2_questions))d.quiz2_questions.forEach(function(id){usedIds.add(id);});
+      });
+    }
+
+    // Filter out recently used questions
+    const eligible=allQs.filter(function(q){return !usedIds.has(q.id)&&q.status==='active';});
+
+    // If not enough eligible questions fall back to all active
+    const pool=eligible.length>=6?eligible:allQs.filter(function(q){return q.status==='active';});
+
+    // Shuffle deterministically using today's date as seed
+    const seed=parseInt(todayKey.replace(/-/g,''));
+    const shuffled=pool.slice();
+    let s=seed;
+    for(let i=shuffled.length-1;i>0;i--){
+      s=(s*9301+49297)%233280;
+      const j=Math.floor((s/233280)*(i+1));
+      const tmp=shuffled[i];shuffled[i]=shuffled[j];shuffled[j]=tmp;
+    }
+
+    const quiz1Ids=shuffled.slice(0,DAILY_SIZE).map(function(q){return q.id;});
+    const quiz2Ids=shuffled.slice(DAILY_SIZE,DAILY_SIZE*2).map(function(q){return q.id;});
+
+    // Save to daily_schedule
+    await fetch(SUPABASE_URL+'/rest/v1/daily_schedule',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({scheduled_date:todayKey,quiz1_questions:quiz1Ids,quiz2_questions:quiz2Ids})
+    });
+
+    return{quiz1_questions:quiz1Ids,quiz2_questions:quiz2Ids};
+  }catch(e){
+    // Fallback
+    const active=allQs.filter(function(q){return q.status==='active';});
+    return{
+      quiz1_questions:active.slice(0,DAILY_SIZE).map(function(q){return q.id;}),
+      quiz2_questions:active.slice(DAILY_SIZE,DAILY_SIZE*2).map(function(q){return q.id;})
+    };
+  }
+}
+
+function getQuestionsFromIds(ids){
+  return ids.map(function(id){return allQuestions.find(function(q){return q.id===id;});}).filter(Boolean);
+}
 
 // ============================================================
 // INIT
@@ -202,22 +266,42 @@ async function init(){
     allQuestions=Array.isArray(data)?data:[];
   }catch(e){}
 
+  // Load persisted state
+  quiz1EarnedPoints=getQuiz1Earned();
+  quiz2EarnedPoints=getQuiz2Earned();
+  feedbackCount=getFeedbackCount();
+  pointsBreakdown=getPointsBreakdown();
+
   const s1=getS1Attempts();
   const s2=getS2Done();
 
-  if(s1===0){sessionNum=1;attemptInSession=1;startQuiz();}
-  else if(s1===1&&!s2){showBetweenSessions(false);}
-  else if(s1>1&&!s2){showBetweenSessions(true);}
-  else{showAllDone();}
+  if(s1===0){
+    sessionNum=1;attemptInSession=1;await startQuiz();
+  } else if(!s2){
+    showBetweenSessions();
+  } else {
+    showAllDone();
+  }
 }
 
-function startQuiz(){
-  questions=pickQuestionsForSession(sessionNum);
+async function startQuiz(){
+  // Get or create today's schedule
+  let schedule=await getTodaySchedule();
+  if(!schedule){
+    schedule=await createTodaySchedule(allQuestions);
+  }
+
+  if(sessionNum===1){
+    questions=getQuestionsFromIds(schedule.quiz1_questions);
+  } else {
+    questions=getQuestionsFromIds(schedule.quiz2_questions);
+  }
+
   if(!questions.length){
     document.getElementById('quizCol').innerHTML='<div class="invalid-state"><div style="font-size:2rem;margin-bottom:1rem;">📚</div>No questions available yet. Check back soon.</div>';
     return;
   }
-  current=0;correctCount=0;
+  current=0;
   renderQuiz();
 }
 
@@ -232,45 +316,62 @@ function showInvalid(){
 }
 
 function showAllDone(){
+  const totalPts=Object.keys(quiz1EarnedPoints).length+Object.keys(quiz2EarnedPoints).length+feedbackCount;
+  const breakdown=getPointsBreakdown();
+  let breakdownHTML='';
+  if(breakdown.length){
+    breakdownHTML='<div class="points-breakdown">'
+      +'<div class="points-breakdown-title">Points breakdown</div>'
+      +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+      +'<div class="points-total">Total today <span>'+totalPts+' pts</span></div>'
+      +'</div>';
+  }
   document.getElementById('quizCol').innerHTML=
     '<div class="results-card">'
     +'<div style="font-size:2.5rem;margin-bottom:0.75rem;">🎯</div>'
     +'<div class="results-headline">All Done Today!</div>'
-    +'<div class="results-sub">You\'ve completed both quiz sessions. Come back tomorrow for fresh questions.</div>'
+    +'<div class="results-sub">You\'ve completed all quiz sessions. Come back tomorrow for new questions.</div>'
+    +breakdownHTML
     +'</div>';
 }
 
-function showBetweenSessions(retakeDone){
-  const s2done=getS2Done();
+function showBetweenSessions(){
+  const s1=getS1Attempts();
+  const s2=getS2Done();
   const name=dailyUserEmail.split('@')[0];
+  const q1pts=Object.keys(quiz1EarnedPoints).length;
+  const q2pts=Object.keys(quiz2EarnedPoints).length;
+  const fbpts=feedbackCount;
+  const totalPts=q1pts+q2pts+fbpts;
+
   let html='<div class="results-card">';
   html+='<div style="font-size:2rem;margin-bottom:0.75rem;">✅</div>';
   html+='<div class="results-headline">Good Work, '+name+'!</div>';
   html+='<div class="results-sub">Choose what to do next.</div>';
   html+='<div style="display:flex;gap:0.5rem;justify-content:center;margin:1rem 0;flex-wrap:wrap;">';
-  html+='<span class="attempt-badge done">✓ Quiz 1'+(retakeDone?' + Retake':'')+'</span>';
-  if(s2done){html+='<span class="attempt-badge done">✓ Quiz 2</span>';}
+  html+='<span class="attempt-badge done">✓ Quiz 1 Done</span>';
+  if(s2){html+='<span class="attempt-badge done">✓ Quiz 2 Done</span>';}
   else{html+='<span class="attempt-badge remaining">Quiz 2 Available</span>';}
   html+='</div>';
+
+  if(totalPts>0){
+    const breakdown=getPointsBreakdown();
+    html+='<div class="points-breakdown">'
+      +'<div class="points-breakdown-title">Points so far today</div>'
+      +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+      +'<div class="points-total">Total so far <span>'+totalPts+' pts</span></div>'
+      +'</div>';
+  }
+
   html+='<div class="btn-action-row">';
-  if(!retakeDone)html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
-  if(!s2done)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
+  if(!s2)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
   html+='</div></div>';
   document.getElementById('quizCol').innerHTML=html;
 }
 
-function doRetake(){
-  sessionNum=1;attemptInSession=2;
-  questions=pickQuestionsForSession(1);
-  current=0;correctCount=0;
-  renderQuiz();
-}
-
-function doSession2(){
+async function doSession2(){
   sessionNum=2;attemptInSession=1;
-  questions=pickQuestionsForSession(2);
-  current=0;correctCount=0;
-  renderQuiz();
+  await startQuiz();
 }
 
 // ============================================================
@@ -278,18 +379,21 @@ function doSession2(){
 // ============================================================
 function renderQuiz(){
   const name=dailyUserEmail.split('@')[0];
-  const sessionLabel=sessionNum===1
-    ?(attemptInSession===1?'Quiz 1':'Quiz 1 — Retake')
-    :'Quiz 2';
+  const s1=getS1Attempts();
+  const isRetake=sessionNum===1&&attemptInSession>1;
+  let sessionLabel='';
+  if(sessionNum===1){
+    if(attemptInSession===1)sessionLabel='Quiz 1';
+    else sessionLabel='Quiz 1 — Retake '+(attemptInSession-1);
+  } else {
+    sessionLabel='Quiz 2';
+  }
 
   let badgesHTML='<div class="attempt-badges">';
   if(sessionNum===1){
-    if(attemptInSession===1){
-      badgesHTML+='<span class="attempt-badge current">→ Quiz 1</span>';
-      badgesHTML+='<span class="attempt-badge remaining">Retake available after</span>';
-    } else {
-      badgesHTML+='<span class="attempt-badge done">✓ Quiz 1</span>';
-      badgesHTML+='<span class="attempt-badge current">→ Retake</span>';
+    for(let i=1;i<=attemptInSession;i++){
+      if(i<attemptInSession)badgesHTML+='<span class="attempt-badge done">✓ '+(i===1?'Quiz 1':'Retake '+(i-1))+'</span>';
+      else badgesHTML+='<span class="attempt-badge current">→ '+(i===1?'Quiz 1':'Retake '+(i-1))+'</span>';
     }
   } else {
     badgesHTML+='<span class="attempt-badge done">✓ Quiz 1 Done</span>';
@@ -304,7 +408,7 @@ function renderQuiz(){
     +'<div class="headline">Hey '+name+'!</div>'
     +'<div class="header-date">'+dateStr+'</div>'
     +'</div>'
-    +'<div class="sub">'+sessionLabel+' — 3 questions, about 2 minutes</div>'
+    +'<div class="sub">'+sessionLabel+' — 3 questions</div>'
     +badgesHTML
     +'<div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>'
     +'<div id="questionArea"></div>';
@@ -314,8 +418,6 @@ function renderQuiz(){
 
 // ============================================================
 // RENDER QUESTION
-// — question text is never passed through onclick strings
-// — all data accessed via questions[current] to avoid apostrophe crashes
 // ============================================================
 function renderQuestion(){
   if(current>=questions.length){showResults();return;}
@@ -324,19 +426,24 @@ function renderQuestion(){
   const isLast=current===questions.length-1;
   const imgHTML=q.image_url?'<img src="'+q.image_url+'" style="max-width:100%;border-radius:10px;margin-bottom:1.2rem;border:1px solid var(--border);">':'';
   const qIndex=current;
+  const qNum=q.question_number?'Q-'+q.question_number:'';
+
+  // Check if already earned point for this question
+  const earned=sessionNum===1?quiz1EarnedPoints[q.id]:quiz2EarnedPoints[q.id];
 
   document.getElementById('questionArea').innerHTML=
     '<div class="q-card" id="qCard_'+qIndex+'">'
-    +'<div class="q-num">Question '+(qIndex+1)+' of '+questions.length+'</div>'
+    +'<div class="q-num">Question '+(qIndex+1)+' of '+questions.length+(qNum?' <span class="q-ref">('+qNum+')</span>':'')+'</div>'
     +imgHTML
     +'<div class="q-text">'+q.question+'</div>'
     +'<div class="options" id="opts_'+qIndex+'">'
     +opts.map(function(opt,i){
       const l=['A','B','C','D'][i];
       const optText=opt.replace(/^[A-D]\)\s*/,'');
-      return '<button class="option-btn" onclick="selectAnswer(\''+l+'\',this,'+qIndex+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
+      return '<button class="option-btn'+(earned?' already-correct':'')+'" onclick="selectAnswer(\''+l+'\',this,'+qIndex+')" data-letter="'+l+'"><div class="opt-letter">'+l+'</div><div>'+optText+'</div></button>';
     }).join('')
     +'</div>'
+    +(earned?'<div style="font-size:0.75rem;color:var(--correct);margin-top:0.75rem;">✓ You already earned a point for this question — answer again to practice</div>':'')
     +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
     +'<div class="report-link-row" id="reportLinkRow">'
     +'<button class="report-toggle" onclick="toggleReportPanel()">⚑ Report a problem with this question</button>'
@@ -348,10 +455,10 @@ function renderQuestion(){
     +'<button class="fb-type-btn" onclick="selectFbType(this,\'outdated\')">Outdated info</button>'
     +'<button class="fb-type-btn" onclick="selectFbType(this,\'other\')">Other</button>'
     +'</div>'
-    +'<textarea class="report-textarea" id="fbComment" placeholder="Describe the issue... (required for +5 pts)" oninput="checkFbReady()"></textarea>'
+    +'<textarea class="report-textarea" id="fbComment" placeholder="Describe the issue... (required for +1 pt, max 3 per day)" oninput="checkFbReady()"></textarea>'
     +'<div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem;flex-wrap:wrap;">'
     +'<button class="btn-submit-report" id="fbSubmitBtn" onclick="submitReport()" disabled>Submit Report →</button>'
-    +'<span style="font-size:0.7rem;color:var(--muted);">+5 pts for a written report</span>'
+    +'<span style="font-size:0.7rem;color:var(--muted);">+1 pt (max 3 reports/day)</span>'
     +'</div>'
     +'<div class="report-sent" id="fbSent"></div>'
     +'</div>'
@@ -387,7 +494,6 @@ function checkFbReady(){
 
 // ============================================================
 // SELECT ANSWER
-// — no question text in onclick, uses card data attribute to prevent double-fire
 // ============================================================
 function selectAnswer(letter,btn,qIndex){
   const card=document.getElementById('qCard_'+qIndex);
@@ -396,7 +502,29 @@ function selectAnswer(letter,btn,qIndex){
 
   const q=questions[current];
   const correct=q.correct_answer===letter;
-  if(correct)correctCount++;
+
+  // Award point only if correct AND haven't earned it yet for this question today
+  const earned=sessionNum===1?quiz1EarnedPoints[q.id]:quiz2EarnedPoints[q.id];
+  if(correct&&!earned){
+    if(sessionNum===1){
+      quiz1EarnedPoints[q.id]=true;
+      saveQuiz1Earned(quiz1EarnedPoints);
+    } else {
+      quiz2EarnedPoints[q.id]=true;
+      saveQuiz2Earned(quiz2EarnedPoints);
+    }
+    const qNum=q.question_number?'Q-'+q.question_number:'Question '+(current+1);
+    const label=sessionNum===1
+      ?(attemptInSession===1?qNum+' correct on Quiz 1':qNum+' correct on Retake '+(attemptInSession-1))
+      :qNum+' correct on Quiz 2';
+    const breakdown=getPointsBreakdown();
+    breakdown.push({label:label,pts:1});
+    savePointsBreakdown(breakdown);
+    pointsBreakdown=breakdown;
+    setTimeout(loadLeaderboard,800);
+    // Award point in Supabase
+    awardPoint(q,'correct');
+  }
 
   const optContainer=document.getElementById('opts_'+qIndex);
   if(optContainer){
@@ -419,15 +547,33 @@ function selectAnswer(letter,btn,qIndex){
   logAnswer(q,correct);
 }
 
-// ============================================================
-// SUBMIT REPORT
-// — reads question directly from questions[current], no inline string passing
-// ============================================================
+async function awardPoint(q,reason){
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({
+        user_email:dailyUserEmail,
+        points:1,
+        reason:reason==='correct'?'Daily quiz correct':'Daily quiz feedback',
+        created_at:new Date().toISOString()
+      })
+    });
+  }catch(e){}
+}
+
 async function submitReport(){
   const comment=(document.getElementById('fbComment').value||'').trim();
   if(!comment){
     const el=document.getElementById('fbSent');
     el.textContent='Please describe the issue to submit.';
+    el.style.color='var(--wrong)';
+    el.classList.add('show');
+    return;
+  }
+  if(feedbackCount>=3){
+    const el=document.getElementById('fbSent');
+    el.textContent='Maximum 3 feedback reports per day reached.';
     el.style.color='var(--wrong)';
     el.classList.add('show');
     return;
@@ -440,29 +586,17 @@ async function submitReport(){
     await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        question_id:q.id,
-        question_text:q.question.substring(0,120),
-        feedback_type:fbType,
-        comment:comment,
-        author_name:dailyUserEmail,
-        user_email:dailyUserEmail,
-        status:'pending',
-        created_at:new Date().toISOString()
-      })
+      body:JSON.stringify({question_id:q.id,question_text:q.question.substring(0,120),feedback_type:fbType,comment:comment,author_name:dailyUserEmail,user_email:dailyUserEmail,status:'pending',created_at:new Date().toISOString()})
     });
-    await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        user_email:dailyUserEmail,
-        points:1,
-        reason:'Question report submitted',
-        created_at:new Date().toISOString()
-      })
-    });
+    await awardPoint(q,'feedback');
+    feedbackCount++;
+    saveFeedbackCount(feedbackCount);
+    const breakdown=getPointsBreakdown();
+    breakdown.push({label:'Feedback report on '+(q.question_number?'Q-'+q.question_number:'question '+(current+1)),pts:1});
+    savePointsBreakdown(breakdown);
+    pointsBreakdown=breakdown;
     const el=document.getElementById('fbSent');
-    el.textContent='✓ Report sent — +5 points earned. Thank you!';
+    el.textContent='✓ Report sent — +1 point earned. Thank you!';
     el.style.color='var(--correct)';
     el.classList.add('show');
     btn.textContent='✓ Sent';
@@ -485,17 +619,6 @@ async function logAnswer(q,correct){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
       body:JSON.stringify({user_email:dailyUserEmail,question_id:q.id,is_correct:correct,time_taken_seconds:0})
     });
-    await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({
-        user_email:dailyUserEmail,
-points:1,
-        reason:correct?'Daily quiz correct':'Daily quiz attempt',
-        created_at:new Date().toISOString()
-      })
-    });
-    setTimeout(loadLeaderboard,800);
   }catch(e){}
 }
 
@@ -510,9 +633,104 @@ function nextQuestion(){
 // RESULTS
 // ============================================================
 function showResults(){
-  if(sessionNum===1)recordS1Attempt();
-  else recordS2Done();
+  const s1=getS1Attempts();
 
+  if(sessionNum===1){
+    // Check how many questions were missed this attempt
+    const missedCount=questions.filter(function(q){return !quiz1EarnedPoints[q.id];}).length;
+    recordS1Attempt();
+    const newS1=getS1Attempts();
+
+    const q1pts=Object.keys(quiz1EarnedPoints).length;
+    const fbpts=getFeedbackCount();
+    const totalSoFar=q1pts+fbpts;
+    const breakdown=getPointsBreakdown();
+
+    // Determine what's available next
+    const retakeAvailable=missedCount>0&&newS1<=MAX_RETAKES;
+    const sessionLabel=attemptInSession===1?'Quiz 1':'Retake '+(attemptInSession-1);
+
+    // Streak tracking
+    updateStreak();
+
+    const pct=Math.round((q1pts/questions.length)*100);
+    const emoji=pct===100?'🎯':pct>=66?'💪':pct>=33?'📈':'🌱';
+
+    let html=
+      '<div class="results-card">'
+      +'<div class="score-circle">'+q1pts+'/'+questions.length+'</div>'
+      +'<div class="results-headline">'+emoji+' '+sessionLabel+' Done!</div>'
+      +'<div class="results-sub">You got <strong>'+q1pts+' out of '+questions.length+'</strong> correct</div>';
+
+    // Points breakdown
+    if(breakdown.length){
+      html+='<div class="points-breakdown">'
+        +'<div class="points-breakdown-title">Points earned</div>'
+        +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+        +'<div class="points-total">Total today <span>'+totalSoFar+' pts</span></div>'
+        +'</div>';
+    }
+
+    html+='<div class="btn-action-row">';
+    if(retakeAvailable){
+      html+='<button class="btn-primary-action" onclick="doRetake()">↻ '+(attemptInSession===1?'Retake Quiz 1':'Retake Again')+'</button>';
+    }
+    if(!retakeAvailable||newS1>MAX_RETAKES){
+      html+='<button class="btn-secondary-action" onclick="doSession2Prompt()">▶ Start Quiz 2</button>';
+    }
+    html+='</div>';
+
+    if(retakeAvailable){
+      html+='<div class="retake-info">'+missedCount+' question'+(missedCount!==1?'s':'')+' missed — retake available to earn those points</div>';
+    }
+    html+='</div>';
+    document.getElementById('quizCol').innerHTML=html;
+
+  } else {
+    // Quiz 2 done
+    recordS2Done();
+    const q1pts=Object.keys(quiz1EarnedPoints).length;
+    const q2pts=Object.keys(quiz2EarnedPoints).length;
+    const fbpts=getFeedbackCount();
+    const totalPts=q1pts+q2pts+fbpts;
+    const breakdown=getPointsBreakdown();
+
+    updateStreak();
+
+    let html=
+      '<div class="results-card">'
+      +'<div class="score-circle">'+q2pts+'/'+questions.length+'</div>'
+      +'<div class="results-headline">🎯 All Done!</div>'
+      +'<div class="results-sub">Quiz 2 complete — great work today!</div>';
+
+    if(breakdown.length){
+      html+='<div class="points-breakdown">'
+        +'<div class="points-breakdown-title">Today\'s points breakdown</div>'
+        +breakdown.map(function(b){return '<div class="points-breakdown-row">'+b.label+'<span>+'+b.pts+' pt'+(b.pts!==1?'s':'')+'</span></div>';}).join('')
+        +'<div class="points-total">Total today <span>'+totalPts+' pts</span></div>'
+        +'</div>';
+    }
+
+    html+='<div class="done-note">Come back tomorrow for new questions!</div>';
+    html+='</div>';
+    document.getElementById('quizCol').innerHTML=html;
+    loadLeaderboard();
+  }
+}
+
+function doRetake(){
+  attemptInSession++;
+  current=0;
+  renderQuiz();
+}
+
+function doSession2Prompt(){
+  sessionNum=2;
+  attemptInSession=1;
+  startQuiz();
+}
+
+function updateStreak(){
   const streakKey='tt_daily_streak_'+dailyUserEmail;
   const lastDoneKey='tt_daily_last_'+dailyUserEmail;
   const lastDone=localStorage.getItem(lastDoneKey);
@@ -523,32 +741,6 @@ function showResults(){
   else if(lastDone!==todayKey)streak=1;
   localStorage.setItem(streakKey,streak);
   localStorage.setItem(lastDoneKey,todayKey);
-
-  const pct=Math.round((correctCount/questions.length)*100);
-  const emoji=pct===100?'🎯':pct>=66?'💪':pct>=33?'📈':'🌱';
-  const s1=getS1Attempts();
-  const s2=getS2Done();
-  const retakeAvailable=sessionNum===1&&s1<=MAX_RETAKES_PER_SESSION;
-  const session2Available=!s2&&s1>0;
-  const sessionLabel=sessionNum===1?(attemptInSession===1?'Quiz 1':'Quiz 1 Retake'):'Quiz 2';
-
-  let html=
-    '<div class="results-card">'
-    +'<div class="score-circle">'+correctCount+'/'+questions.length+'</div>'
-    +'<div class="results-headline">'+emoji+' '+sessionLabel+' Done!</div>'
-    +'<div class="results-sub">You got <strong>'+correctCount+' out of '+questions.length+'</strong> correct</div>'
-    +(streak>1?'<div class="streak-box">🔥 '+streak+'-day streak! Keep it going.</div>':'');
-
-  html+='<div class="btn-action-row">';
-  if(retakeAvailable)html+='<button class="btn-primary-action" onclick="doRetake()">↻ Retake Quiz 1</button>';
-  if(session2Available&&sessionNum===1&&s1>0)html+='<button class="btn-secondary-action" onclick="doSession2()">▶ Start Quiz 2</button>';
-  html+='</div>';
-  if(retakeAvailable)html+='<div class="retake-info">Same 3 questions — try to improve your score</div>';
-  if(!retakeAvailable&&!session2Available)html+='<div class="done-note">All quiz sessions complete for today — come back tomorrow!</div>';
-  html+='</div>';
-
-  document.getElementById('quizCol').innerHTML=html;
-  loadLeaderboard();
 }
 
 // ============================================================
