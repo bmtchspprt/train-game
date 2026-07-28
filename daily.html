@@ -50,10 +50,23 @@
   .option-btn.correct .opt-letter{background:var(--correct);color:#0a0a0f;}
   .option-btn.wrong .opt-letter{background:var(--wrong);color:white;}
   .option-btn.already-correct .opt-letter{background:rgba(0,229,160,0.3);color:var(--correct);}
-  .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1rem 1.2rem;margin-top:1.2rem;font-size:0.85rem;line-height:1.6;display:none;}
-  .explanation-box.show{display:block;}
-  .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.35rem;}
-  .report-link-row{margin-top:0.9rem;display:none;}
+  /* SKIP */
+  .skip-row{margin-top:1rem;border-top:1px solid var(--border);padding-top:0.8rem;}
+  .skip-toggle{background:none;border:none;color:var(--muted);font-size:0.75rem;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;padding:0;transition:color 0.2s;}
+  .skip-toggle:hover{color:var(--warning);}
+  .skip-panel{margin-top:0.6rem;background:rgba(255,179,71,0.04);border:1px solid rgba(255,179,71,0.18);border-radius:10px;padding:0.9rem 1.1rem;display:none;}
+  .skip-panel.open{display:block;}
+  .skip-panel-label{font-family:var(--headline-font);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--warning);font-weight:bold;margin-bottom:0.4rem;}
+  .skip-panel-sub{font-size:0.72rem;color:var(--muted);margin-bottom:0.6rem;font-weight:normal;}
+  .skip-textarea{width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.8rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;resize:none;outline:none;min-height:55px;transition:border-color 0.2s;}
+  .skip-textarea:focus{border-color:var(--warning);}
+  .btn-submit-skip{margin-top:0.5rem;padding:0.42rem 0.9rem;background:rgba(255,179,71,0.1);border:1px solid rgba(255,179,71,0.3);border-radius:7px;color:var(--warning);font-size:0.76rem;cursor:pointer;font-family:var(--headline-font);text-transform:uppercase;letter-spacing:0.04em;transition:all 0.2s;}
+  .btn-submit-skip:hover{background:rgba(255,179,71,0.2);}
+  .btn-submit-skip:disabled{opacity:0.4;cursor:not-allowed;}
+  .skip-sent{font-size:0.74rem;margin-top:0.4rem;display:none;}
+  .skip-sent.show{display:block;}
+  /* REPORT */
+  .report-link-row{margin-top:0.6rem;display:none;}
   .report-link-row.show{display:block;}
   .report-toggle{background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;padding:0;}
   .report-toggle:hover{color:var(--warning);}
@@ -70,13 +83,15 @@
   .btn-submit-report:disabled{opacity:0.4;cursor:not-allowed;}
   .report-sent{font-size:0.74rem;margin-top:0.4rem;display:none;}
   .report-sent.show{display:block;}
+  .explanation-box{background:var(--surface2);border:1px solid rgba(139,26,26,0.3);border-radius:12px;padding:1rem 1.2rem;margin-top:1.2rem;font-size:0.85rem;line-height:1.6;display:none;}
+  .explanation-box.show{display:block;}
+  .exp-label{font-family:var(--headline-font);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.35rem;}
   .btn-next{margin-top:1.2rem;padding:0.8rem 2rem;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));border:none;border-radius:10px;color:white;font-family:var(--headline-font);font-size:0.95rem;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;display:none;}
   .btn-next.visible{display:inline-flex;}
   .results-card{background:var(--surface);border:1px solid rgba(139,26,26,0.3);border-radius:20px;padding:2rem;text-align:center;}
   .results-headline{font-family:var(--headline-font);font-weight:bold;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--maroon-light);margin-bottom:0.4rem;}
   .results-sub{font-size:0.88rem;color:var(--muted);margin-bottom:1.2rem;}
   .score-circle{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--maroon),var(--maroon-light));display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-family:var(--headline-font);font-size:1.8rem;font-weight:bold;color:white;box-shadow:0 0 40px var(--maroon-glow);}
-  .streak-box{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);border-radius:10px;padding:0.8rem 1.1rem;margin:1rem 0;font-size:0.83rem;color:var(--warning);}
   .points-breakdown{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin:1rem 0;text-align:left;}
   .points-breakdown-title{font-family:var(--headline-font);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--maroon-light);font-weight:bold;margin-bottom:0.6rem;}
   .points-breakdown-row{font-size:0.82rem;color:var(--muted);padding:0.2rem 0;display:flex;justify-content:space-between;}
@@ -148,8 +163,11 @@ let attemptInSession=1;
 let questions=[];
 let current=0;
 
-// In-memory state (synced to Supabase)
-let dbRecord=null; // the daily_completions row
+// Track which questions were skipped this session (no retake for these)
+let skippedIds={};
+
+// In-memory state synced to Supabase
+let dbRecord=null;
 let quiz1EarnedPoints={};
 let quiz2EarnedPoints={};
 let feedbackCount=0;
@@ -158,7 +176,7 @@ let pointsBreakdown=[];
 const todayKey=new Date().toISOString().split('T')[0];
 
 // ============================================================
-// SUPABASE DAILY COMPLETION — cross-device session tracking
+// SUPABASE DAILY COMPLETION
 // ============================================================
 async function loadDbRecord(){
   try{
@@ -167,7 +185,6 @@ async function loadDbRecord(){
     const data=await res.json();
     if(Array.isArray(data)&&data.length){
       dbRecord=data[0];
-      // Restore state from DB
       quiz1EarnedPoints=arrayToObj(dbRecord.quiz1_earned||[]);
       quiz2EarnedPoints=arrayToObj(dbRecord.quiz2_earned||[]);
       feedbackCount=dbRecord.feedback_count||0;
@@ -181,7 +198,6 @@ async function loadDbRecord(){
 async function saveDbRecord(updates){
   try{
     if(dbRecord){
-      // Update existing
       const merged=Object.assign({},updates,{updated_at:new Date().toISOString()});
       await fetch(SUPABASE_URL+'/rest/v1/daily_completions?user_email=eq.'+encodeURIComponent(dailyUserEmail)+'&completion_date=eq.'+todayKey,{
         method:'PATCH',
@@ -190,7 +206,6 @@ async function saveDbRecord(updates){
       });
       dbRecord=Object.assign({},dbRecord,merged);
     } else {
-      // Insert new
       const newRecord=Object.assign({
         user_email:dailyUserEmail,
         completion_date:todayKey,
@@ -213,16 +228,8 @@ async function saveDbRecord(updates){
   }catch(e){}
 }
 
-function arrayToObj(arr){
-  const obj={};
-  if(Array.isArray(arr))arr.forEach(function(id){obj[id]=true;});
-  return obj;
-}
-
-function objToArray(obj){
-  return Object.keys(obj);
-}
-
+function arrayToObj(arr){const obj={};if(Array.isArray(arr))arr.forEach(function(id){obj[id]=true;});return obj;}
+function objToArray(obj){return Object.keys(obj);}
 function getS1Attempts(){return dbRecord?dbRecord.s1_attempts:0;}
 function getS2Done(){return dbRecord?dbRecord.s2_done:false;}
 
@@ -301,8 +308,7 @@ async function init(){
 
   loadLeaderboard();
 
-  // Load questions and DB record in parallel
-  const [,record]=await Promise.all([
+  await Promise.all([
     fetch(SUPABASE_URL+'/rest/v1/bst_training_results?select=*&status=eq.active&limit=500',
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY}})
       .then(r=>r.json())
@@ -313,13 +319,9 @@ async function init(){
   const s1=getS1Attempts();
   const s2=getS2Done();
 
-  if(s1===0){
-    sessionNum=1;attemptInSession=1;await startQuiz();
-  } else if(!s2){
-    showBetweenSessions();
-  } else {
-    showAllDone();
-  }
+  if(s1===0){sessionNum=1;attemptInSession=1;await startQuiz();}
+  else if(!s2){showBetweenSessions();}
+  else{showAllDone();}
 }
 
 async function startQuiz(){
@@ -331,6 +333,7 @@ async function startQuiz(){
     return;
   }
   current=0;
+  skippedIds={};
   renderQuiz();
 }
 
@@ -400,7 +403,6 @@ async function doSession2(){
 // ============================================================
 function renderQuiz(){
   const name=dailyUserEmail.split('@')[0];
-  const s1=getS1Attempts();
   const sessionLabel=sessionNum===1
     ?(attemptInSession===1?'Quiz 1':'Quiz 1 — Retake '+(attemptInSession-1))
     :'Quiz 2';
@@ -459,6 +461,20 @@ function renderQuestion(){
     +'</div>'
     +(earned?'<div style="font-size:0.75rem;color:var(--correct);margin-top:0.75rem;">✓ You already earned a point for this question — answer again to practice</div>':'')
     +'<div class="explanation-box" id="expBox"><div class="exp-label">Why this is correct</div><div id="expText"></div></div>'
+
+    // SKIP ROW
+    +'<div class="skip-row" id="skipRow">'
+    +'<button class="skip-toggle" onclick="toggleSkipPanel()">↷ Skip question and comment</button>'
+    +'<div class="skip-panel" id="skipPanel">'
+    +'<div class="skip-panel-label">Why are you skipping?</div>'
+    +'<div class="skip-panel-sub">A comment is required to earn +1 pt. Skipped questions cannot be retaken.</div>'
+    +'<textarea class="skip-textarea" id="skipComment" placeholder="e.g. Not sure about this topic yet..." oninput="checkSkipReady()"></textarea>'
+    +'<button class="btn-submit-skip" id="skipSubmitBtn" onclick="submitSkip('+qIndex+')" disabled>Skip & Earn +1 pt →</button>'
+    +'<div class="skip-sent" id="skipSent"></div>'
+    +'</div>'
+    +'</div>'
+
+    // REPORT ROW
     +'<div class="report-link-row" id="reportLinkRow">'
     +'<button class="report-toggle" onclick="toggleReportPanel()">⚑ Report a problem with this question</button>'
     +'<div class="report-panel" id="reportPanel">'
@@ -477,12 +493,103 @@ function renderQuestion(){
     +'<div class="report-sent" id="fbSent"></div>'
     +'</div>'
     +'</div>'
+
     +'<button class="btn-next" id="nextBtn" onclick="nextQuestion()">'+(isLast?'✓ See Results':'Next →')+'</button>'
     +'</div>';
 }
 
 let selectedFbType=null;
 let reportPanelOpen=false;
+let skipPanelOpen=false;
+
+function toggleSkipPanel(){
+  skipPanelOpen=!skipPanelOpen;
+  const panel=document.getElementById('skipPanel');
+  if(panel){
+    if(skipPanelOpen)panel.classList.add('open');
+    else panel.classList.remove('open');
+  }
+}
+
+function checkSkipReady(){
+  const comment=(document.getElementById('skipComment').value||'').trim();
+  const btn=document.getElementById('skipSubmitBtn');
+  if(btn)btn.disabled=!comment;
+}
+
+async function submitSkip(qIndex){
+  const comment=(document.getElementById('skipComment').value||'').trim();
+  if(!comment){
+    const el=document.getElementById('skipSent');
+    el.textContent='Please write a comment to skip.';
+    el.style.color='var(--wrong)';
+    el.classList.add('show');
+    return;
+  }
+  const q=questions[current];
+  const btn=document.getElementById('skipSubmitBtn');
+  btn.disabled=true;btn.textContent='Saving...';
+
+  // Mark as skipped — no retake for this question
+  skippedIds[String(q.id)]=true;
+
+  // Mark as earned so they get the point
+  const qIdStr=String(q.id);
+  if(sessionNum===1){quiz1EarnedPoints[qIdStr]=true;}
+  else{quiz2EarnedPoints[qIdStr]=true;}
+
+  const qNum=q.question_number?'Q-'+q.question_number:'Question '+(current+1);
+  const label=qNum+' skipped with comment';
+  pointsBreakdown.push({label:label,pts:1});
+
+  // Save to Supabase
+  await saveDbRecord({
+    quiz1_earned:objToArray(quiz1EarnedPoints),
+    quiz2_earned:objToArray(quiz2EarnedPoints),
+    points_breakdown:pointsBreakdown
+  });
+
+  // Award point
+  await awardPoint('skip');
+
+  // Log skip to question_feedback so admin can see which questions get skipped
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/question_feedback',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({
+        question_id:q.id,
+        question_text:q.question.substring(0,120),
+        feedback_type:'skipped',
+        comment:comment,
+        author_name:dailyUserEmail,
+        user_email:dailyUserEmail,
+        status:'pending',
+        created_at:new Date().toISOString()
+      })
+    });
+  }catch(e){}
+
+  const el=document.getElementById('skipSent');
+  el.textContent='✓ Skipped — +1 point earned.';
+  el.style.color='var(--correct)';
+  el.classList.add('show');
+  btn.textContent='✓ Skipped';
+
+  // Disable answer buttons
+  const optContainer=document.getElementById('opts_'+qIndex);
+  if(optContainer){
+    optContainer.querySelectorAll('.option-btn').forEach(function(b){b.disabled=true;b.style.opacity='0.4';});
+  }
+
+  // Hide skip row
+  const skipRow=document.getElementById('skipRow');
+  if(skipRow)skipRow.style.display='none';
+
+  // Show next button
+  document.getElementById('nextBtn').classList.add('visible');
+  setTimeout(loadLeaderboard,800);
+}
 
 function toggleReportPanel(){
   reportPanelOpen=!reportPanelOpen;
@@ -514,23 +621,23 @@ function selectAnswer(letter,btn,qIndex){
   if(!card||card.dataset.answered==='1')return;
   card.dataset.answered='1';
 
+  // Hide skip row once answered
+  const skipRow=document.getElementById('skipRow');
+  if(skipRow)skipRow.style.display='none';
+
   const q=questions[current];
   const correct=q.correct_answer===letter;
   const qIdStr=String(q.id);
   const earned=sessionNum===1?quiz1EarnedPoints[qIdStr]:quiz2EarnedPoints[qIdStr];
 
   if(correct&&!earned){
-    if(sessionNum===1){
-      quiz1EarnedPoints[qIdStr]=true;
-    } else {
-      quiz2EarnedPoints[qIdStr]=true;
-    }
+    if(sessionNum===1){quiz1EarnedPoints[qIdStr]=true;}
+    else{quiz2EarnedPoints[qIdStr]=true;}
     const qNum=q.question_number?'Q-'+q.question_number:'Question '+(current+1);
     const label=sessionNum===1
       ?(attemptInSession===1?qNum+' correct on Quiz 1':qNum+' correct on Retake '+(attemptInSession-1))
       :qNum+' correct on Quiz 2';
     pointsBreakdown.push({label:label,pts:1});
-    // Save to Supabase
     saveDbRecord({
       quiz1_earned:objToArray(quiz1EarnedPoints),
       quiz2_earned:objToArray(quiz2EarnedPoints),
@@ -563,10 +670,11 @@ function selectAnswer(letter,btn,qIndex){
 
 async function awardPoint(reason){
   try{
+    const reasonLabel=reason==='correct'?'Daily quiz correct':reason==='skip'?'Daily quiz skip with comment':'Daily quiz feedback';
     await fetch(SUPABASE_URL+'/rest/v1/technician_points',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_email:dailyUserEmail,points:1,reason:reason==='correct'?'Daily quiz correct':'Daily quiz feedback',created_at:new Date().toISOString()})
+      body:JSON.stringify({user_email:dailyUserEmail,points:1,reason:reasonLabel,created_at:new Date().toISOString()})
     });
   }catch(e){}
 }
@@ -632,6 +740,9 @@ function nextQuestion(){
   current++;
   const pf=document.getElementById('progFill');
   if(pf)pf.style.width=(current/questions.length*100)+'%';
+  skipPanelOpen=false;
+  reportPanelOpen=false;
+  selectedFbType=null;
   renderQuestion();
 }
 
@@ -640,7 +751,14 @@ function nextQuestion(){
 // ============================================================
 async function showResults(){
   if(sessionNum===1){
-    const missedCount=questions.filter(function(q){return !quiz1EarnedPoints[String(q.id)];}).length;
+    // Only wrong answers trigger retakes — skipped questions do not
+    const missedCount=questions.filter(function(q){
+      const qIdStr=String(q.id);
+      const earned=quiz1EarnedPoints[qIdStr];
+      const skipped=skippedIds[qIdStr];
+      return !earned&&!skipped;
+    }).length;
+
     const newS1=(getS1Attempts()||0)+1;
     await saveDbRecord({s1_attempts:newS1});
 
@@ -709,7 +827,13 @@ async function showResults(){
 function doRetake(){
   attemptInSession++;
   current=0;
+  skippedIds={};
   renderQuiz();
+}
+
+async function doSession2(){
+  sessionNum=2;attemptInSession=1;
+  await startQuiz();
 }
 
 function updateStreak(){
